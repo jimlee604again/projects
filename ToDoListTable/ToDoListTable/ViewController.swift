@@ -8,7 +8,7 @@
 import UIKit
 
 class ViewController: UIViewController, UITableViewDelegate,
-  UITableViewDataSource
+                      UITableViewDataSource, ItemEditorDelegate
 {
 
   // MARK: - UI Elements
@@ -16,7 +16,8 @@ class ViewController: UIViewController, UITableViewDelegate,
   let tableView = UITableView()
   let addItemButton = UIButton()
 
-  var items = [String]()
+//  var items = [String]()
+  var items = ["Placeholder Item"]
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -42,6 +43,7 @@ class ViewController: UIViewController, UITableViewDelegate,
     tableView.delegate = self
     tableView.dataSource = self
     tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+    tableView.translatesAutoresizingMaskIntoConstraints = false
     view.addSubview(tableView)
   }
   
@@ -54,6 +56,7 @@ class ViewController: UIViewController, UITableViewDelegate,
     addItemButton.addTarget(self, action: #selector(addItem), for: .touchUpInside)
     addItemButton.translatesAutoresizingMaskIntoConstraints = false
     addItemButton.contentVerticalAlignment = .center
+    addItemButton.translatesAutoresizingMaskIntoConstraints = false
     view.addSubview(addItemButton)
   }
 
@@ -121,7 +124,9 @@ class ViewController: UIViewController, UITableViewDelegate,
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
   {
     tableView.deselectRow(at: indexPath, animated: true)
-    let itemEditor = ItemEditorViewController(text: items[indexPath.row])
+    let itemEditor = ItemEditorViewController(item: Item(text: items[indexPath.row],
+                                                         index: indexPath.row),
+                                              delegate: self)
     itemEditor.modalPresentationStyle = .overFullScreen
     present(itemEditor, animated: false)
   }
@@ -130,5 +135,17 @@ class ViewController: UIViewController, UITableViewDelegate,
     items.append("New Item")
     tableView.reloadData()
     tableView.scrollToRow(at: IndexPath(row: items.count - 1, section: 0), at: .bottom, animated: true)
+  }
+  
+  func didTapSave(text: String, index: Int) {
+    items[index] = text
+    tableView.reloadData()
+    tableView.scrollToRow(at: IndexPath(row: index, section: 0), at: .bottom, animated: false)
+  }
+  
+  func didTapDelete(index: Int) {
+    items.remove(at: index)
+    tableView.reloadData()
+    tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
   }
 }
