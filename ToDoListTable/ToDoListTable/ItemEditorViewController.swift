@@ -8,8 +8,8 @@
 import UIKit
 
 protocol ItemEditorDelegate {
-  func didTapSave(text: String, index: Int)
-  func didTapDelete(index: Int)
+  func didTapSave(item: Item, text: String)
+  func didTapDelete(item: Item, index: Int)
 }
 
 class ItemEditorViewController : UIViewController
@@ -20,6 +20,7 @@ class ItemEditorViewController : UIViewController
   var buttonConfiguration = UIButton.Configuration.filled()
   
   let item: Item
+  let index: Int
   var textField = InsettedTextField()
   var saveButton = UIButton()
   var cancelButton = UIButton()
@@ -27,8 +28,9 @@ class ItemEditorViewController : UIViewController
   
   let delegate: ItemEditorDelegate;
   
-  init(item: Item, delegate: ItemEditorDelegate) {
+  init(item: Item, index: Int, delegate: ItemEditorDelegate) {
     self.item = item
+    self.index = index
     self.delegate = delegate
     super.init(nibName: nil, bundle: nil)
     buttonConfiguration.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10,
@@ -50,7 +52,7 @@ class ItemEditorViewController : UIViewController
   }
   
   func setUpTextField() {
-    textField.text = item.text
+    textField.text = item.name
     textField.translatesAutoresizingMaskIntoConstraints = false
     textField.backgroundColor = .white
     textField.layer.cornerRadius = 6.0
@@ -127,14 +129,10 @@ class ItemEditorViewController : UIViewController
       ),
 
       saveButton.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: firstButtonUpperGap),
-//      saveButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -butonSideInset),
-//      saveButton.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: view.frame.width/4.0),
       saveButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
       saveButton.widthAnchor.constraint(equalToConstant: buttonWidth),
       
       cancelButton.topAnchor.constraint(equalTo: saveButton.bottomAnchor, constant: secondButtonUpperGap),
-//      cancelButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: butonSideInset),
-//      cancelButton.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: -view.frame.width/4.0),
       cancelButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
       cancelButton.widthAnchor.constraint(equalToConstant: buttonWidth),
       
@@ -146,7 +144,7 @@ class ItemEditorViewController : UIViewController
 
   @objc func didTapSave() {
     dismiss(animated: false)
-    delegate.didTapSave(text: textField.text!, index: item.index)
+    delegate.didTapSave(item: item, text: textField.text!)
   }
   
   @objc func didTapCancel() {
@@ -155,7 +153,7 @@ class ItemEditorViewController : UIViewController
   
   @objc func didTapDelete() {
     dismiss(animated: false)
-    delegate.didTapDelete(index: item.index)
+    delegate.didTapDelete(item: item, index: index)
   }
   
 }

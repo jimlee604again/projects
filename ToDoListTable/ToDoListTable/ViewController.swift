@@ -10,14 +10,13 @@ import UIKit
 class ViewController: UIViewController, UITableViewDelegate,
                       UITableViewDataSource, ItemEditorDelegate
 {
-
+  let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+  
   // MARK: - UI Elements
   let titleLabel = UILabel()
   let tableView = UITableView()
   let addItemButton = UIButton()
-
-//  var items = [String]()
-  var items = ["Placeholder Item"]
+  var models = [Item]()
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -27,6 +26,12 @@ class ViewController: UIViewController, UITableViewDelegate,
     setUpTableView()
     setUpAddItemButton()
     setUpLayout()
+    
+    do {
+      try models = context.fetch(Item.fetchRequest())
+    } catch {
+      // error
+    }
   }
 
   // MARK: - Setup Methods
@@ -103,10 +108,9 @@ class ViewController: UIViewController, UITableViewDelegate,
 
   // MARK: - TableView DataSource Methods
 
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int)
-    -> Int
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
   {
-    return items.count
+    return models.count
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)
@@ -116,7 +120,7 @@ class ViewController: UIViewController, UITableViewDelegate,
       withIdentifier: "cell",
       for: indexPath
     )
-    cell.textLabel?.text = items[indexPath.row]
+    cell.textLabel?.text = models[indexPath.row].name
     return cell
   }
 
@@ -124,27 +128,50 @@ class ViewController: UIViewController, UITableViewDelegate,
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
   {
     tableView.deselectRow(at: indexPath, animated: true)
-    let itemEditor = ItemEditorViewController(item: Item(text: items[indexPath.row],
-                                                         index: indexPath.row),
+    let itemEditor = ItemEditorViewController(item: models[indexPath.row],
+                                              index: indexPath.row,
                                               delegate: self)
     itemEditor.modalPresentationStyle = .overFullScreen
     present(itemEditor, animated: false)
   }
   
   @objc func addItem() {
-    items.append("New Item")
+    let newItem = Item(context: context)
+    newItem.name = "New Item"
+    models.append(newItem)
+    
+    do {
+      try context.save()
+    } catch {
+      // error
+    }
+    
     tableView.reloadData()
-    tableView.scrollToRow(at: IndexPath(row: items.count - 1, section: 0), at: .bottom, animated: true)
+    tableView.scrollToRow(at: IndexPath(row: models.count - 1, section: 0), at: .bottom, animated: true)
   }
   
-  func didTapSave(text: String, index: Int) {
-    items[index] = text
+  func didTapSave(item: Item, text: String) {
+    item.name = text
+    
+    do {
+      try context.save()
+    } catch {
+      // error
+    }
+    
     tableView.reloadData()
-    tableView.scrollToRow(at: IndexPath(row: index, section: 0), at: .bottom, animated: false)
   }
   
-  func didTapDelete(index: Int) {
-    items.remove(at: index)
+  func didTapDelete(item: Item, index: Int) {
+    context.delete(item)
+    models.remove(at: index)
+    
+    do {
+      try context.save()
+    } catch {
+      // error
+    }
+    
     tableView.reloadData()
     tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
   }
