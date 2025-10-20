@@ -14,17 +14,17 @@ protocol ItemEditorDelegate {
 
 class ItemEditorViewController : UIViewController
 {
-  let buttonBorderWidth = 2.0
-  let buttonCornerRadius = 6.0
-  let buttonHeight = 40.0
-  var buttonConfiguration = UIButton.Configuration.filled()
-  
   let item: Item
   let index: Int
   var textField = InsettedTextField()
   var saveButton = UIButton()
   var cancelButton = UIButton()
   var deleteButton = UIButton()
+ 
+  let buttonBorderWidth = 2.0
+  let buttonCornerRadius = 6.0
+  let buttonHeight = 40.0
+  var buttonConfiguration = UIButton.Configuration.filled()
   
   let delegate: ItemEditorDelegate;
   
@@ -67,12 +67,11 @@ class ItemEditorViewController : UIViewController
                                                           blue: 144/255.0,
                                                           alpha: 1.0)
     saveButton.setTitle("Save", for: .normal)
-    // add tap action
-    saveButton.translatesAutoresizingMaskIntoConstraints = false
     saveButton.setTitleColor(.black, for: .normal)
     saveButton.layer.borderWidth = buttonBorderWidth
     saveButton.layer.cornerRadius = buttonCornerRadius
     saveButton.addTarget(self, action: #selector(didTapSave), for: .touchUpInside)
+    saveButton.translatesAutoresizingMaskIntoConstraints = false
     view.addSubview(saveButton)
   }
   
@@ -80,12 +79,11 @@ class ItemEditorViewController : UIViewController
     cancelButton.configuration = buttonConfiguration
     cancelButton.configuration?.baseBackgroundColor = .lightGray
     cancelButton.setTitle("Cancel", for: .normal)
-    // add tap action
-    cancelButton.translatesAutoresizingMaskIntoConstraints = false
     cancelButton.setTitleColor(.black, for: .normal)
     cancelButton.layer.borderWidth = buttonBorderWidth
     cancelButton.layer.cornerRadius = buttonCornerRadius
     cancelButton.addTarget(self, action: #selector(didTapCancel), for: .touchUpInside)
+    cancelButton.translatesAutoresizingMaskIntoConstraints = false
     view.addSubview(cancelButton)
   }
   
@@ -96,12 +94,11 @@ class ItemEditorViewController : UIViewController
                                                             blue: 193/255.0,
                                                             alpha: 1.0)
     deleteButton.setTitle("Delete", for: .normal)
-    // add tap action
-    deleteButton.translatesAutoresizingMaskIntoConstraints = false
     deleteButton.setTitleColor(.black, for: .normal)
     deleteButton.layer.borderWidth = buttonBorderWidth
     deleteButton.layer.cornerRadius = buttonCornerRadius
     deleteButton.addTarget(self, action: #selector(didTapDelete), for: .touchUpInside)
+    deleteButton.translatesAutoresizingMaskIntoConstraints = false
     view.addSubview(deleteButton)
   }
   
@@ -114,7 +111,7 @@ class ItemEditorViewController : UIViewController
     let buttonWidth = 140.0
     
     NSLayoutConstraint.activate([
-      // Title Label constraints
+      // Text Field constraints
       textField.topAnchor.constraint(
         equalTo: view.safeAreaLayoutGuide.topAnchor,
         constant: textFieldTopInset
@@ -128,14 +125,17 @@ class ItemEditorViewController : UIViewController
         constant: -textFieldSideInset
       ),
 
+      // Save Button constraints
       saveButton.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: firstButtonUpperGap),
       saveButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
       saveButton.widthAnchor.constraint(equalToConstant: buttonWidth),
       
+      // Cancel Button constraints
       cancelButton.topAnchor.constraint(equalTo: saveButton.bottomAnchor, constant: secondButtonUpperGap),
       cancelButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
       cancelButton.widthAnchor.constraint(equalToConstant: buttonWidth),
       
+      // Delete Button constraints
       deleteButton.topAnchor.constraint(equalTo: cancelButton.bottomAnchor, constant: deleteButtonVerticalGap),
       deleteButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
       deleteButton.widthAnchor.constraint(equalToConstant: buttonWidth)
@@ -155,5 +155,4 @@ class ItemEditorViewController : UIViewController
     dismiss(animated: false)
     delegate.didTapDelete(item: item, index: index)
   }
-  
 }

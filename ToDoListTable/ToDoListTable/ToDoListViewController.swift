@@ -7,15 +7,17 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDelegate,
-                      UITableViewDataSource, ItemEditorDelegate
+class ToDoListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,
+                              ItemEditorDelegate
 {
   let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
   
-  // MARK: - UI Elements
+  // MARK: UI Elements
   let titleLabel = UILabel()
   let tableView = UITableView()
   let addItemButton = UIButton()
+  
+  // MARK: Data Models
   var models = [Item]()
 
   override func viewDidLoad() {
@@ -30,7 +32,7 @@ class ViewController: UIViewController, UITableViewDelegate,
     do {
       try models = context.fetch(Item.fetchRequest())
     } catch {
-      // error
+      NSLog("Failed to fetch To Do List Items.")
     }
   }
 
@@ -59,7 +61,6 @@ class ViewController: UIViewController, UITableViewDelegate,
     addItemButton.layer.borderWidth = 2.0
     addItemButton.layer.borderColor = UIColor.black.cgColor
     addItemButton.addTarget(self, action: #selector(addItem), for: .touchUpInside)
-    addItemButton.translatesAutoresizingMaskIntoConstraints = false
     addItemButton.contentVerticalAlignment = .center
     addItemButton.translatesAutoresizingMaskIntoConstraints = false
     view.addSubview(addItemButton)
@@ -67,6 +68,7 @@ class ViewController: UIViewController, UITableViewDelegate,
 
   func setUpLayout() {
     NSLayoutConstraint.activate([
+
       // Title label constraints
       titleLabel.topAnchor.constraint(
         equalTo: view.safeAreaLayoutGuide.topAnchor,
@@ -96,8 +98,6 @@ class ViewController: UIViewController, UITableViewDelegate,
       addItemButton.leadingAnchor.constraint(equalTo: view.trailingAnchor, constant: -70),
       addItemButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40),
     ])
-    
-    
   }
   
   override func viewDidLayoutSubviews() {
@@ -107,7 +107,6 @@ class ViewController: UIViewController, UITableViewDelegate,
   }
 
   // MARK: - TableView DataSource Methods
-
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
   {
     return models.count
@@ -143,7 +142,7 @@ class ViewController: UIViewController, UITableViewDelegate,
     do {
       try context.save()
     } catch {
-      // error
+      NSLog("Failed to save new To Do List Item.")
     }
     
     tableView.reloadData()
@@ -156,7 +155,7 @@ class ViewController: UIViewController, UITableViewDelegate,
     do {
       try context.save()
     } catch {
-      // error
+      NSLog("Failed to update To Do List Item.")
     }
     
     tableView.reloadData()
@@ -169,7 +168,7 @@ class ViewController: UIViewController, UITableViewDelegate,
     do {
       try context.save()
     } catch {
-      // error
+      NSLog("Failed to delete To Do List Item.")
     }
     
     tableView.reloadData()
