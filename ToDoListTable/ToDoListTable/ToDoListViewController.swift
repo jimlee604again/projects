@@ -10,14 +10,13 @@ import UIKit
 class ToDoListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,
                               ItemEditorDelegate
 {
-  let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-  
   // MARK: UI Elements
   let titleLabel = UILabel()
   let tableView = UITableView()
   let addItemButton = UIButton()
   
   // MARK: Data Models
+  let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
   var models = [Item]()
 
   override func viewDidLoad() {
