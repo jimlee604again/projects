@@ -8,7 +8,7 @@
 import UIKit
 
 protocol ItemEditorDelegate {
-  func didTapSave(item: Item, text: String)
+  func didTapSave(index: Int, text: String)
   func didTapDelete(item: Item, index: Int)
 }
 
@@ -144,7 +144,7 @@ class ItemEditorViewController : UIViewController
 
   @objc func didTapSave() {
     dismiss(animated: false)
-    delegate.didTapSave(item: item, text: textField.text!)
+    delegate.didTapSave(index: index, text: textField.text!)
   }
   
   @objc func didTapCancel() {
