@@ -12,23 +12,13 @@ class ToDoListViewController: UIViewController, UITableViewDelegate, UITableView
 {
   // MARK: UI Elements
   var titleLabel : UILabel?
-  var tableView : UITableView?
+  var listTableView : UITableView?
   var addItemButton : UIButton?
-//  var titleLabel = UILabel()
-//  var tableView = UITableView()
-//  var addItemButton = UIButton()
   let placeholderItemString = "New Item"
   
   // MARK: Data Models
   let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
   var models = [Item]()
-
-//  required init?(coder: NSCoder) {
-//    self.titleLabel = UILabel()
-//    self.tableView = UITableView()
-//    self.addItemButton = UIButton()
-//    super.init(nibName: nil, bundle: nil)
-//  }
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -38,8 +28,7 @@ class ToDoListViewController: UIViewController, UITableViewDelegate, UITableView
     setUpTableView()
     setUpAddItemButton()
     setUpLayout()
-    
-    // move this to init?
+
     do {
       try models = context.fetch(Item.fetchRequest())
     } catch {
@@ -49,79 +38,95 @@ class ToDoListViewController: UIViewController, UITableViewDelegate, UITableView
 
   // MARK: - Setup Methods
   func setUpTitleLabel() {
-    titleLabel = UILabel()
-    titleLabel!.text = "To Do"
-    titleLabel!.font = UIFont.boldSystemFont(ofSize: 24)
-    titleLabel!.textAlignment = .center
-    titleLabel!.translatesAutoresizingMaskIntoConstraints = false
-    view.addSubview(titleLabel!)
+    let label = UILabel()
+    label.text = "To Do"
+    label.font = UIFont.boldSystemFont(ofSize: 24)
+    label.textAlignment = .center
+    label.translatesAutoresizingMaskIntoConstraints = false
+    view.addSubview(label)
+    titleLabel = label
   }
   
   func setUpTableView() {
-    tableView = UITableView()
-    tableView!.translatesAutoresizingMaskIntoConstraints = false
-    tableView!.delegate = self
-    tableView!.dataSource = self
-    tableView!.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-    tableView!.translatesAutoresizingMaskIntoConstraints = false
-    view.addSubview(tableView!)
-  }
-  
-  func setUpAddItemButton() {
-    addItemButton = UIButton()
-    addItemButton!.setTitle("＋", for: .normal)
-    addItemButton!.setTitleColor(.black, for: .normal)
-    addItemButton!.titleLabel?.font = UIFont.systemFont(ofSize: 30)
-    addItemButton!.layer.borderWidth = 2.0
-    addItemButton!.layer.borderColor = UIColor.black.cgColor
-    addItemButton!.addTarget(self, action: #selector(addItemAndScroll), for: .touchUpInside)
-    addItemButton!.contentVerticalAlignment = .center
-    addItemButton!.translatesAutoresizingMaskIntoConstraints = false
-    view.addSubview(addItemButton!)
+    let tableView = UITableView()
+    tableView.translatesAutoresizingMaskIntoConstraints = false
+    tableView.delegate = self
+    tableView.dataSource = self
+    tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+    tableView.translatesAutoresizingMaskIntoConstraints = false
+    view.addSubview(tableView)
+    listTableView = tableView
   }
 
+  func setUpAddItemButton() {
+    let button = UIButton()
+    button.setTitle("＋", for: .normal)
+    button.setTitleColor(.black, for: .normal)
+    button.titleLabel?.font = UIFont.systemFont(ofSize: 30)
+    button.layer.borderWidth = 2.0
+    button.layer.borderColor = UIColor.black.cgColor
+    button.addTarget(self, action: #selector(addItemAndScroll), for: .touchUpInside)
+    button.contentVerticalAlignment = .center
+    button.translatesAutoresizingMaskIntoConstraints = false
+    view.addSubview(button)
+    addItemButton = button
+  }
+  
   func setUpLayout() {
+    guard let unwrappedTitleLabel = titleLabel, let unwrappedTableView = listTableView,
+          let unwrappedAddItemButton = addItemButton else {
+      NSLog("An optional UI value is nil.")
+      return
+    }
+    
     NSLayoutConstraint.activate([
 
       // Title label constraints
-      titleLabel!.topAnchor.constraint(
+      unwrappedTitleLabel.topAnchor.constraint(
         equalTo: view.safeAreaLayoutGuide.topAnchor,
         constant: 16
       ),
-      titleLabel!.leadingAnchor.constraint(
+      unwrappedTitleLabel.leadingAnchor.constraint(
         equalTo: view.leadingAnchor,
         constant: 16
       ),
-      titleLabel!.trailingAnchor.constraint(
+      unwrappedTitleLabel.trailingAnchor.constraint(
         equalTo: view.trailingAnchor,
         constant: -16
       ),
 
       // TableView constraints
-      tableView!.topAnchor.constraint(
-        equalTo: titleLabel!.bottomAnchor,
+      unwrappedTableView.topAnchor.constraint(
+        equalTo: unwrappedTitleLabel.bottomAnchor,
         constant: 8
       ),
-      tableView!.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      tableView!.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-      tableView!.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+      unwrappedTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      unwrappedTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      unwrappedTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
       
       // AddItemButton constraints
-      addItemButton!.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -100),
-      addItemButton!.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -70),
-      addItemButton!.leadingAnchor.constraint(equalTo: view.trailingAnchor, constant: -70),
-      addItemButton!.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40),
+      unwrappedAddItemButton.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -100),
+      unwrappedAddItemButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -70),
+      unwrappedAddItemButton.leadingAnchor.constraint(equalTo: view.trailingAnchor, constant: -70),
+      unwrappedAddItemButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40),
     ])
   }
   
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    addItemButton!.layer.cornerRadius = addItemButton!.frame.height / 2
-    addItemButton!.layer.masksToBounds = true
+    
+    if let unwrappedAddItemButton = addItemButton {
+      unwrappedAddItemButton.layer.cornerRadius = unwrappedAddItemButton.frame.height / 2
+      unwrappedAddItemButton.layer.masksToBounds = true
+    }
   }
 
   func itemAtIndex(index: Int)->String {
-    return models[index].name!
+    if let name = models[index].name {
+      return name
+    } else {
+      return ""
+    }
   }
 
   func updateItem(at index: Int, with name: String) {
@@ -174,8 +179,8 @@ class ToDoListViewController: UIViewController, UITableViewDelegate, UITableView
   
   @objc func addItemAndScroll() {
     addItem()
-    tableView?.reloadData()
-    tableView?.scrollToRow(at: IndexPath(row: models.count - 1, section: 0), at: .bottom, animated: true)
+    listTableView?.reloadData()
+    listTableView?.scrollToRow(at: IndexPath(row: models.count - 1, section: 0), at: .bottom, animated: true)
   }
   
   func didTapSave(index: Int, text: String) {
@@ -187,11 +192,10 @@ class ToDoListViewController: UIViewController, UITableViewDelegate, UITableView
       NSLog("Failed to update To Do List Item.")
     }
     
-    tableView?.reloadData()
+    listTableView?.reloadData()
   }
   
   func delete(at index:Int) {
-    // is both needed?
     context.delete(models[index])
     models.remove(at: index)
   }
@@ -204,7 +208,9 @@ class ToDoListViewController: UIViewController, UITableViewDelegate, UITableView
       NSLog("Failed to delete To Do List Item.")
     }
     
-    tableView?.reloadData()
-    tableView?.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+    listTableView?.reloadData()
+    if (models.count > 0) {
+      listTableView?.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+    }
   }
 }
