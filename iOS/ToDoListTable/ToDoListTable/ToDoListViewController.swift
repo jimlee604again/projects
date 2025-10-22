@@ -154,6 +154,16 @@ class ToDoListViewController: UIViewController, UITableViewDelegate, UITableView
     return cell
   }
 
+  func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+      let delete = UIContextualAction(style: .destructive, title: "Delete") { (action, sourceView, completionHandler) in
+          print("index path of delete: \(indexPath)")
+          completionHandler(true)
+      }
+      let swipeActionConfig = UISwipeActionsConfiguration(actions: [delete])
+      swipeActionConfig.performsFirstActionWithFullSwipe = true
+      return swipeActionConfig
+  }
+
   // MARK: - TableView Delegate Method (optional)
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
   {
