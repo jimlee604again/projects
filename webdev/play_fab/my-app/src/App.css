@@ -1,0 +1,154 @@
+:root {
+  --card-border-radius: 6px;
+}
+
+.App {
+  text-align: center;
+}
+
+.error {
+  color: rgb(153, 21, 21);
+  font-weight: bolder;
+}
+
+.full-background-container {
+  height: 100vh;
+  width: 100vw;
+  /* Position if needed, e.g., for absolute positioning within a parent */
+  position: relative; /* or absolute, fixed, depending on your layout */
+}
+
+.hidden-but-takes-space {
+  visibility: hidden;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text_align_center {
+  text-align: center;
+}
+
+.height_5vh {
+  height: 5vh;
+}
+
+.height_10vh {
+  height: 10vh;
+}
+
+.height_30vh {
+  height: 30vh;
+}
+
+.height_50vh {
+  height: 50vh;
+}
+
+.width_40vh {
+  width: 40vw;
+}
+
+.width_60vh {
+  width: 60vw;
+}
+
+.game_logistics_panel {
+  margin-left: 5vw;
+}
+
+.instructions_panel {
+  margin-right: 5vw;
+}
+
+.hflex {
+  display: flex;
+  flex-direction: row;
+}
+
+.vflex {
+  display: flex;
+  flex-direction: column;
+}
+
+.flexgrow {
+  flex:1
+}
+
+.flexgrow10 {
+  flex:0.1
+}
+
+.start_button {
+  font-size: x-large;
+  border-radius: 6px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.start_button:active {
+  background-color: gray;
+}
+
+.FABCard {
+  height: 20vh;
+  width: 20vw;
+  background-color: white;
+  border-radius: 10px;
+  margin-right: 10px;
+}
+
+.highlight_red {
+  border-width: var(--card-border-radius);
+  border-color: red;
+}
+
+.highlight_blue {
+  border-width: var(--card-border-radius);
+  border-color: blue;
+}
+
+.highlight_yellow {
+  border-width: var(--card-border-radius);
+  border-color: yellow;
+}
+
+.highlight_gray {
+  border-width: var(--card-border-radius);
+  border-color: darkslategray;
+}
+
+p.turn_text {
+  font-size: 1.5em;
+  font-weight: bolder;
+}
+
+p.player_turn {
+  color:rgb(50, 50, 186);
+}
+
+p.opponent_turn {
+  color:rgb(186, 44, 44);
+}
+
+.mid_bar {
+  display: flex;
+  flex-direction: row;
+}
+
+.next_button {
+  background-color:#74dd74;
+  margin-right: 10vw;
+  font-size: 3em;
+  border-radius: 6px;
+  border-width: 4pt;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
