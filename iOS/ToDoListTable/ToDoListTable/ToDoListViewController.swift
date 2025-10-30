@@ -12,8 +12,10 @@ class ToDoListViewController: UIViewController, UITableViewDelegate, UITableView
 {
   // MARK: UI Elements
   var titleLabel : UILabel?
+  var animatedLabel : UILabel?
   var listTableView : UITableView?
   var addItemButton : UIButton?
+
   let placeholderItemString = "New Item"
   
   // MARK: Data Models
@@ -27,6 +29,7 @@ class ToDoListViewController: UIViewController, UITableViewDelegate, UITableView
     setUpTitleLabel()
     setUpTableView()
     setUpAddItemButton()
+    setUpAnimatedLabel()
     setUpLayout()
 
     do {
@@ -45,6 +48,17 @@ class ToDoListViewController: UIViewController, UITableViewDelegate, UITableView
     label.translatesAutoresizingMaskIntoConstraints = false
     view.addSubview(label)
     titleLabel = label
+  }
+  
+  // MARK: - Setup Methods
+  func setUpAnimatedLabel() {
+    let label = UILabel()
+    label.text = ":)"
+    label.font = UIFont.boldSystemFont(ofSize: 24)
+    label.textAlignment = .center
+    label.sizeToFit()
+    view.addSubview(label)
+    animatedLabel = label
   }
   
   func setUpTableView() {
@@ -84,7 +98,7 @@ class ToDoListViewController: UIViewController, UITableViewDelegate, UITableView
       // Title label constraints
       unwrappedTitleLabel.topAnchor.constraint(
         equalTo: view.safeAreaLayoutGuide.topAnchor,
-        constant: 16
+        constant: 16.0,
       ),
       unwrappedTitleLabel.leadingAnchor.constraint(
         equalTo: view.leadingAnchor,
@@ -112,8 +126,24 @@ class ToDoListViewController: UIViewController, UITableViewDelegate, UITableView
     ])
   }
   
+  func startAnimations() {
+    
+    let toY = titleLabel?.center.y ?? 0.0;
+    
+    let animation = CABasicAnimation()
+    animation.keyPath = "position.y"
+    animation.fromValue = 0.0
+    animation.toValue = toY
+    animation.duration = 1
+    
+    animatedLabel?.layer.add(animation, forKey:"basic")
+    animatedLabel?.layer.position = CGPoint(x: 250.0, y: toY)
+  }
+  
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
+
+    startAnimations()
     
     if let unwrappedAddItemButton = addItemButton {
       unwrappedAddItemButton.layer.cornerRadius = unwrappedAddItemButton.frame.height / 2
