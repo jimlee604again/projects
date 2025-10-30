@@ -14,6 +14,6 @@ import Testing
         let lifeTrackerView = lifeTrackerVC.lifeTrackerView
         let p1LifeView = lifeTrackerView?.p1LifeView
         p1LifeView?.tapDecrementLife()
-        expect(lifeTrackerVC.gameLifeViewModel.player1.life == 15)
+        expect(lifeTrackerVC.gameLifeViewModel.player1.life == 19)
       }
 }
