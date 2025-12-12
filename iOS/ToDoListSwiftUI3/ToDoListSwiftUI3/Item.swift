@@ -6,7 +6,6 @@
 //
 
 import SwiftData
-import Observation
 
 @Model
 final class Item {

@@ -12,28 +12,48 @@ struct ContentView: View {
   private static var defaultItemName = "New Item"
   private static var addItemText = "Add Item"
   @Environment(\.modelContext) private var modelContext
-  @Environment(\.colorScheme) var colorScheme
+  @Environment(\.colorScheme) private var colorScheme
   @Query(sort: \Item.completed) private var items: [Item]
   @State private var newItemEntry: String = defaultItemName
   @State private var showingAlert = false
-  var selectedIndex = 0
 
   var body: some View {
     NavigationView {
       List {
         ForEach(items) { item in
-          NavigationLink {
-            ItemDetailView(item: item, deleteAction: didTapDelete)
-          } label: {
-            Button {
-            } label: {
-              HStack {
-                Image(systemName: item.completed ? "checkmark.circle.fill" : "circle")
-                Text(item.name)
-                  .foregroundStyle(colorScheme == .light ? .black : .white)
-              }
-            }
-          }
+//          HStack {
+//            Image(
+//              systemName: item.completed ? "checkmark.circle.fill" : "circle"
+//            )
+//            Text(item.name)
+//              .foregroundStyle(colorScheme == .light ? .black : .white)
+//          }
+//          .background(
+//            NavigationLink(
+//              "",
+//              destination: ItemDetailView(
+//                item: item,
+//                saveAction: didTapSave,
+//                deleteAction: didTapDelete
+//              )
+//            )
+//            .opacity(0)
+//          )
+
+                    NavigationLink {
+                      ItemDetailView(item: item,
+                                     saveAction: didTapSave,
+                                     deleteAction: didTapDelete)
+                    } label: {
+                      Button {
+                      } label: {
+                        HStack {
+                          Image(systemName: item.completed ? "checkmark.circle.fill" : "circle")
+                          Text(item.name)
+                            .foregroundStyle(colorScheme == .light ? .black : .white)
+                        }
+                      }
+                    }
         }
         .onDelete(perform: deleteItems)
       }
@@ -53,6 +73,7 @@ struct ContentView: View {
         Button {
           let newItem = Item(name: newItemEntry, completed: false)
           modelContext.insert(newItem)
+          modelSave()
           newItemEntry = ContentView.defaultItemName
         } label: {
           Text("Save")
@@ -64,9 +85,14 @@ struct ContentView: View {
   private func didTapDelete(item: Item) {
     withAnimation {
       modelContext.delete(item)
+      modelSave()
     }
   }
   
+  private func didTapSave() {
+    modelSave()
+  }
+
   private func didTapAddItemButton() {
     showingAlert.toggle()
   }
@@ -75,9 +101,19 @@ struct ContentView: View {
     withAnimation {
       for index in offsets {
         modelContext.delete(items[index])
+        modelSave()
       }
     }
   }
+  
+  private func modelSave() {
+    do {
+      try modelContext.save()
+    } catch {
+      print("Failed to save context: \(error)")
+    }
+  }
+  
 }
 
 #Preview {

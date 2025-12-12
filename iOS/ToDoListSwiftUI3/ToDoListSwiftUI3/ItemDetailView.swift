@@ -12,21 +12,26 @@ struct ItemDetailView: View {
   @State var item: Item
   @State var text: String
   let deleteAction: (Item) -> Void
+  let saveAction: () -> Void
 
-  init(item: Item, deleteAction: @escaping (Item) -> Void) {
+  init(item: Item,
+       saveAction: @escaping () -> Void,
+       deleteAction: @escaping (Item) -> Void) {
     self.item = item
     self.text = item.name
+    self.saveAction = saveAction
     self.deleteAction = deleteAction
   }
 
   var body: some View {
     VStack {
       Form {
-        TextField("", text: $item.name)
+        TextField("", text: $text)
       }
       VStack(spacing: 20) {
         Button {
           item.name = text
+          saveAction()
           dismiss()
         } label: {
           Text("Save Item Name")
