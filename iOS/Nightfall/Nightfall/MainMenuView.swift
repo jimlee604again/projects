@@ -67,14 +67,14 @@ struct MainMenuView: View {
           MainMenuTextView("Shop")
         }
         NavigationLink {
-          Text("Potions acquired: \(player.potionCount)")
+          ItemsView(player: player)
         } label: {
           MainMenuTextView("Items")
         }
         NavigationLink {
           VStack {
             Text("You battle and lose some health")
-            if player.hp - hpDown <= 0 {
+            if player.hp == 0 {
               Text("You died.")
             } else {
               if player.gold + goldUp >= 50 {
