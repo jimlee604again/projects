@@ -14,9 +14,9 @@ struct MainMenuView: View {
   private let hpUp = 10
   private let maxHp = 50
   private let hpDown = 5
-  private let goldUp = 7
+  private let goldUp = 8
   private let maxGold = 50
-  private let goldDown = 6
+
   @State private var boughtItem = false
 
   init(player: Player) {
@@ -34,35 +34,12 @@ struct MainMenuView: View {
         Spacer()
           .frame(height: 60)
         NavigationLink {
-          Group {
-            if player.hp < maxHp {
-              Text("You visit the Inn and heal some")
-            } else {
-              Text("You are fully rested")
-            }
-          }
-          .task {
-            player.hp = min(maxHp, player.hp + hpUp)
-          }
+          InnView(player: player)
         } label: {
           MainMenuTextView("Inn")
         }
         NavigationLink {
-          Group {
-            if boughtItem {
-              Text("You spend \(goldDown) gold on a potion.")
-            } else {
-              Text("You cannot afford a potion.")
-            }
-          }
-          .task {
-            boughtItem = false
-            if player.gold > goldDown {
-              player.gold -= goldDown
-              player.potionCount += 1
-              boughtItem = true
-            }
-          }
+          ShopView(player: player)
         } label: {
           MainMenuTextView("Shop")
         }
