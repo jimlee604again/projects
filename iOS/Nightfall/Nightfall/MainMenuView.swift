@@ -11,11 +11,6 @@ struct MainMenuView: View {
 
   private let buttonCornerRadius = 8.0
   private var player: Player
-  private let hpUp = 10
-  private let maxHp = 50
-  private let hpDown = 5
-  private let goldUp = 8
-  private let maxGold = 50
 
   @State private var boughtItem = false
 
@@ -81,7 +76,7 @@ struct MainMenuView: View {
       .foregroundStyle(.black)
       .frame(maxWidth: .infinity)
       .padding()
-      .background(Color.orange)
+      .background(Color.mint)
       .cornerRadius(buttonCornerRadius)
       .padding()
   }
