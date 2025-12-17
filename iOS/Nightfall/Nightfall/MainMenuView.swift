@@ -49,22 +49,7 @@ struct MainMenuView: View {
           MainMenuTextView("Items")
         }
         NavigationLink {
-          VStack {
-            Text("You battle and lose some health")
-            if player.hp == 0 {
-              Text("You died.")
-            } else {
-              if player.gold + goldUp >= 50 {
-                Text("Your pockets are full.")
-              } else {
-                Text("You earn some gold.")
-              }
-            }
-          }
-          .task {
-            player.hp = max(0, player.hp - hpDown)
-            player.gold = min(maxGold, player.gold + goldUp)
-          }
+          BattleView(player: player)
         } label: {
           MainMenuTextView("Battle")
         }
@@ -81,7 +66,7 @@ struct MainMenuView: View {
       }
       .background(Color.black)
       .task {
-        if player.hp == 0 {
+        if player.hp <= 0 {
           player.hp = 10
           player.gold = 0
           player.potionCount = 0

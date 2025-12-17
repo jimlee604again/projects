@@ -50,7 +50,7 @@ struct TitleView: View {
         do {
           try modelContext.save()
         } catch {
-          // couldn't save
+          print("Couldn't save player model.")
         }
       }
     }
