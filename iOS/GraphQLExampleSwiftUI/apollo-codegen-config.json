@@ -1,0 +1,29 @@
+{
+  "schemaNamespace" : "Countries",
+  "input" : {
+    "operationSearchPaths" : [
+      "**/*.graphql"
+    ],
+    "schemaSearchPaths" : [
+      "**/*.graphqls"
+    ]
+  },
+  "output" : {
+    "testMocks" : {
+      "none" : {
+      }
+    },
+    "schemaTypes" : {
+      "path" : "./GraphQLExampleSwiftUI/Countries",
+      "moduleType" : {
+        "embeddedInTarget" : {
+          "name" : "GraphQLExampleSwiftUI"
+        }
+      }
+    },
+    "operations" : {
+      "inSchemaModule" : {
+      }
+    }
+  }
+}

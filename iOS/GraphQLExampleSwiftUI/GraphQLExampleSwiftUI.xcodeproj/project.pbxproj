@@ -59,6 +59,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				BF1B57962F022E5F000AF0AF /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				BF7082B22EE4E8810002B300 /* GraphQLExampleSwiftUI */,
@@ -78,7 +79,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 2610;
-				LastUpgradeCheck = 2610;
+				LastUpgradeCheck = 2620;
 				TargetAttributes = {
 					BF7082AF2EE4E8810002B300 = {
 						CreatedOnToolsVersion = 26.1.1;
@@ -94,6 +95,9 @@
 			);
 			mainGroup = BF7082A72EE4E8810002B300;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				BF1B57912F022734000AF0AF /* XCRemoteSwiftPackageReference "apollo-ios" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = BF7082B12EE4E8810002B300 /* Products */;
 			projectDirPath = "";
@@ -123,6 +127,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BF1B57962F022E5F000AF0AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = BF1B57952F022E5F000AF0AF /* Apollo */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		BF7082B92EE4E8850002B300 /* Debug */ = {
@@ -184,6 +195,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -241,6 +253,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -332,6 +345,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		BF1B57912F022734000AF0AF /* XCRemoteSwiftPackageReference "apollo-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apollographql/apollo-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BF1B57952F022E5F000AF0AF /* Apollo */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BF1B57912F022734000AF0AF /* XCRemoteSwiftPackageReference "apollo-ios" */;
+			productName = Apollo;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = BF7082A82EE4E8810002B300 /* Project object */;
 }

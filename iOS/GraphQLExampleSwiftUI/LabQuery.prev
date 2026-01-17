@@ -1,0 +1,9 @@
+query LabQuery {
+  project(fullPath: "gitlab-org/graphql-sandbox") {
+    name
+    issue(iid: "2") {
+      title
+      description
+    }
+  }
+}

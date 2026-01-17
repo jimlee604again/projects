@@ -29,7 +29,7 @@ struct MainMenuView: View {
         Spacer()
           .frame(height: 60)
         NavigationLink {
-          InnView(player: player)
+          InnView(innViewModel: InnViewModel(player: player))
         } label: {
           MainMenuTextView("Inn")
         }
