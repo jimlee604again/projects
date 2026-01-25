@@ -8,43 +8,43 @@
 import SwiftUI
 
 struct ShopView: View {
-  private let player : Player
-  private let potionPrice = 6
-  @State var boughtPotion = false
-  
-  init(player: Player) {
-    self.player = player
+  @StateObject private var shopViewModel: ShopViewModel
+
+  init(shopViewModel: ShopViewModel) {
+    _shopViewModel = StateObject(wrappedValue: shopViewModel)
   }
-  
+
   var body: some View {
     VStack {
       Spacer()
-      if boughtPotion {
-        Text("You bought a potion.")
+      if shopViewModel.boughtPotion {
+        Text(shopViewModel.boughtPotionText)
       }
-      if player.gold >= potionPrice {
+      if shopViewModel.canPlayerAffordPotion() {
         Button {
-          player.gold -= potionPrice
-          player.potionCount += 1
-          boughtPotion = true
+          shopViewModel.buyPotion()
         } label: {
-          Text("Buy Potion")
+          Text(shopViewModel.buyPotionText)
         }
       } else {
-        if !boughtPotion {
-          Text("You don't have enough gold.")
-        }
+        shopViewModel.boughtPotion
+          ? Text(shopViewModel.notEnoughForAnotherPotionText)
+          : Text(shopViewModel.notEnoughForPotionText)
       }
+    }
+    Spacer()
+    HStack {
       Spacer()
-      HStack {
-        Spacer()
-        Text("Gold: \(player.gold)")
-          .padding(.trailing, 20)
-      }
+      Text(shopViewModel.remainingGoldText)
+        .padding(.trailing, 20)
     }
   }
 }
 
 #Preview {
-  ShopView(player: Player(hp: 10, gold: 20, potionCount: 1))
+  ShopView(
+    shopViewModel: ShopViewModel(
+      player: Player(hp: 10, gold: 20, potionCount: 1)
+    )
+  )
 }

@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       window = UIWindow(windowScene: windowScene)
       
       // Set the initial view controller (assuming you have a ViewController class)
-      window?.rootViewController = ViewController()
+      window?.rootViewController = ViewController(nibName: nil, bundle: nil)
       
       // Make the window visible
       window?.makeKeyAndVisible()

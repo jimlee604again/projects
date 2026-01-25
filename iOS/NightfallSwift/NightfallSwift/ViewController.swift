@@ -8,11 +8,15 @@
 import UIKit
 
 class ViewController: UIViewController {
+  
+  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    self.view = TitleView()
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view.
-    self.view.backgroundColor = UIColor.blue
   }
 
 }

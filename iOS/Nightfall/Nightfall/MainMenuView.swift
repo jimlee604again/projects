@@ -12,8 +12,6 @@ struct MainMenuView: View {
   private let buttonCornerRadius = 8.0
   private var player: Player
 
-  @State private var boughtItem = false
-
   init(player: Player) {
     self.player = player
   }
@@ -34,7 +32,7 @@ struct MainMenuView: View {
           MainMenuTextView("Inn")
         }
         NavigationLink {
-          ShopView(player: player)
+          ShopView(shopViewModel: ShopViewModel(player: player))
         } label: {
           MainMenuTextView("Shop")
         }
