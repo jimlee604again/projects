@@ -8,28 +8,26 @@
 import SwiftUI
 
 struct ItemsView: View {
-  @State private var player : Player // or binding??
-  private var potionBoostValue = 10
-  
-  init(player: Player) {
-    self.player = player
+  @StateObject private var itemsViewModel: ItemsViewModel
+
+  init(itemsViewModel: ItemsViewModel) {
+    _itemsViewModel = StateObject(wrappedValue: itemsViewModel)
   }
-  
-    var body: some View {
-      VStack {
-        Text("Potions remaining: \(player.potionCount)")
-        if player.potionCount > 0 {
-          Button {
-            player.potionCount -= 1
-            player.hp += potionBoostValue
-          } label: {
-            Text("Use Potion")
-          }
+
+  var body: some View {
+    VStack {
+      Text(itemsViewModel.potionsRemainingText())
+      if itemsViewModel.playerHasPotions() {
+        Button {
+          itemsViewModel.playerUsedPotion()
+        } label: {
+          Text(itemsViewModel.usePotionText)
         }
       }
     }
+  }
 }
 
 #Preview {
-    ItemsView(player: Player(hp: 10, gold: 7, potionCount: 2))
+  ItemsView(itemsViewModel: ItemsViewModel(player: Player(hp: 10, gold: 7, potionCount: 2)))
 }

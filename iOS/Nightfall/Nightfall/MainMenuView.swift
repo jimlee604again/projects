@@ -37,7 +37,7 @@ struct MainMenuView: View {
           MainMenuTextView("Shop")
         }
         NavigationLink {
-          ItemsView(player: player)
+          ItemsView(itemsViewModel: ItemsViewModel(player: player))
         } label: {
           MainMenuTextView("Items")
         }

@@ -35,7 +35,7 @@ struct ShopView: View {
     Spacer()
     HStack {
       Spacer()
-      Text(shopViewModel.remainingGoldText)
+      Text(shopViewModel.remainingGoldText())
         .padding(.trailing, 20)
     }
   }
