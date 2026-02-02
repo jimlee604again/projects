@@ -13,6 +13,7 @@ struct NightfallApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Player.self,
+            Winner.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 

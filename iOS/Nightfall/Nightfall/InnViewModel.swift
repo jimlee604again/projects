@@ -5,11 +5,8 @@
 //  Created by Jimmy Lee on 12/26/25.
 //
 
-import Foundation
 import Combine
-import SwiftUI
 
-//@MainActor
 class InnViewModel: ObservableObject {
   @Published var player: Player
   @Published var stayed = false

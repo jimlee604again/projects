@@ -10,39 +10,37 @@ import SwiftUI
 struct BattleView: View {
 
   @Environment(\.dismiss) private var dismiss
-  private let hpLoss = 5
-  private let goldGain = 8
-  private let player : Player
-  @State private var died = false
-  @State private var won = false
-
-  init(player: Player) {
-    self.player = player
+  
+  @StateObject private var battleViewModel: BattleViewModel;
+  
+  init(battleViewModel: BattleViewModel) {
+    _battleViewModel = StateObject(wrappedValue: battleViewModel)
   }
   
+  // fix: not fully migrated
   var body: some View {
     ZStack {
-      Image("battle")
+      Image(battleViewModel.backgroundImageFileName)
         .resizable()
         .scaledToFill()
         .ignoresSafeArea()
       VStack {
         Spacer()
-        if (died) {
-          Text("You have died.")
-        } else if (won) {
-          Text("You emerge victorious.\nWould you like to fight again?\nYou will lose \(hpLoss) hp and gain \(goldGain) gold.")
+        if (battleViewModel.playerDied) {
+          Text(battleViewModel.playerDiedText)
+        } else if (battleViewModel.playerWon) {
+          Text(battleViewModel.playerWonText())
             .multilineTextAlignment(.center)
         } else {
-          Text("Would you like to battle?\nYou will lose \(hpLoss) hp and gain \(goldGain) gold.")
+          Text(battleViewModel.askToBattleText())
             .multilineTextAlignment(.center)
         }
         Spacer()
         Spacer()
         VStack {
-          Text("HP: \(player.hp)")
+          Text(battleViewModel.remainingHPText())
             .foregroundStyle(.red)
-          Text("Gold: \(player.gold)")
+          Text(battleViewModel.remainingGoldText())
             .foregroundStyle(.yellow)
         }
         .padding()
@@ -50,18 +48,12 @@ struct BattleView: View {
         Spacer()
           .frame(height: 100)
       }
-      if !died {
+      if !(battleViewModel.playerDied) {
         VStack {
           Button {
-            player.hp -= hpLoss
-            if player.hp <= 0 {
-              died = true
-            } else {
-              player.gold += goldGain
-              won = true
-            }
+            battleViewModel.resolveBattle()
           } label: {
-            Text("Battle")
+            Text(battleViewModel.battleButtonText)
           }
           .padding()
           .background(Color.white)
@@ -70,7 +62,7 @@ struct BattleView: View {
           Button {
             dismiss()
           } label: {
-            Text("Return")
+            Text(battleViewModel.returnButtonText)
           }
           .foregroundStyle(.red)
           .padding()
@@ -84,5 +76,5 @@ struct BattleView: View {
 }
 
 #Preview {
-  BattleView(player: Player(hp: 10, gold: 0, potionCount: 0))
+  BattleView(battleViewModel: BattleViewModel(player: Player(hp: 10, gold: 0, potionCount: 0)))
 }

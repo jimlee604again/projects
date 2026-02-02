@@ -5,11 +5,10 @@
 //  Created by Jimmy Lee on 1/25/26.
 //
 
-import Foundation
+//import Foundation
 import Combine
-import SwiftUI
+//import SwiftUI
 
-//@MainActor
 class ItemsViewModel: ObservableObject {
   @Published var player : Player
   private let potionHealValue = 10
@@ -17,8 +16,6 @@ class ItemsViewModel: ObservableObject {
 
   // Text
   let usePotionText = "Use Potion"
-//  let notEnoughForPotionText = "You don't have enough gold to buy a potion."
-//  let notEnoughForAnotherPotionText = "You don't have enough gold to buy another potion."
   
   init(player: Player) {
     self.player = player

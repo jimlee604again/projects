@@ -15,28 +15,39 @@ struct ShopView: View {
   }
 
   var body: some View {
-    VStack {
-      Spacer()
-      if shopViewModel.boughtPotion {
-        Text(shopViewModel.boughtPotionText)
-      }
-      if shopViewModel.canPlayerAffordPotion() {
-        Button {
-          shopViewModel.buyPotion()
-        } label: {
-          Text(shopViewModel.buyPotionText)
+    if shopViewModel.boughtTrophy {
+      WinView()
+    } else {
+      VStack {
+        Spacer()
+        if shopViewModel.boughtPotion {
+          Text(shopViewModel.boughtPotionText)
         }
-      } else {
-        shopViewModel.boughtPotion
+        if shopViewModel.canPlayerAffordPotion() {
+          Button {
+            shopViewModel.buyPotion()
+          } label: {
+            Text(shopViewModel.buyPotionText())
+          }
+        } else {
+          shopViewModel.boughtPotion
           ? Text(shopViewModel.notEnoughForAnotherPotionText)
           : Text(shopViewModel.notEnoughForPotionText)
+        }
+        if shopViewModel.canPlayerAffordTrophy() {
+          Button {
+            shopViewModel.buyTrophy()
+          } label: {
+            Text(shopViewModel.buyTrophyText())
+          }
+        }
       }
-    }
-    Spacer()
-    HStack {
       Spacer()
-      Text(shopViewModel.remainingGoldText())
-        .padding(.trailing, 20)
+      HStack {
+        Spacer()
+        Text(shopViewModel.remainingGoldText())
+          .padding(.trailing, 20)
+      }
     }
   }
 }

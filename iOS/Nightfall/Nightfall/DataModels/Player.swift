@@ -13,11 +13,13 @@ final class Player {
   var hp: Int
   var gold: Int
   var potionCount: Int // item/inventory
+  var wonGame: Bool
   
   init(hp: Int, gold: Int, potionCount: Int) {
     self.hp = hp
     self.gold = gold
     self.potionCount = potionCount
+    self.wonGame = false
   }
 
 }

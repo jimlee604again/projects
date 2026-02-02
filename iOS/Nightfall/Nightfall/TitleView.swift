@@ -6,7 +6,6 @@
 //
 
 import SwiftData
-
 import SwiftUI
 
 struct TitleView: View {
@@ -28,7 +27,7 @@ struct TitleView: View {
         Spacer()
         if (players.first != nil) {
           NavigationLink {
-            MainMenuView(player: players.first!)
+            MainMenuView(mainMenuViewModel: MainMenuViewModel(player: players.first!))
               .navigationBarBackButtonHidden(true)
           } label: {
             Text("Start Game")
@@ -48,6 +47,7 @@ struct TitleView: View {
       if (players.first == nil) {
         modelContext.insert(Player(hp: 10, gold: 0, potionCount: 0))
         do {
+          // fix: more model context.save
           try modelContext.save()
         } catch {
           print("Couldn't save player model.")

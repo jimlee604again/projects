@@ -10,60 +10,57 @@ import SwiftUI
 struct MainMenuView: View {
 
   private let buttonCornerRadius = 8.0
-  private var player: Player
+  @StateObject private var mainMenuViewModel: MainMenuViewModel;
 
-  init(player: Player) {
-    self.player = player
+  init(mainMenuViewModel: MainMenuViewModel) {
+    _mainMenuViewModel = StateObject(wrappedValue: mainMenuViewModel)
   }
-
+  
+  // fix: add more bg images
   var body: some View {
     NavigationStack {
       VStack {
         Spacer()
           .frame(maxWidth: .infinity, maxHeight: 60)
-        Text("Main Menu")
+        Text(mainMenuViewModel.mainMenuTitle)
           .font(.largeTitle)
           .foregroundStyle(.white)
         Spacer()
           .frame(height: 60)
         NavigationLink {
-          InnView(innViewModel: InnViewModel(player: player))
+          InnView(innViewModel: InnViewModel(player: mainMenuViewModel.player))
         } label: {
-          MainMenuTextView("Inn")
+          MainMenuTextView(mainMenuViewModel.innTitle)
         }
         NavigationLink {
-          ShopView(shopViewModel: ShopViewModel(player: player))
+          ShopView(shopViewModel: ShopViewModel(player: mainMenuViewModel.player))
         } label: {
-          MainMenuTextView("Shop")
+          MainMenuTextView(mainMenuViewModel.shopTitle)
         }
         NavigationLink {
-          ItemsView(itemsViewModel: ItemsViewModel(player: player))
+          ItemsView(itemsViewModel: ItemsViewModel(player: mainMenuViewModel.player))
         } label: {
-          MainMenuTextView("Items")
+          MainMenuTextView(mainMenuViewModel.itemsTitle)
         }
         NavigationLink {
-          BattleView(player: player)
+          BattleView(battleViewModel: BattleViewModel(player: mainMenuViewModel.player))
         } label: {
-          MainMenuTextView("Battle")
+          MainMenuTextView(mainMenuViewModel.battleTitle)
         }
         Spacer()
         HStack {
-          AttributeTextView("HP: \(player.hp)")
+          AttributeTextView(mainMenuViewModel.playerHP())
             .foregroundStyle(.red)
             .fixedSize(horizontal: true, vertical: false)
           Spacer()
-          AttributeTextView("Gold: \(player.gold)")
+          AttributeTextView(mainMenuViewModel.playerGold())
             .foregroundStyle(.yellow)
             .fixedSize(horizontal: true, vertical: false)
         }
       }
       .background(Color.black)
       .task {
-        if player.hp <= 0 {
-          player.hp = 10
-          player.gold = 0
-          player.potionCount = 0
-        }
+        mainMenuViewModel.handlePlayerDeath()
       }
     }
   }
@@ -89,5 +86,5 @@ private func AttributeTextView(_ name: String) -> some View {
 }
 
 #Preview {
-  MainMenuView(player: Player(hp: 10, gold: 50, potionCount: 2))
+  MainMenuView(mainMenuViewModel: MainMenuViewModel(player: Player(hp: 10, gold: 50, potionCount: 2)))
 }
