@@ -8,11 +8,18 @@
 import Foundation
 import UIKit
 
+protocol StartButtonDelegate {
+  func didTapStart()
+}
+
 class TitleView : UIView {
   private let titleText : UILabel
   private let startButton : UIButton
+  private let startButtonDelegate : StartButtonDelegate
   
-  init() {
+  init(startButtonDelegate : StartButtonDelegate) {
+    self.startButtonDelegate = startButtonDelegate
+    
     self.titleText = UILabel()
     self.titleText.text = "Nightfall"
     self.titleText.textColor = .white
@@ -33,6 +40,7 @@ class TitleView : UIView {
 
     super.init(frame: CGRectZero)
 
+    self.startButton.addTarget(self, action: #selector(didTapStart), for: .touchUpInside)
     self.backgroundColor = .black
     self.addSubview(self.titleText)
     self.addSubview(self.startButton)
@@ -57,6 +65,10 @@ class TitleView : UIView {
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+  @objc func didTapStart() {
+    startButtonDelegate.didTapStart()
   }
   
 }
