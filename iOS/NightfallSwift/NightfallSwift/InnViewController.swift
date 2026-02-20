@@ -1,17 +1,17 @@
 //
-//  MainMenuViewController.swift
+//  InnViewController.swift
 //  NightfallSwift
 //
-//  Created by Jimmy Lee on 2/8/26.
+//  Created by Jimmy Lee on 2/11/26.
 //
 
 import UIKit
 
-class MainMenuViewController: UIViewController, MainMenuDelegate {
+class InnViewController: UIViewController {
 
   init(player: Player) {
     super.init(nibName: nil, bundle: nil)
-    self.view = MainMenuView(player: player, mainMenuDelegate: self)
+    self.view = InnView(player: player) // model instead
   }
 
   required init?(coder: NSCoder) {
@@ -23,9 +23,4 @@ class MainMenuViewController: UIViewController, MainMenuDelegate {
     // Do any additional setup after loading the view.
   }
 
-  func didTapInnButton() {
-    print("tapped inn button")
-  }
-  
 }
-
