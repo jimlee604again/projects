@@ -9,9 +9,12 @@ import UIKit
 
 class MainMenuViewController: UIViewController, MainMenuDelegate {
 
-  init(player: Player) {
+  let mainMenuViewModel: MainMenuViewModel
+  
+  init(mainMenuViewModel: MainMenuViewModel) {
+    self.mainMenuViewModel = mainMenuViewModel
     super.init(nibName: nil, bundle: nil)
-    self.view = MainMenuView(player: player, mainMenuDelegate: self)
+    self.view = MainMenuView(mainMenuViewModel: mainMenuViewModel, mainMenuDelegate: self)
   }
 
   required init?(coder: NSCoder) {
@@ -25,6 +28,11 @@ class MainMenuViewController: UIViewController, MainMenuDelegate {
 
   func didTapInnButton() {
     print("tapped inn button")
+    
+    let innViewModel = mainMenuViewModel.makeInnViewModel()
+    let innVC = InnViewController(innViewModel: innViewModel)
+    innVC.modalPresentationStyle = .fullScreen
+    present(innVC, animated: false, completion: nil)
   }
   
 }

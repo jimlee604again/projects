@@ -27,18 +27,18 @@ class MainMenuView : UIView {
   private let hp = 10
   private let gold = 0
   
-  private let player: Player
+  private let mainMenuViewModel: MainMenuViewModel
   
   private let mainMenuDelegate: MainMenuDelegate
   
-  init(player: Player, mainMenuDelegate: MainMenuDelegate) {
+  init(mainMenuViewModel: MainMenuViewModel, mainMenuDelegate: MainMenuDelegate) {
     innButton = UIButton(type: .system)
     shopButton = UIButton(type: .system)
     itemsButton = UIButton(type: .system)
     battleButton = UIButton(type: .system)
     hpLabel = UILabel()
     goldLabel = UILabel()
-    self.player = player
+    self.mainMenuViewModel = mainMenuViewModel
     self.mainMenuDelegate = mainMenuDelegate
 
     super.init(frame: CGRectZero)
@@ -56,8 +56,8 @@ class MainMenuView : UIView {
     battleButton.configuration = menuButtonConfig(title: "Battle")
     battleButton.layer.cornerRadius = menuButtonCornerRadius
     
-    hpLabel.attributedText = NSAttributedString(string: "HP: \(self.player.hp)")
-    goldLabel.attributedText = NSAttributedString(string: "Gold: \(self.player.gold)")
+    hpLabel.attributedText = NSAttributedString(string: mainMenuViewModel.playerHealthDisplayText())
+    goldLabel.attributedText = NSAttributedString(string: mainMenuViewModel.playerGoldDisplayText())
     
     addSubview(self.innButton)
     addSubview(self.shopButton)

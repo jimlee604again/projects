@@ -7,11 +7,25 @@
 
 import UIKit
 
-class InnViewController: UIViewController {
+class InnViewController: UIViewController, InnViewDelegate {
+  private let innViewModel: InnViewModel
 
-  init(player: Player) {
+  init(innViewModel: InnViewModel) {
+    self.innViewModel = innViewModel
     super.init(nibName: nil, bundle: nil)
-    self.view = InnView(player: player) // model instead
+    let innView = InnView(innViewModel: innViewModel) // model instead
+    self.view = innView
+    innView.innViewDelegate = self
+  }
+  
+  func didTapStay() {
+    if (innViewModel.attemptStay()) {
+      self.dismiss(animated: false)
+    } else {
+      let alertController = UIAlertController(title: "Insufficient Funds", message: "Not enough gold to stay at the inn.", preferredStyle: .alert)
+      alertController.addAction(UIAlertAction(title: "OK", style: .default))
+      present(alertController, animated: false)
+    }
   }
 
   required init?(coder: NSCoder) {

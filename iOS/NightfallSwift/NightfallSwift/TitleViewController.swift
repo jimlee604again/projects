@@ -27,7 +27,8 @@ class TitleViewController: UIViewController, StartButtonDelegate {
 
   func didTapStart() {
     let player = createPlayer()
-    let mainMenuVC = MainMenuViewController(player: player)
+    let mainMenuViewModel = MainMenuViewModel(player: player)
+    let mainMenuVC = MainMenuViewController(mainMenuViewModel: mainMenuViewModel)
     mainMenuVC.modalPresentationStyle = .fullScreen
     present(mainMenuVC, animated: false)
   }
