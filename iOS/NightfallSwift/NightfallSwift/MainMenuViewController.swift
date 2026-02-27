@@ -14,7 +14,9 @@ class MainMenuViewController: UIViewController, MainMenuDelegate {
   init(mainMenuViewModel: MainMenuViewModel) {
     self.mainMenuViewModel = mainMenuViewModel
     super.init(nibName: nil, bundle: nil)
-    self.view = MainMenuView(mainMenuViewModel: mainMenuViewModel, mainMenuDelegate: self)
+    let mainMenuView = MainMenuView(mainMenuViewModel: mainMenuViewModel)
+    mainMenuView.mainMenuDelegate = self
+    self.view = mainMenuView
   }
 
   required init?(coder: NSCoder) {
@@ -25,14 +27,29 @@ class MainMenuViewController: UIViewController, MainMenuDelegate {
     super.viewDidLoad()
     // Do any additional setup after loading the view.
   }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    updateMainMenuViewData()
+  }
 
   func didTapInnButton() {
-    print("tapped inn button")
-    
     let innViewModel = mainMenuViewModel.makeInnViewModel()
     let innVC = InnViewController(innViewModel: innViewModel)
     innVC.modalPresentationStyle = .fullScreen
     present(innVC, animated: false, completion: nil)
+  }
+  
+  // MARK: TODO: do actual function
+  func didTapBattleButton() {
+    mainMenuViewModel.completeBattle()
+    updateMainMenuViewData()
+  }
+  
+  func updateMainMenuViewData() {
+    if let mainMenuView = self.view as? MainMenuView {
+        // Access MyCustomView properties
+      mainMenuView.dataDidChange()
+    }
   }
   
 }

@@ -12,7 +12,7 @@ struct InnViewModel {
   private let player: Player
   
   // MARK: Logic Values
-  private let stayCost : Int32 = 20
+  private let stayCost : Int32 = 2
   private let hpRestoreAmount : Int32 = 10
   
   // MARK: Content

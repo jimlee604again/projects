@@ -10,28 +10,44 @@ import UIKit
 
 protocol MainMenuDelegate {
   func didTapInnButton()
+  func didTapBattleButton()
 }
 
 class MainMenuView : UIView {
 
+  // MARK: subviews
   private let innButton : UIButton
-  
-  private let menuButtonCornerRadius = 6.0
   private let shopButton : UIButton
   private let itemsButton : UIButton
   private let battleButton : UIButton
   private let hpLabel : UILabel
   private let goldLabel: UILabel
   
-  // move to view model
-  private let hp = 10
-  private let gold = 0
+  // MARK: UI constants
+  private let menuButtonCornerRadius = 6.0
+  let labelBottomConstant = 100.0
+  let labelSideConstant = 50.0
+  var lastConstraints: [NSLayoutConstraint] = []
   
+  // MARK: computed UI variables
+  var menuButtonSize : CGSize {
+    CGSize(width: 200,
+           height: innButton.sizeThatFits(self.bounds.size).height)
+  }
+  var hpLabelSize : CGSize {
+    return hpLabel.sizeThatFits(self.bounds.size)
+  }
+  var goldLabelSize : CGSize {
+    return goldLabel.sizeThatFits(self.bounds.size)
+  }
+
+  // MARK: Model
   private let mainMenuViewModel: MainMenuViewModel
   
-  private let mainMenuDelegate: MainMenuDelegate
+  // MARK: Delegate
+  var mainMenuDelegate: MainMenuDelegate?
   
-  init(mainMenuViewModel: MainMenuViewModel, mainMenuDelegate: MainMenuDelegate) {
+  init(mainMenuViewModel: MainMenuViewModel) {
     innButton = UIButton(type: .system)
     shopButton = UIButton(type: .system)
     itemsButton = UIButton(type: .system)
@@ -39,9 +55,9 @@ class MainMenuView : UIView {
     hpLabel = UILabel()
     goldLabel = UILabel()
     self.mainMenuViewModel = mainMenuViewModel
-    self.mainMenuDelegate = mainMenuDelegate
 
     super.init(frame: CGRectZero)
+    self.backgroundColor = .cyan
 
     innButton.configuration = menuButtonConfig(title: "Inn")
     innButton.layer.cornerRadius = menuButtonCornerRadius
@@ -55,6 +71,7 @@ class MainMenuView : UIView {
     
     battleButton.configuration = menuButtonConfig(title: "Battle")
     battleButton.layer.cornerRadius = menuButtonCornerRadius
+    battleButton.addTarget(self, action: #selector(didTapBattleButton), for: .touchUpInside)
     
     hpLabel.attributedText = NSAttributedString(string: mainMenuViewModel.playerHealthDisplayText())
     goldLabel.attributedText = NSAttributedString(string: mainMenuViewModel.playerGoldDisplayText())
@@ -65,21 +82,20 @@ class MainMenuView : UIView {
     addSubview(self.battleButton)
     addSubview(self.hpLabel)
     addSubview(self.goldLabel)
-    
-    let menuButtonSize = CGSize(width: 200,
-                                height: innButton.sizeThatFits(self.bounds.size).height)
-    let hpLabelSize = hpLabel.sizeThatFits(self.bounds.size)
-    let goldLabelSize = goldLabel.sizeThatFits(self.bounds.size)
-    let labelBottomConstant = 100.0
-    let labelSideConstant = 50.0
-    
+
     innButton.translatesAutoresizingMaskIntoConstraints = false
     shopButton.translatesAutoresizingMaskIntoConstraints = false
     itemsButton.translatesAutoresizingMaskIntoConstraints = false
     battleButton.translatesAutoresizingMaskIntoConstraints = false
     hpLabel.translatesAutoresizingMaskIntoConstraints = false
     goldLabel.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
+    HACKactivateConstraints()
+  }
+  
+  func HACKactivateConstraints() {
+    NSLayoutConstraint.deactivate(lastConstraints)
+    
+    lastConstraints = [
       innButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
       innButton.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -200),
       innButton.widthAnchor.constraint(equalToConstant: menuButtonSize.width),
@@ -105,13 +121,13 @@ class MainMenuView : UIView {
       hpLabel.widthAnchor.constraint(equalToConstant: hpLabelSize.width),
       hpLabel.heightAnchor.constraint(equalToConstant: hpLabelSize.height),
       
-      goldLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -labelSideConstant),
-      goldLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -labelBottomConstant),
+      goldLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: labelSideConstant),
+      goldLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -labelBottomConstant + 30),
       goldLabel.widthAnchor.constraint(equalToConstant: goldLabelSize.width),
       goldLabel.heightAnchor.constraint(equalToConstant: goldLabelSize.height)
-    ])
+    ]
     
-    self.backgroundColor = .cyan
+    NSLayoutConstraint.activate(lastConstraints)
   }
   
   func menuButtonConfig(title: String) -> UIButton.Configuration {
@@ -126,7 +142,24 @@ class MainMenuView : UIView {
   }
   
   @objc func didTapInnButton() {
-    mainMenuDelegate.didTapInnButton()
+    mainMenuDelegate?.didTapInnButton()
+  }
+  
+  @objc func didTapBattleButton() {
+    mainMenuDelegate?.didTapBattleButton()
+  }
+  
+  func dataDidChange() {
+    setNeedsUpdateProperties()
+  }
+  
+  override func updateProperties() {
+    super.updateProperties()
+    // Reading the properties here automatically tracks them
+    hpLabel.attributedText = NSAttributedString(string: mainMenuViewModel.playerHealthDisplayText())
+    goldLabel.attributedText = NSAttributedString(string: mainMenuViewModel.playerGoldDisplayText())
+    
+    HACKactivateConstraints()
   }
   
   required init?(coder: NSCoder) {

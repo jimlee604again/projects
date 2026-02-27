@@ -13,7 +13,7 @@ class InnViewController: UIViewController, InnViewDelegate {
   init(innViewModel: InnViewModel) {
     self.innViewModel = innViewModel
     super.init(nibName: nil, bundle: nil)
-    let innView = InnView(innViewModel: innViewModel) // model instead
+    let innView = InnView(innViewModel: innViewModel)
     self.view = innView
     innView.innViewDelegate = self
   }
@@ -28,6 +28,10 @@ class InnViewController: UIViewController, InnViewDelegate {
     }
   }
 
+  func didTapExit() {
+    self.dismiss(animated: false)
+  }
+  
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
