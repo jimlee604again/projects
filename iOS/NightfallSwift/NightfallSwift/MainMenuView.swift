@@ -10,6 +10,8 @@ import UIKit
 
 protocol MainMenuDelegate {
   func didTapInnButton()
+  func didTapShopButton()
+  func didTapItemsButton()
   func didTapBattleButton()
 }
 
@@ -25,8 +27,6 @@ class MainMenuView : UIView {
   
   // MARK: UI constants
   private let menuButtonCornerRadius = 6.0
-  let labelBottomConstant = 100.0
-  let labelSideConstant = 50.0
   var lastConstraints: [NSLayoutConstraint] = []
   
   // MARK: computed UI variables
@@ -65,16 +65,18 @@ class MainMenuView : UIView {
     
     shopButton.configuration = menuButtonConfig(title: "Shop")
     shopButton.layer.cornerRadius = menuButtonCornerRadius
+    shopButton.addTarget(self, action: #selector(didTapShopButton), for: .touchUpInside)
     
     itemsButton.configuration = menuButtonConfig(title: "Items")
     itemsButton.layer.cornerRadius = menuButtonCornerRadius
+    itemsButton.addTarget(self, action: #selector(didTapItemsButton), for: .touchUpInside)
     
     battleButton.configuration = menuButtonConfig(title: "Battle")
     battleButton.layer.cornerRadius = menuButtonCornerRadius
     battleButton.addTarget(self, action: #selector(didTapBattleButton), for: .touchUpInside)
     
     hpLabel.attributedText = NSAttributedString(string: mainMenuViewModel.playerHealthDisplayText())
-    goldLabel.attributedText = NSAttributedString(string: mainMenuViewModel.playerGoldDisplayText())
+    goldLabel.attributedText = NSAttributedString(string: mainMenuViewModel.playerGoldDisplayText()) // convert to computed var
     
     addSubview(self.innButton)
     addSubview(self.shopButton)
@@ -116,13 +118,13 @@ class MainMenuView : UIView {
       battleButton.widthAnchor.constraint(equalToConstant: menuButtonSize.width),
       battleButton.heightAnchor.constraint(equalToConstant: menuButtonSize.height),
       
-      hpLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: labelSideConstant),
-      hpLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -labelBottomConstant),
+      hpLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: UIGuidelineStatusSide),
+      hpLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -UIGuidelineStatusBottom),
       hpLabel.widthAnchor.constraint(equalToConstant: hpLabelSize.width),
       hpLabel.heightAnchor.constraint(equalToConstant: hpLabelSize.height),
       
-      goldLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: labelSideConstant),
-      goldLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -labelBottomConstant + 30),
+      goldLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: UIGuidelineStatusSide),
+      goldLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -UIGuidelineStatusBottom + 30),
       goldLabel.widthAnchor.constraint(equalToConstant: goldLabelSize.width),
       goldLabel.heightAnchor.constraint(equalToConstant: goldLabelSize.height)
     ]
@@ -143,6 +145,14 @@ class MainMenuView : UIView {
   
   @objc func didTapInnButton() {
     mainMenuDelegate?.didTapInnButton()
+  }
+  
+  @objc func didTapShopButton() {
+    mainMenuDelegate?.didTapShopButton()
+  }
+  
+  @objc func didTapItemsButton() {
+    mainMenuDelegate?.didTapItemsButton()
   }
   
   @objc func didTapBattleButton() {

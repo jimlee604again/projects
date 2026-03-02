@@ -39,6 +39,17 @@ class MainMenuViewController: UIViewController, MainMenuDelegate {
     present(innVC, animated: false, completion: nil)
   }
   
+  func didTapShopButton() {
+    let shopViewModel = mainMenuViewModel.makeShopViewModel()
+    let shopVC = ShopViewController(shopViewModel: shopViewModel)
+    shopVC.modalPresentationStyle = .fullScreen
+    present(shopVC, animated: false, completion: nil)
+  }
+  
+  func didTapItemsButton() {
+    // implement
+  }
+  
   // MARK: TODO: do actual function
   func didTapBattleButton() {
     mainMenuViewModel.completeBattle()

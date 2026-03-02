@@ -7,5 +7,9 @@
 
 import Foundation
 
-let UIGuidelineExitLeadingConstant: CGFloat = 40
-let UIGuidelineExitTopConstant: CGFloat = 70
+let UIGuidelineExitLeading: CGFloat = 40
+let UIGuidelineExitTop: CGFloat = 70
+let UIGuidelineStatusBottom = 100.0
+let UIGuidelineStatusSide = 50.0
+
+let UIGuidelineAlertConfirm = "OK"

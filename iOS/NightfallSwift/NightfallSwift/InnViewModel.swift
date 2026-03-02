@@ -16,8 +16,10 @@ struct InnViewModel {
   private let hpRestoreAmount : Int32 = 10
   
   // MARK: Content
-  let titleText: String = "Inn"
-  let stayButtonText: String = "Stay"
+  let titleText = "Inn"
+  let stayButtonText = "Stay"
+  let notEnoughGoldTitle = "Insufficient Funds"
+  let notEnoughGoldDescription = "Not enough gold to stay at the inn."
   
   init(player: Player) {
     self.player = player

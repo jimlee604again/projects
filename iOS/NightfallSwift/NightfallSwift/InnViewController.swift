@@ -22,8 +22,8 @@ class InnViewController: UIViewController, InnViewDelegate {
     if (innViewModel.attemptStay()) {
       self.dismiss(animated: false)
     } else {
-      let alertController = UIAlertController(title: "Insufficient Funds", message: "Not enough gold to stay at the inn.", preferredStyle: .alert)
-      alertController.addAction(UIAlertAction(title: "OK", style: .default))
+      let alertController = UIAlertController(title: innViewModel.notEnoughGoldTitle, message: notEnoughGoldDescription, preferredStyle: .alert)
+      alertController.addAction(UIAlertAction(title: UIGuidelineAlertConfirm, style: .default))
       present(alertController, animated: false)
     }
   }

@@ -26,7 +26,7 @@ class InnView : UIView {
     
     super.init(frame: CGRectZero)
 
-    self.backgroundColor = .yellow
+    self.backgroundColor = .brown
     
     // MARK: set up subvies
     titleView.text = innViewModel.titleText
@@ -50,8 +50,8 @@ class InnView : UIView {
       stayButton.centerXAnchor.constraint(equalTo: centerXAnchor),
       stayButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -100),
       
-      exitButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIGuidelineExitLeadingConstant),
-      exitButton.topAnchor.constraint(equalTo: topAnchor, constant: UIGuidelineExitTopConstant)
+      exitButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIGuidelineExitLeading),
+      exitButton.topAnchor.constraint(equalTo: topAnchor, constant: UIGuidelineExitTop)
     ])
   }
   

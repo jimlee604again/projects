@@ -17,10 +17,19 @@ public class MainMenuViewModel: ObservableObject {
   }
   
   func makeInnViewModel() -> InnViewModel {
-    if innViewModel == nil {
-      innViewModel = InnViewModel(player: player)
-    }
-    return innViewModel!
+    return InnViewModel(player: player)
+  }
+  
+  func makeShopViewModel() -> ShopViewModel {
+    return ShopViewModel(player: player)
+  }
+  
+  func makeItemsViewModel() -> ItemsViewModel {
+    return ItemsViewModel(player: player)
+  }
+  
+  func makeBattleViewModel() -> BattleViewModel {
+    return BattleViewModel(player: player)
   }
   
   func completeBattle() {
