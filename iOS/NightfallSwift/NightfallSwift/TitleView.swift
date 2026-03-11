@@ -58,7 +58,7 @@ class TitleView : UIView {
       
       startButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
       startButton.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 100),
-      startButton.widthAnchor.constraint(equalToConstant: buttonSizeThatFits.width),
+      startButton.widthAnchor.constraint(equalToConstant: UIGuidelineButtonWidth),
       startButton.heightAnchor.constraint(equalToConstant: buttonSizeThatFits.height)
     ])
   }

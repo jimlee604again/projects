@@ -22,7 +22,7 @@ class InnViewController: UIViewController, InnViewDelegate {
     if (innViewModel.attemptStay()) {
       self.dismiss(animated: false)
     } else {
-      let alertController = UIAlertController(title: innViewModel.notEnoughGoldTitle, message: notEnoughGoldDescription, preferredStyle: .alert)
+      let alertController = UIAlertController(title: innViewModel.notEnoughGoldTitle, message: innViewModel.notEnoughGoldDescription, preferredStyle: .alert)
       alertController.addAction(UIAlertAction(title: UIGuidelineAlertConfirm, style: .default))
       present(alertController, animated: false)
     }

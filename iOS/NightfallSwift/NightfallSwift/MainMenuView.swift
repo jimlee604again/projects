@@ -27,11 +27,11 @@ class MainMenuView : UIView {
   
   // MARK: UI constants
   private let menuButtonCornerRadius = 6.0
-  var lastConstraints: [NSLayoutConstraint] = []
+  private let themeColor = UIColor.cyan
   
   // MARK: computed UI variables
   var menuButtonSize : CGSize {
-    CGSize(width: 200,
+    CGSize(width: UIGuidelineButtonWidth,
            height: innButton.sizeThatFits(self.bounds.size).height)
   }
   var hpLabelSize : CGSize {
@@ -39,6 +39,10 @@ class MainMenuView : UIView {
   }
   var goldLabelSize : CGSize {
     return goldLabel.sizeThatFits(self.bounds.size)
+  }
+  
+  var layoutConstraints : [NSLayoutConstraint] {
+    return computedLayoutConstraints()
   }
 
   // MARK: Model
@@ -59,19 +63,20 @@ class MainMenuView : UIView {
     super.init(frame: CGRectZero)
     self.backgroundColor = .cyan
 
-    innButton.configuration = menuButtonConfig(title: "Inn")
+    // MARK: Set up subviews
+    innButton.configuration = UIGuidelineButtonConfig(title: "Inn", foregroundColor: themeColor)
     innButton.layer.cornerRadius = menuButtonCornerRadius
     innButton.addTarget(self, action: #selector(didTapInnButton), for: .touchUpInside)
     
-    shopButton.configuration = menuButtonConfig(title: "Shop")
+    shopButton.configuration = UIGuidelineButtonConfig(title: "Shop", foregroundColor: themeColor)
     shopButton.layer.cornerRadius = menuButtonCornerRadius
     shopButton.addTarget(self, action: #selector(didTapShopButton), for: .touchUpInside)
     
-    itemsButton.configuration = menuButtonConfig(title: "Items")
+    itemsButton.configuration = UIGuidelineButtonConfig(title: "Items", foregroundColor: themeColor)
     itemsButton.layer.cornerRadius = menuButtonCornerRadius
     itemsButton.addTarget(self, action: #selector(didTapItemsButton), for: .touchUpInside)
     
-    battleButton.configuration = menuButtonConfig(title: "Battle")
+    battleButton.configuration = UIGuidelineButtonConfig(title: "Battle", foregroundColor: themeColor)
     battleButton.layer.cornerRadius = menuButtonCornerRadius
     battleButton.addTarget(self, action: #selector(didTapBattleButton), for: .touchUpInside)
     
@@ -91,13 +96,11 @@ class MainMenuView : UIView {
     battleButton.translatesAutoresizingMaskIntoConstraints = false
     hpLabel.translatesAutoresizingMaskIntoConstraints = false
     goldLabel.translatesAutoresizingMaskIntoConstraints = false
-    HACKactivateConstraints()
+    NSLayoutConstraint.activate(layoutConstraints)
   }
   
-  func HACKactivateConstraints() {
-    NSLayoutConstraint.deactivate(lastConstraints)
-    
-    lastConstraints = [
+  func computedLayoutConstraints() -> [NSLayoutConstraint] {
+    return [
       innButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
       innButton.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -200),
       innButton.widthAnchor.constraint(equalToConstant: menuButtonSize.width),
@@ -128,19 +131,6 @@ class MainMenuView : UIView {
       goldLabel.widthAnchor.constraint(equalToConstant: goldLabelSize.width),
       goldLabel.heightAnchor.constraint(equalToConstant: goldLabelSize.height)
     ]
-    
-    NSLayoutConstraint.activate(lastConstraints)
-  }
-  
-  func menuButtonConfig(title: String) -> UIButton.Configuration {
-    var menuButtonConfig = UIButton.Configuration.filled()
-    var attributedTitle = AttributedString(title)
-    attributedTitle.font = UIFont.systemFont(ofSize: 20.0, weight: .bold)
-    menuButtonConfig.attributedTitle = attributedTitle
-    menuButtonConfig.baseForegroundColor = .black
-    menuButtonConfig.background.backgroundColor = .lightGray
-    menuButtonConfig.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 20, bottom: 16, trailing: 20)
-    return menuButtonConfig
   }
   
   @objc func didTapInnButton() {
@@ -169,7 +159,8 @@ class MainMenuView : UIView {
     hpLabel.attributedText = NSAttributedString(string: mainMenuViewModel.playerHealthDisplayText())
     goldLabel.attributedText = NSAttributedString(string: mainMenuViewModel.playerGoldDisplayText())
     
-    HACKactivateConstraints()
+    clearConstraints()
+    NSLayoutConstraint.activate(layoutConstraints)
   }
   
   required init?(coder: NSCoder) {

@@ -20,9 +20,8 @@ class ShopViewController: UIViewController, ShopViewDelegate {
   
   func didTapBuyPotion() {
     if shopViewModel.attemptBuyPotion() {
-      // tell view to update based on model?
+      updateShopViewData()
     } else {
-      // get text from model
       let alertController = UIAlertController(title: shopViewModel.cantAffordText, message: nil, preferredStyle: .alert)
       alertController.addAction(UIAlertAction(title: UIGuidelineAlertConfirm, style: .default))
       present(alertController, animated: false)
@@ -31,9 +30,11 @@ class ShopViewController: UIViewController, ShopViewDelegate {
   
   func didTapBuyMagicCrown() {
     if shopViewModel.attemptBuyMagicCrown() {
-      // tell view to update based on model?
+      updateShopViewData()
+      let alertController = UIAlertController(title: shopViewModel.isFirstWin ? shopViewModel.winGameText : shopViewModel.repeatWinText, message: nil, preferredStyle: .alert)
+      alertController.addAction(UIAlertAction(title: UIGuidelineAlertConfirm, style: .default))
+      present(alertController, animated: false)
     } else {
-      // get text from model
       let alertController = UIAlertController(title: shopViewModel.cantAffordText, message: nil, preferredStyle: .alert)
       alertController.addAction(UIAlertAction(title: UIGuidelineAlertConfirm, style: .default))
       present(alertController, animated: false)
@@ -53,4 +54,11 @@ class ShopViewController: UIViewController, ShopViewDelegate {
     // Do any additional setup after loading the view.
   }
 
+  func updateShopViewData() {
+    if let shopView = self.view as? ShopView {
+        // Access MyCustomView properties
+      shopView.dataDidChange()
+    }
+  }
+  
 }

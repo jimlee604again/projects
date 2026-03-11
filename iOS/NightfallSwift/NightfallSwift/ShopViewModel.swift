@@ -15,14 +15,24 @@ class ShopViewModel {
   let titleText: String = "Shop"
   let descriptionText: String = "Welcome to the shop, we are selling potions."
   let cantAffordText: String = "Not enough gold."
+  let winGameText: String = "Congratulations, you got the magic crown and now you rule the world! See how many crowns you can collect."
   var buyPotionButtonText: String {
-    "Buy Potion (\(potionCost) gold)"
+    "Buy Potion\n(\(potionCost) gold)"
   }
   var buyMagicCrownButtonText: String {
-    "Buy Magic Crown (\(magicCrownCost) gold)"
+    "Buy Crown\n(\(magicCrownCost) gold)"
+  }
+  var potionCountText: String {
+    "Potions: \(player.potionCount)"
   }
   var goldText: String {
     "Gold: \(player.gold)"
+  }
+  var isFirstWin: Bool {
+    player.crownCount == 1
+  }
+  var repeatWinText: String {
+    "Congratulations on crown number \(player.crownCount)!"
   }
   
   init (player: Player) {
@@ -41,7 +51,8 @@ class ShopViewModel {
   func attemptBuyMagicCrown() -> Bool {
     if player.gold >= magicCrownCost {
       player.gold -= magicCrownCost
-      player.magicCrownCount += 1
+      player.crownCount += 1
+      return true
       // win the game?
     }
     return false

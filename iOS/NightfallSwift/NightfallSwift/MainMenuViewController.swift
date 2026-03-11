@@ -47,7 +47,10 @@ class MainMenuViewController: UIViewController, MainMenuDelegate {
   }
   
   func didTapItemsButton() {
-    // implement
+    let itemsviewModel = mainMenuViewModel.makeItemsViewModel()
+    let itemsVC = ItemsViewController(itemsViewModel: itemsviewModel)
+    itemsVC.modalPresentationStyle = .fullScreen
+    present(itemsVC, animated: false, completion: nil)
   }
   
   // MARK: TODO: do actual function
