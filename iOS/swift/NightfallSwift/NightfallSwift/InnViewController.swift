@@ -8,17 +8,17 @@
 import UIKit
 
 class InnViewController: UIViewController, InnViewDelegate {
-  private let innViewModel: InnViewModel
+  private var innViewModel: InnViewModel
 
   init(innViewModel: InnViewModel) {
     self.innViewModel = innViewModel
     super.init(nibName: nil, bundle: nil)
     let innView = InnView()
     self.view = innView
-    innView.configureWith(InnViewState(title: innViewModel.titleText, stayButtonText: innViewModel.stayButtonText))
-    innViewModel.onStateChange = { [weak innView] state in
+    self.innViewModel.onStateChange = { [weak innView] state in
         innView?.configureWith(state)
     }
+    innView.configureWith(innViewModel.viewState)
     innView.innViewDelegate = self
   }
 
