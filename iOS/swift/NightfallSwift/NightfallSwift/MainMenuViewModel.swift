@@ -9,39 +9,38 @@ import Combine
 import Foundation
 
 public class MainMenuViewModel: ObservableObject {
-  @Published private var player: Player
-  private var innViewModel: InnViewModel?
+  @Published private var gameState: GameState
   
-  init(player: Player) {
-    self.player = player
+  init(gameState: GameState) {
+    self.gameState = gameState
   }
   
   func makeInnViewModel() -> InnViewModel {
-    return InnViewModel(player: player)
+    return InnViewModel(gameState: gameState)
   }
   
   func makeShopViewModel() -> ShopViewModel {
-    return ShopViewModel(player: player)
+    return ShopViewModel(gameState: gameState)
   }
   
   func makeItemsViewModel() -> ItemsViewModel {
-    return ItemsViewModel(player: player)
+    return ItemsViewModel(gameState: gameState)
   }
   
   func makeBattleViewModel() -> BattleViewModel {
-    return BattleViewModel(player: player)
+    return BattleViewModel(gameState: gameState)
   }
   
   func completeBattle() {
-    player.hp -= 3
-    player.gold += 10
+    gameState.player.hp -= 3
+    gameState.player.gold += 10
   }
   
   func playerHealthDisplayText() -> String {
-    return "HP: \(player.hp)"
+    return "HP: \(gameState.player.hp)"
   }
   
   func playerGoldDisplayText() -> String {
-    return "Gold: \(player.gold)"
+    return "Gold: \(gameState.player.gold)"
   }
 }

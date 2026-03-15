@@ -8,18 +8,18 @@
 import Foundation
 
 class ItemsViewModel {
-  private let player : Player
+  private let gameState: GameState
   
   // MARK: Text
   let titleText: String = "Items"
   var potionsCountText : String {
-    "Potions: \(player.potionCount)"
+    "Potions: \(gameState.player.potionCount)"
   }
   var crownsCountText : String {
-    "Crowns: \(player.crownCount)"
+    "Crowns: \(gameState.player.crownCount)"
   }
-  
-  init (player: Player) {
-    self.player = player
+
+  init (gameState: GameState) {
+    self.gameState = gameState
   }
 }

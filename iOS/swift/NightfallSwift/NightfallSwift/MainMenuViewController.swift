@@ -47,16 +47,20 @@ class MainMenuViewController: UIViewController, MainMenuDelegate {
   }
   
   func didTapItemsButton() {
-    let itemsviewModel = mainMenuViewModel.makeItemsViewModel()
-    let itemsVC = ItemsViewController(itemsViewModel: itemsviewModel)
+    let itemsViewModel = mainMenuViewModel.makeItemsViewModel()
+    let itemsVC = ItemsViewController(itemsViewModel: itemsViewModel)
     itemsVC.modalPresentationStyle = .fullScreen
     present(itemsVC, animated: false, completion: nil)
   }
   
   // MARK: TODO: do actual function
   func didTapBattleButton() {
-    mainMenuViewModel.completeBattle()
-    updateMainMenuViewData()
+//    mainMenuViewModel.completeBattle()
+//    updateMainMenuViewData()
+    let battleViewModel = mainMenuViewModel.makeBattleViewModel()
+    let battleVC = BattleViewController(battleViewModel: battleViewModel)
+    battleVC.modalPresentationStyle = .fullScreen
+    present(battleVC, animated: false, completion: nil)
   }
   
   func updateMainMenuViewData() {

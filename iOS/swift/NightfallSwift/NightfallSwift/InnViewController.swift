@@ -13,18 +13,25 @@ class InnViewController: UIViewController, InnViewDelegate {
   init(innViewModel: InnViewModel) {
     self.innViewModel = innViewModel
     super.init(nibName: nil, bundle: nil)
-    let innView = InnView(innViewModel: innViewModel)
+    let innView = InnView()
     self.view = innView
+    innView.configureWith(InnViewState(title: innViewModel.titleText, stayButtonText: innViewModel.stayButtonText))
+    innViewModel.onStateChange = { [weak innView] state in
+        innView?.configureWith(state)
+    }
     innView.innViewDelegate = self
   }
-  
+
   func didTapStay() {
-    if (innViewModel.attemptStay()) {
+    switch innViewModel.attemptStay() {
+    case .success:
       self.dismiss(animated: false)
-    } else {
+      break
+    case .insufficientFunds:
       let alertController = UIAlertController(title: innViewModel.notEnoughGoldTitle, message: innViewModel.notEnoughGoldDescription, preferredStyle: .alert)
       alertController.addAction(UIAlertAction(title: UIGuidelineAlertConfirm, style: .default))
       present(alertController, animated: false)
+      break
     }
   }
 

@@ -8,7 +8,7 @@
 import Foundation
 
 class ShopViewModel {
-  private let player: Player
+  private let gameState: GameState
   private let potionCost: Int32 = 5
   private let magicCrownCost: Int32 = 1
   
@@ -23,35 +23,35 @@ class ShopViewModel {
     "Buy Crown\n(\(magicCrownCost) gold)"
   }
   var potionCountText: String {
-    "Potions: \(player.potionCount)"
+    "Potions: \(gameState.player.potionCount)"
   }
   var goldText: String {
-    "Gold: \(player.gold)"
+    "Gold: \(gameState.player.gold)"
   }
   var isFirstWin: Bool {
-    player.crownCount == 1
+    gameState.player.crownCount == 1
   }
   var repeatWinText: String {
-    "Congratulations on crown number \(player.crownCount)!"
+    "Congratulations on crown number \(gameState.player.crownCount)!"
   }
   
-  init (player: Player) {
-    self.player = player
+  init (gameState: GameState) {
+    self.gameState = gameState
   }
   
   func attemptBuyPotion() -> Bool {
-    if player.gold >= potionCost {
-      player.gold -= potionCost
-      player.potionCount += 1
+    if gameState.player.gold >= potionCost {
+      gameState.player.gold -= potionCost
+      gameState.player.potionCount += 1
       return true
     }
     return false
   }
   
   func attemptBuyMagicCrown() -> Bool {
-    if player.gold >= magicCrownCost {
-      player.gold -= magicCrownCost
-      player.crownCount += 1
+    if gameState.player.gold >= magicCrownCost {
+      gameState.player.gold -= magicCrownCost
+      gameState.player.crownCount += 1
       return true
       // win the game?
     }

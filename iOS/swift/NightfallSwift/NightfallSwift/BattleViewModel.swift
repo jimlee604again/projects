@@ -8,7 +8,11 @@
 import Foundation
 
 class BattleViewModel {
-  
-  init (player: Player) {
+  private let gameState: GameState
+
+  let titleText = "Battle"
+
+  init (gameState: GameState) {
+    self.gameState = gameState
   }
 }

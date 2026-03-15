@@ -12,8 +12,11 @@ let UIGuidelineExitTop: CGFloat = 70
 let UIGuidelineStatusBottom = 100.0
 let UIGuidelineStatusSide = 50.0
 let UIGuidelineButtonWidth = 200.0
+let UIGuidelineTitleTopInset = 100.0
 
 let UIGuidelineAlertConfirm = "OK"
+
+let UIGuidelineTitleFont = UIFont.preferredFont(forTextStyle: .largeTitle)
 
 func UIGuidelineButtonConfig(title: String, foregroundColor: UIColor) -> UIButton.Configuration {
   var menuButtonConfig = UIButton.Configuration.filled()

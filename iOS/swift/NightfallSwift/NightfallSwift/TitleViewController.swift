@@ -26,8 +26,7 @@ class TitleViewController: UIViewController, StartButtonDelegate {
   }
 
   func didTapStart() {
-    let player = createPlayer()
-    let mainMenuViewModel = MainMenuViewModel(player: player)
+    let mainMenuViewModel = MainMenuViewModel(gameState: GameState(player: createPlayer()))
     let mainMenuVC = MainMenuViewController(mainMenuViewModel: mainMenuViewModel)
     mainMenuVC.modalPresentationStyle = .fullScreen
     present(mainMenuVC, animated: false)
@@ -45,7 +44,6 @@ class TitleViewController: UIViewController, StartButtonDelegate {
           return []
       }
   }
-
   
   func createPlayer() -> Player {
     let context = CoreDataManager.shared.context
