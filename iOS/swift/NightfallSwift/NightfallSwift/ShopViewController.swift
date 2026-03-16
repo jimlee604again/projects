@@ -13,14 +13,17 @@ class ShopViewController: UIViewController, ShopViewDelegate {
   init(shopViewModel: ShopViewModel) {
     self.shopViewModel = shopViewModel
     super.init(nibName: nil, bundle: nil)
-    let shopView = ShopView(shopViewModel: shopViewModel)
+    let shopView = ShopView()
+    shopView.configure(with: shopViewModel.viewState)
+    shopViewModel.onStateChange = { [weak shopView] newState in
+      shopView?.configure(with: newState)
+    }
     self.view = shopView
     shopView.shopViewDelegate = self
   }
   
   func didTapBuyPotion() {
     if shopViewModel.attemptBuyPotion() {
-      updateShopViewData()
     } else {
       let alertController = UIAlertController(title: shopViewModel.cantAffordText, message: nil, preferredStyle: .alert)
       alertController.addAction(UIAlertAction(title: UIGuidelineAlertConfirm, style: .default))
@@ -28,9 +31,8 @@ class ShopViewController: UIViewController, ShopViewDelegate {
     }
   }
   
-  func didTapBuyMagicCrown() {
-    if shopViewModel.attemptBuyMagicCrown() {
-      updateShopViewData()
+  func didTapBuyCrown() {
+    if shopViewModel.attemptBuyCrown() {
       let alertController = UIAlertController(title: shopViewModel.isFirstWin ? shopViewModel.winGameText : shopViewModel.repeatWinText, message: nil, preferredStyle: .alert)
       alertController.addAction(UIAlertAction(title: UIGuidelineAlertConfirm, style: .default))
       present(alertController, animated: false)
@@ -52,13 +54,6 @@ class ShopViewController: UIViewController, ShopViewDelegate {
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view.
-  }
-
-  func updateShopViewData() {
-    if let shopView = self.view as? ShopView {
-        // Access MyCustomView properties
-      shopView.dataDidChange()
-    }
   }
   
 }

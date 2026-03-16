@@ -28,5 +28,17 @@ public class GameState {
       print("Attempted to stay at inn without enough gold.")
     }
   }
+ 
+  func battle(_ battleParameters: BattleParameters) -> BattleResult {
+    player.hp -= battleParameters.hpLoss
+
+    if player.hp <= 0 {
+      player.hp = 0
+      return .loseBattle
+    } else {
+      player.gold += battleParameters.goldGain
+      return .winBattle
+    }
+  }
   
 }

@@ -10,8 +10,13 @@ import Foundation
 enum StayResult { case success, insufficientFunds }
 
 struct InnViewState {
-  let title: String
-  let stayButtonText: String
+  let title = "Inn"
+  let outcomeExplanation: String
+  let stayButtonText = "Stay"
+  
+  init(stayCost : Int32, recoverAmount : Int32) {
+    outcomeExplanation = "You will pay \(stayCost) gold to recover \(recoverAmount) HP."
+  }
 }
 
 struct InnViewModel {
@@ -25,23 +30,26 @@ struct InnViewModel {
   
   // MARK: Logic Values
   private let stayCost : Int32 = 2
-  private let hpRestoreAmount : Int32 = 10
+  private let recoverAmount : Int32 = 10
   
   // MARK: Content
   let titleText = "Inn"
   let stayButtonText = "Stay"
+  let staySuccessTitle = "Zzz..."
+  let staySuccessDescription: String
   let notEnoughGoldTitle = "Insufficient Funds"
   let notEnoughGoldDescription = "Not enough gold to stay at the inn."
   
   init(gameState: GameState) {
     self.gameState = gameState
-    self.viewState = InnViewState(title: titleText, stayButtonText: stayButtonText)
+    self.viewState = InnViewState(stayCost: stayCost, recoverAmount: recoverAmount)
+    self.staySuccessDescription = "You feel rested. Gained \(recoverAmount) HP."
   }
 
   func attemptStay() -> StayResult {
     if gameState.player.gold >= stayCost {
       gameState.player.gold -= stayCost
-      gameState.player.hp += hpRestoreAmount
+      gameState.player.hp += recoverAmount
       return .success
     }
     return .insufficientFunds

@@ -16,7 +16,8 @@ class InnView : UIView {
   var innViewDelegate: InnViewDelegate?
 
   // MARK: Subviews
-  private let titleView = UILabel()
+  private let title = UILabel()
+  private let outcomeExplanation = UILabel()
   private let stayButton = UIButton(type: .system)
   private let exitButton = UIButton(type: .close)
 
@@ -29,18 +30,19 @@ class InnView : UIView {
     self.backgroundColor = themeColor
 
     // MARK: set up subviews
-    titleView.text = ""
-    titleView.font = UIGuidelineTitleFont
+    title.font = UIGuidelineTitleFont
     stayButton.configuration = UIGuidelineButtonConfig(title:"", foregroundColor: themeColor)
     stayButton.addTarget(self, action: #selector(didTapStay), for: .touchUpInside)
     exitButton.addTarget(self, action: #selector(didTapExit), for: .touchUpInside)
 
-    addSubview(titleView)
+    addSubview(title)
+    addSubview(outcomeExplanation)
     addSubview(stayButton)
     addSubview(exitButton)
 
     // MARK: layout subviews
-    titleView.translatesAutoresizingMaskIntoConstraints = false
+    title.translatesAutoresizingMaskIntoConstraints = false
+    outcomeExplanation.translatesAutoresizingMaskIntoConstraints = false
     stayButton.translatesAutoresizingMaskIntoConstraints = false
     exitButton.translatesAutoresizingMaskIntoConstraints = false
 
@@ -49,20 +51,31 @@ class InnView : UIView {
   
   func computeLayoutConstraints() -> [NSLayoutConstraint] {
     return [
-      titleView.centerXAnchor.constraint(equalTo: centerXAnchor),
-      titleView.topAnchor.constraint(equalTo: topAnchor, constant: UIGuidelineTitleTopInset),
+      title.centerXAnchor.constraint(equalTo: centerXAnchor),
+      title.topAnchor.constraint(equalTo: topAnchor, constant: UIGuidelineTitleTopInset),
+      title.widthAnchor.constraint(equalToConstant: title.computedWidthAnchor),
+      title.heightAnchor.constraint(equalToConstant: title.computedHeightAnchor),
+      
+      outcomeExplanation.centerXAnchor.constraint(equalTo: centerXAnchor),
+      outcomeExplanation.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 30),
+      outcomeExplanation.widthAnchor.constraint(equalToConstant: outcomeExplanation.computedWidthAnchor),
+      outcomeExplanation.heightAnchor.constraint(equalToConstant: outcomeExplanation.computedHeightAnchor),
 
       stayButton.centerXAnchor.constraint(equalTo: centerXAnchor),
       stayButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -100),
       stayButton.widthAnchor.constraint(equalToConstant: UIGuidelineButtonWidth),
+      stayButton.heightAnchor.constraint(equalToConstant: stayButton.computedHeightAnchor),
 
       exitButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIGuidelineExitLeading),
-      exitButton.topAnchor.constraint(equalTo: topAnchor, constant: UIGuidelineExitTop)
+      exitButton.topAnchor.constraint(equalTo: topAnchor, constant: UIGuidelineExitTop),
+      exitButton.widthAnchor.constraint(equalToConstant: exitButton.computedWidthAnchor),
+      exitButton.heightAnchor.constraint(equalToConstant: exitButton.computedHeightAnchor)
     ]
   }
 
   func configureWith(_ viewState: InnViewState) {
-    titleView.text = viewState.title
+    title.text = viewState.title
+    outcomeExplanation.text = viewState.outcomeExplanation
     stayButton.configuration = stayButtonConfig(title: viewState.stayButtonText)
     clearConstraints()
     NSLayoutConstraint.activate(computeLayoutConstraints())
