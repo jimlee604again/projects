@@ -14,13 +14,27 @@ class ItemsViewController: UIViewController, ItemsViewDelegate {
   init(itemsViewModel: ItemsViewModel) {
     self.itemsViewModel = itemsViewModel
     super.init(nibName: nil, bundle: nil)
-    let itemsView = ItemsView(itemsViewModel: itemsViewModel)
+    let itemsView = ItemsView()
+    itemsViewModel.onStateChange = { [weak itemsView] viewState in
+      itemsView?.configure(with: viewState)
+    }
+    itemsView.configure(with: itemsViewModel.viewState)
     self.view = itemsView
     itemsView.itemsViewDelegate = self
   }
   
   func didTapExit() {
-    self.dismiss(animated: false)
+    dismiss(animated: false)
+  }
+  
+  func didTapUsePotion() {
+    switch itemsViewModel.attemptUsePotion() {
+    case .used:
+      presentSimpleAlert(title: itemsViewModel.usedPotionAlertTitle, message: itemsViewModel.usedPotionAlertMessage)
+      break
+    case .noneLeft:
+      break
+    }
   }
   
   required init?(coder: NSCoder) {

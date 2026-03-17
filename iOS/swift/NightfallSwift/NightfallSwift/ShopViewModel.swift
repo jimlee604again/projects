@@ -7,6 +7,11 @@
 
 import Foundation
 
+enum PurchaseResult {
+  case success
+  case insufficientFunds
+}
+
 struct ShopViewState {
   let titleText: String = "Shop"
   let pageDescriptionText: String = "Shop til you drop."
@@ -35,13 +40,15 @@ class ShopViewModel {
   private let potionCost: Int32 = 5
   private let crownCost: Int32 = 1
   
-  let cantAffordText: String = "Not enough gold."
+  let insufficientFundsAlertTitle = "Insuffient funds."
   let winGameText: String = "Congratulations, you got the magic crown and now you rule the world! See how many crowns you can collect."
-  var isFirstWin: Bool {
-    gameState.player.crownCount == 1
-  }
   var repeatWinText: String {
     "Congratulations on crown number \(gameState.player.crownCount)!"
+  }
+  let buyPotionAlertTitle = "Potion Purchased!"
+  let buyCrownAlertTitle = "Crown Purchased!"
+  var buyCrownAlertMessage: String {
+    gameState.player.crownCount == 1 ? winGameText : repeatWinText
   }
   
   init(gameState: GameState) {
@@ -53,24 +60,33 @@ class ShopViewModel {
                                        goldAmount: gameState.player.gold)
   }
   
+  func updateViewState () {
+    viewState = ShopViewState(potionCost: potionCost,
+                              crownCost: crownCost,
+                              potionAmount: gameState.player.potionCount,
+                              crownAmount: gameState.player.crownCount,
+                              goldAmount: gameState.player.gold)
+  }
+  
   // change to enum
-  func attemptBuyPotion() -> Bool {
+  func attemptBuyPotion() -> PurchaseResult {
     if gameState.player.gold >= potionCost {
       gameState.player.gold -= potionCost
       gameState.player.potionCount += 1
-      return true
+      updateViewState()
+      return .success
     }
-    return false
+    return .insufficientFunds
   }
   
-  func attemptBuyCrown() -> Bool {
+  func attemptBuyCrown() -> PurchaseResult {
     if gameState.player.gold >= crownCost {
       gameState.player.gold -= crownCost
       gameState.player.crownCount += 1
-      return true
-      // win the game?
+      updateViewState()
+      return .success
     }
-    return false
+    return .insufficientFunds
   }
   
 }

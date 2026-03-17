@@ -36,14 +36,14 @@ struct InnViewModel {
   let titleText = "Inn"
   let stayButtonText = "Stay"
   let staySuccessTitle = "Zzz..."
-  let staySuccessDescription: String
+  let staySuccessMessage: String
   let notEnoughGoldTitle = "Insufficient Funds"
-  let notEnoughGoldDescription = "Not enough gold to stay at the inn."
+  let notEnoughGoldMessage = "Not enough gold to stay at the inn."
   
   init(gameState: GameState) {
     self.gameState = gameState
     self.viewState = InnViewState(stayCost: stayCost, recoverAmount: recoverAmount)
-    self.staySuccessDescription = "You feel rested. Gained \(recoverAmount) HP."
+    self.staySuccessMessage = "You feel rested. Gained \(recoverAmount) HP."
   }
 
   func attemptStay() -> StayResult {

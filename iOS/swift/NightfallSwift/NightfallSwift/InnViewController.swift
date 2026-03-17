@@ -25,14 +25,10 @@ class InnViewController: UIViewController, InnViewDelegate {
   func didTapStay() {
     switch innViewModel.attemptStay() {
     case .success:
-      let alert = UIAlertController(title: innViewModel.staySuccessTitle, message: innViewModel.staySuccessDescription, preferredStyle: .alert)
-      alert.addAction(UIAlertAction(title: UIGuidelineAlertConfirm, style: .default))
-      present(alert, animated: false)
+      presentSimpleAlert(title: innViewModel.staySuccessTitle, message: innViewModel.staySuccessMessage)
       break
     case .insufficientFunds:
-      let alert = UIAlertController(title: innViewModel.notEnoughGoldTitle, message: innViewModel.notEnoughGoldDescription, preferredStyle: .alert)
-      alert.addAction(UIAlertAction(title: UIGuidelineAlertConfirm, style: .default))
-      present(alert, animated: false)
+      presentSimpleAlert(title: innViewModel.notEnoughGoldTitle, message: innViewModel.notEnoughGoldMessage)
       break
     }
   }

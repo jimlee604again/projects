@@ -7,11 +7,35 @@
 
 import Foundation
 
+enum UseItemResult { case used, noneLeft }
+
+struct ItemsViewState {
+  let usePotionText = "Use Potion"
+  let title = "Items"
+  let pageDescription : String
+  let potionHealAmount: Int
+  let potionAmountText: String
+  let crownAmountText: String
+  
+  init(potionHealAmount: Int, potionAmount: Int32, crownAmount: Int32) {
+    self.potionHealAmount = potionHealAmount
+    self.pageDescription = "Potions will heal you \(potionHealAmount) HP."
+    self.potionAmountText = "Potions: \(potionAmount)"
+    self.crownAmountText = "Crowns: \(crownAmount)"
+  }
+}
+
 class ItemsViewModel {
   private let gameState: GameState
+  private(set) var viewState : ItemsViewState {
+    didSet { onStateChange?(viewState) }
+  }
+  
+  let potionHealAmount = 5
+  
+  var onStateChange: ((ItemsViewState) -> Void)?
   
   // MARK: Text
-  let titleText: String = "Items"
   var potionsCountText : String {
     "Potions: \(gameState.player.potionCount)"
   }
@@ -21,5 +45,22 @@ class ItemsViewModel {
 
   init (gameState: GameState) {
     self.gameState = gameState
+    self.viewState = ItemsViewState(potionHealAmount: potionHealAmount,
+                                    potionAmount: gameState.player.potionCount,
+                                    crownAmount: gameState.player.crownCount)
+  }
+  
+  let usedPotionAlertTitle: String = "Potion Used"
+  var usedPotionAlertMessage: String {
+    "You restored \(potionHealAmount) HP!"
+  }
+
+  func attemptUsePotion() -> UseItemResult {
+    if gameState.player.potionCount > 0 {
+      gameState.player.potionCount -= 1
+      return .used
+    } else {
+      return .noneLeft
+    }
   }
 }

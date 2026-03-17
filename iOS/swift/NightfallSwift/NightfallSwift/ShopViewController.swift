@@ -23,23 +23,25 @@ class ShopViewController: UIViewController, ShopViewDelegate {
   }
   
   func didTapBuyPotion() {
-    if shopViewModel.attemptBuyPotion() {
-    } else {
-      let alertController = UIAlertController(title: shopViewModel.cantAffordText, message: nil, preferredStyle: .alert)
-      alertController.addAction(UIAlertAction(title: UIGuidelineAlertConfirm, style: .default))
-      present(alertController, animated: false)
+    switch shopViewModel.attemptBuyPotion() {
+    case .success:
+      presentSimpleAlert(title: shopViewModel.buyPotionAlertTitle, message: nil)
+      break
+    case .insufficientFunds:
+      presentSimpleAlert(title: shopViewModel.insufficientFundsAlertTitle, message: nil)
+      break
     }
   }
   
   func didTapBuyCrown() {
-    if shopViewModel.attemptBuyCrown() {
-      let alertController = UIAlertController(title: shopViewModel.isFirstWin ? shopViewModel.winGameText : shopViewModel.repeatWinText, message: nil, preferredStyle: .alert)
-      alertController.addAction(UIAlertAction(title: UIGuidelineAlertConfirm, style: .default))
-      present(alertController, animated: false)
-    } else {
-      let alertController = UIAlertController(title: shopViewModel.cantAffordText, message: nil, preferredStyle: .alert)
-      alertController.addAction(UIAlertAction(title: UIGuidelineAlertConfirm, style: .default))
-      present(alertController, animated: false)
+    switch shopViewModel.attemptBuyCrown() {
+    case .success:
+      presentSimpleAlert(title: shopViewModel.buyCrownAlertTitle,
+                         message: shopViewModel.buyCrownAlertMessage)
+      break
+    case .insufficientFunds:
+      presentSimpleAlert(title: shopViewModel.insufficientFundsAlertTitle, message: nil)
+      break
     }
   }
 
