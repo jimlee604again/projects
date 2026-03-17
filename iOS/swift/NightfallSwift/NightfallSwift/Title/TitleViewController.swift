@@ -7,13 +7,13 @@
 
 import CoreData
 import UIKit
-import Foundation
 
 class TitleViewController: UIViewController, StartButtonDelegate {
   
+  let titleViewModel: TitleViewModel = TitleViewModel()
+  
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    let titleViewModel = TitleViewModel()
     let titleView = TitleView()
     self.view = titleView
     titleView.startButtonDelegate = self
@@ -38,9 +38,7 @@ class TitleViewController: UIViewController, StartButtonDelegate {
   
   func fetchPlayers() -> [Player] {
       let context = CoreDataManager.shared.context
-
       let request: NSFetchRequest<Player> = Player.fetchRequest()
-
       do {
           return try context.fetch(request)
       } catch {
@@ -53,11 +51,11 @@ class TitleViewController: UIViewController, StartButtonDelegate {
     let context = CoreDataManager.shared.context
     let players = fetchPlayers()
     
-    if let existing = players.first {
-      return existing
+    if let existingPlayer = players.first {
+      return existingPlayer
     }
     
-    // generate base player if a persisted one isn't fetched
+    // Generate base player if a persisted one isn't fetched.
     guard let entity = NSEntityDescription.entity(
       forEntityName: "Player",
       in: context
@@ -66,8 +64,8 @@ class TitleViewController: UIViewController, StartButtonDelegate {
     }
     
     let player = Player(entity: entity, insertInto: context)
-    player.hp = 10
-    player.gold = 0
+    player.hp = titleViewModel.playerStartingHealth
+    player.gold = titleViewModel.playerStartingGold
     
     do {
       try context.save()

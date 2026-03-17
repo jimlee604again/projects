@@ -13,11 +13,11 @@ struct ItemsViewState {
   let usePotionText = "Use Potion"
   let title = "Items"
   let pageDescription : String
-  let potionHealAmount: Int
+  let potionHealAmount: Int32
   let potionAmountText: String
   let crownAmountText: String
   
-  init(potionHealAmount: Int, potionAmount: Int32, crownAmount: Int32) {
+  init(potionHealAmount: Int32, potionAmount: Int32, crownAmount: Int32) {
     self.potionHealAmount = potionHealAmount
     self.pageDescription = "Potions will heal you \(potionHealAmount) HP."
     self.potionAmountText = "Potions: \(potionAmount)"
@@ -31,7 +31,7 @@ class ItemsViewModel {
     didSet { onStateChange?(viewState) }
   }
   
-  let potionHealAmount = 5
+  let potionHealAmount: Int32 = 5
   
   var onStateChange: ((ItemsViewState) -> Void)?
   
@@ -58,6 +58,10 @@ class ItemsViewModel {
   func attemptUsePotion() -> UseItemResult {
     if gameState.player.potionCount > 0 {
       gameState.player.potionCount -= 1
+      gameState.player.hp += potionHealAmount
+      viewState = ItemsViewState(potionHealAmount: potionHealAmount,
+                                 potionAmount: gameState.player.potionCount,
+                                 crownAmount: gameState.player.crownCount)
       return .used
     } else {
       return .noneLeft

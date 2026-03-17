@@ -20,6 +20,9 @@ class ItemsView : UIView {
   private let pageDescription = UILabel()
   private let potionsCount = UILabel()
   private let crownsCount = UILabel()
+  
+  // add hp and gold amount
+  
   private let exit = UIButton(type: .close)
   private let usePotion = UIButton(type: .custom)
   var potionsCountSize : CGSize {
@@ -62,16 +65,24 @@ class ItemsView : UIView {
     return [
       title.centerXAnchor.constraint(equalTo: centerXAnchor),
       title.topAnchor.constraint(equalTo: topAnchor, constant: 100),
+      title.widthAnchor.constraint(equalToConstant: title.computedWidthAnchor),
+      title.heightAnchor.constraint(equalToConstant: title.computedHeightAnchor),
       
       potionsCount.centerXAnchor.constraint(equalTo: centerXAnchor),
       potionsCount.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -140),
+      potionsCount.widthAnchor.constraint(equalToConstant: potionsCount.computedWidthAnchor),
+      potionsCount.heightAnchor.constraint(equalToConstant: potionsCount.computedHeightAnchor),
       
       crownsCount.centerXAnchor.constraint(equalTo: centerXAnchor),
       crownsCount.topAnchor.constraint(equalTo: potionsCount.bottomAnchor, constant: 10),
+      crownsCount.widthAnchor.constraint(equalToConstant: crownsCount.computedWidthAnchor),
+      crownsCount.heightAnchor.constraint(equalToConstant: crownsCount.computedHeightAnchor),
       
       exit.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIGuidelineExitLeading),
       exit.topAnchor.constraint(equalTo: topAnchor, constant: UIGuidelineExitTop),
-      
+      exit.widthAnchor.constraint(equalToConstant: exit.computedWidthAnchor),
+      exit.heightAnchor.constraint(equalToConstant: exit.computedHeightAnchor),
+
       usePotion.centerXAnchor.constraint(equalTo: centerXAnchor),
       usePotion.bottomAnchor.constraint(equalTo: potionsCount.topAnchor, constant: -20),
       usePotion.widthAnchor.constraint(equalToConstant: usePotion.computedWidthAnchor),
