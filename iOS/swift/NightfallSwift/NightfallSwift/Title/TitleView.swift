@@ -5,7 +5,6 @@
 //  Created by Jimmy Lee on 1/21/26.
 //
 
-import Foundation
 import UIKit
 
 protocol StartButtonDelegate {
@@ -17,39 +16,41 @@ class TitleView : UIView {
   private let start = UIButton(type: .custom)
   var startButtonDelegate : StartButtonDelegate?
   
+  private let titleVerticalOffset: CGFloat = -200
+  private let startButtonVerticalOffset: CGFloat = 100
+  
   init() {
     super.init(frame: CGRectZero)
 
-    self.title.text = "Nightfall"
-    self.title.textColor = .white
-    self.title.font = UIFont.boldSystemFont(ofSize: 40.0)
-
+    backgroundColor = .black
     
-    self.start.configuration = startButtonConfig(title: "")
-    self.start.backgroundColor = .blue
-    self.start.layer.cornerRadius = 6.0
-    self.start.addTarget(self, action: #selector(didTapStart), for: .touchUpInside)
-    self.backgroundColor = .black
-    self.addSubview(self.title)
-    self.addSubview(self.start)
-
-    let titleSizeThatFits = title.sizeThatFits(self.bounds.size)
-    let buttonSizeThatFits = start.sizeThatFits(self.bounds.size)
+    title.text = "Nightfall"
+    title.textColor = .white
+    title.font = UIFont.boldSystemFont(ofSize: 40.0)
+    
+    start.configuration = startButtonConfig(title: "")
+    start.backgroundColor = .blue
+    start.layer.cornerRadius = 6.0
+    start.addTarget(self, action: #selector(didTapStart), for: .touchUpInside)
+    
+    addSubview(title)
+    addSubview(start)
     
     title.translatesAutoresizingMaskIntoConstraints = false
     start.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate(computedConstraints())
   }
   
   func computedConstraints() -> [NSLayoutConstraint] {
     return [
-      title.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-      title.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -200),
+      title.centerXAnchor.constraint(equalTo: centerXAnchor),
+      title.centerYAnchor.constraint(equalTo: centerYAnchor,
+                                     constant: titleVerticalOffset),
       title.widthAnchor.constraint(equalToConstant: title.computedWidthAnchor),
       title.heightAnchor.constraint(equalToConstant: title.computedHeightAnchor),
       
-      start.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-      start.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 100),
+      start.centerXAnchor.constraint(equalTo: centerXAnchor),
+      start.centerYAnchor.constraint(equalTo: centerYAnchor,
+                                     constant: startButtonVerticalOffset),
       start.widthAnchor.constraint(equalToConstant: UIGuidelineButtonWidth),
       start.heightAnchor.constraint(equalToConstant: start.computedHeightAnchor)
     ]
