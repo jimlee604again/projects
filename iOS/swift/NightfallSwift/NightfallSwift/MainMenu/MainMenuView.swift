@@ -36,6 +36,7 @@ class MainMenuView : UIView {
     self.backgroundColor = themeColor
 
     // MARK: Set Up Subviews
+    // MARK: TODO: Make Main Menu Title
     inn.layer.cornerRadius = menuCornerRadius
     shop.layer.cornerRadius = menuCornerRadius
     items.layer.cornerRadius = menuCornerRadius
@@ -46,21 +47,26 @@ class MainMenuView : UIView {
     items.addTarget(self, action: #selector(didTapItems), for: .touchUpInside)
     battle.addTarget(self, action: #selector(didTapBattle), for: .touchUpInside)
     
+    inn.translatesAutoresizingMaskIntoConstraints = false
+    shop.translatesAutoresizingMaskIntoConstraints = false
+    items.translatesAutoresizingMaskIntoConstraints = false
+    battle.translatesAutoresizingMaskIntoConstraints = false
+    hp.translatesAutoresizingMaskIntoConstraints = false
+    gold.translatesAutoresizingMaskIntoConstraints = false
+    
     addSubview(inn)
     addSubview(shop)
     addSubview(items)
     addSubview(battle)
     addSubview(hp)
     addSubview(gold)
+    
+    NSLayoutConstraint.activate(computedLayoutConstraints())
   }
   
   func configure(with viewState: MainMenuViewState) {
     hp.text = viewState.hpText
     gold.text = viewState.goldText
-    
-    clearConstraints()
-    NSLayoutConstraint.activate(computedLayoutConstraints())
-    layoutIfNeeded()
     
     inn.configuration = UIGuidelineButtonConfig(title: viewState.innTitle,
                                                       foregroundColor: themeColor)
@@ -96,13 +102,13 @@ class MainMenuView : UIView {
       
       hp.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIGuidelineStatusSide),
       hp.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -UIGuidelineStatusBottom),
-      hp.widthAnchor.constraint(equalToConstant: hp.computedWidthAnchor),
-      hp.heightAnchor.constraint(equalToConstant: hp.computedHeightAnchor),
+//      hp.widthAnchor.constraint(equalToConstant: hp.computedWidthAnchor),
+//      hp.heightAnchor.constraint(equalToConstant: hp.computedHeightAnchor),
       
-      gold.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: UIGuidelineStatusSide),
-      gold.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -UIGuidelineStatusBottom + 30),
-      gold.widthAnchor.constraint(equalToConstant: gold.computedWidthAnchor),
-      gold.heightAnchor.constraint(equalToConstant: gold.computedHeightAnchor)
+      gold.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIGuidelineStatusSide),
+      gold.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -UIGuidelineStatusBottom + 30),
+//      gold.widthAnchor.constraint(equalToConstant: gold.computedWidthAnchor),
+//      gold.heightAnchor.constraint(equalToConstant: gold.computedHeightAnchor)
     ]
   }
   

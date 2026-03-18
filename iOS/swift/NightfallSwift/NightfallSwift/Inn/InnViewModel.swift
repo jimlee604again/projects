@@ -47,9 +47,7 @@ struct InnViewModel {
   }
 
   func attemptStay() -> StayResult {
-    if gameState.player.gold >= stayCost {
-      gameState.player.gold -= stayCost
-      gameState.player.hp += recoverAmount
+    if gameState.stayAtInn(cost: stayCost, recoverAmount: recoverAmount) {
       return .success
     }
     return .insufficientFunds

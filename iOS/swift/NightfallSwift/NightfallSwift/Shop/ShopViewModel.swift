@@ -53,26 +53,26 @@ class ShopViewModel {
   
   init(gameState: GameState) {
     self.gameState = gameState
+    let snapshot = gameState.snapshot
     self.viewState = ShopViewState(potionCost: potionCost,
-                                       crownCost: crownCost,
-                                       potionAmount: gameState.player.potionCount,
-                                       crownAmount: gameState.player.crownCount,
-                                       goldAmount: gameState.player.gold)
+                                   crownCost: crownCost,
+                                   potionAmount: snapshot.potionCount,
+                                   crownAmount: snapshot.crownCount,
+                                   goldAmount: snapshot.gold)
   }
   
   func updateViewState () {
+    let snapshot = gameState.snapshot
     viewState = ShopViewState(potionCost: potionCost,
                               crownCost: crownCost,
-                              potionAmount: gameState.player.potionCount,
-                              crownAmount: gameState.player.crownCount,
-                              goldAmount: gameState.player.gold)
+                              potionAmount: snapshot.potionCount,
+                              crownAmount: snapshot.crownCount,
+                              goldAmount: snapshot.gold)
   }
   
   // change to enum
   func attemptBuyPotion() -> PurchaseResult {
-    if gameState.player.gold >= potionCost {
-      gameState.player.gold -= potionCost
-      gameState.player.potionCount += 1
+    if gameState.buyPotion(cost: potionCost) {
       updateViewState()
       return .success
     }
@@ -80,9 +80,7 @@ class ShopViewModel {
   }
   
   func attemptBuyCrown() -> PurchaseResult {
-    if gameState.player.gold >= crownCost {
-      gameState.player.gold -= crownCost
-      gameState.player.crownCount += 1
+    if gameState.buyCrown(cost: crownCost) {
       updateViewState()
       return .success
     }

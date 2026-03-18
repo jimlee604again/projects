@@ -5,7 +5,6 @@
 //  Created by Jimmy Lee on 2/24/26.
 //
 
-import Combine
 import Foundation
 
 struct MainMenuViewState {
@@ -22,8 +21,9 @@ struct MainMenuViewState {
   }
 }
 
-public class MainMenuViewModel: ObservableObject {
-  @Published private var gameState: GameState
+public class MainMenuViewModel {
+  private let gameState: GameState
+  private var gameStateObserverID: UUID?
   private(set) var viewState : MainMenuViewState {
     didSet { onDidChange?(viewState) }
   }
@@ -31,8 +31,13 @@ public class MainMenuViewModel: ObservableObject {
   
   init(gameState: GameState) {
     self.gameState = gameState
-    self.viewState = MainMenuViewState(hp: gameState.player.hp,
-                                       gold: gameState.player.gold)
+    let snapshot = gameState.snapshot
+    self.viewState = MainMenuViewState(hp: snapshot.hp,
+                                       gold: snapshot.gold)
+    self.gameStateObserverID = gameState.addObserver { [weak self] snapshot in
+      self?.viewState = MainMenuViewState(hp: snapshot.hp,
+                                          gold: snapshot.gold)
+    }
   }
   
   func makeInnViewModel() -> InnViewModel {
@@ -52,15 +57,19 @@ public class MainMenuViewModel: ObservableObject {
   }
   
   func completeBattle() {
-    gameState.player.hp -= 3
-    gameState.player.gold += 10
+    _ = gameState.battle(BattleParameters())
   }
   
   func playerHealthDisplayText() -> String {
-    return "HP: \(gameState.player.hp)"
+    return "HP: \(gameState.snapshot.hp)"
   }
   
   func playerGoldDisplayText() -> String {
-    return "Gold: \(gameState.player.gold)"
+    return "Gold: \(gameState.snapshot.gold)"
+  }
+
+  deinit {
+    guard let gameStateObserverID else { return }
+    gameState.removeObserver(gameStateObserverID)
   }
 }

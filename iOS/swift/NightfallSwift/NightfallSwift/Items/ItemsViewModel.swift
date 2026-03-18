@@ -56,9 +56,7 @@ class ItemsViewModel {
   }
 
   func attemptUsePotion() -> UseItemResult {
-    if gameState.player.potionCount > 0 {
-      gameState.player.potionCount -= 1
-      gameState.player.hp += potionHealAmount
+    if gameState.usePotion(healAmount: potionHealAmount) {
       viewState = ItemsViewState(potionHealAmount: potionHealAmount,
                                  potionAmount: gameState.player.potionCount,
                                  crownAmount: gameState.player.crownCount)

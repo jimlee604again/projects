@@ -66,14 +66,10 @@ class ShopView : UIView {
     title.text = viewState.titleText
     pageDescription.text = viewState.pageDescriptionText
     buyPotion.configuration = UIGuidelineButtonConfig(title: viewState.buyPotionText, foregroundColor: themeColor)
-    buyPotion.titleLabel?.lineBreakMode = .byWordWrapping
     buyCrown.configuration = UIGuidelineButtonConfig(title: viewState.buyCrownText, foregroundColor: themeColor)
     potionAmount.text = viewState.potionAmountText
     crownAmount.text = viewState.crownAmountText
     goldAmount.text = viewState.goldAmountText
-    
-    clearConstraints()
-    NSLayoutConstraint.activate(computedLayoutContraints())
   }
   
   @objc func didTapBuyPotion() {
@@ -92,44 +88,31 @@ class ShopView : UIView {
     return [
       title.centerXAnchor.constraint(equalTo: centerXAnchor),
       title.topAnchor.constraint(equalTo: topAnchor, constant: 100),
-      title.widthAnchor.constraint(equalToConstant: title.computedWidthAnchor),
-      title.heightAnchor.constraint(equalToConstant: title.computedHeightAnchor),
       
       pageDescription.centerXAnchor.constraint(equalTo: centerXAnchor),
       pageDescription.topAnchor.constraint(equalTo: title.bottomAnchor, constant: UIGuidelineDescriptionGap),
-      pageDescription.widthAnchor.constraint(equalToConstant: pageDescription.computedWidthAnchor),
-      pageDescription.heightAnchor.constraint(equalToConstant: pageDescription.computedHeightAnchor),
       
       buyCrown.centerXAnchor.constraint(equalTo: centerXAnchor),
       buyCrown.bottomAnchor.constraint(equalTo: potionAmount.topAnchor, constant: -20),
       buyCrown.widthAnchor.constraint(equalToConstant: UIGuidelineButtonWidth),
-      buyCrown.heightAnchor.constraint(equalToConstant: buyCrown.computedHeightAnchor),
       
       buyPotion.centerXAnchor.constraint(equalTo: centerXAnchor),
       buyPotion.bottomAnchor.constraint(equalTo: buyCrown.topAnchor, constant: -20),
       buyPotion.widthAnchor.constraint(equalToConstant: UIGuidelineButtonWidth),
-      buyPotion.heightAnchor.constraint(equalToConstant: buyPotion.computedHeightAnchor),
 
       // stack potion and gold in a Stack ??
       goldAmount.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIGuidelineStatusSide),
       goldAmount.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -UIGuidelineStatusBottom + 30),
       goldAmount.widthAnchor.constraint(equalToConstant: goldAmount.computedWidthAnchor),
-      goldAmount.heightAnchor.constraint(equalToConstant: goldAmount.computedHeightAnchor),
       
       crownAmount.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIGuidelineStatusSide),
       crownAmount.bottomAnchor.constraint(equalTo: goldAmount.topAnchor, constant: -10),
-      crownAmount.widthAnchor.constraint(equalToConstant: crownAmount.computedWidthAnchor),
-      crownAmount.heightAnchor.constraint(equalToConstant: crownAmount.computedHeightAnchor),
-
+      
       potionAmount.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIGuidelineStatusSide),
       potionAmount.bottomAnchor.constraint(equalTo: crownAmount.topAnchor, constant: -10),
-      potionAmount.widthAnchor.constraint(equalToConstant: potionAmount.computedWidthAnchor),
-      potionAmount.heightAnchor.constraint(equalToConstant: potionAmount.computedHeightAnchor),
       
       exit.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIGuidelineExitLeading),
       exit.topAnchor.constraint(equalTo: topAnchor, constant: UIGuidelineExitTop),
-      exit.widthAnchor.constraint(equalToConstant: exit.computedWidthAnchor),
-      exit.heightAnchor.constraint(equalToConstant: exit.computedHeightAnchor)
     ]
   }
   
