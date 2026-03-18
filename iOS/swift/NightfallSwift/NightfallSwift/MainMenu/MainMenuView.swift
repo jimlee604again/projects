@@ -5,162 +5,121 @@
 //  Created by Jimmy Lee on 2/8/26.
 //
 
-import Foundation
 import UIKit
 
 protocol MainMenuDelegate {
-  func didTapInnButton()
-  func didTapShopButton()
-  func didTapItemsButton()
-  func didTapBattleButton()
+  func didTapInn()
+  func didTapShop()
+  func didTapItems()
+  func didTapBattle()
 }
 
 class MainMenuView : UIView {
-
-  // MARK: subviews
-  private let innButton : UIButton
-  private let shopButton : UIButton
-  private let itemsButton : UIButton
-  private let battleButton : UIButton
-  private let hpLabel : UILabel
-  private let goldLabel: UILabel
-  
-  // MARK: UI constants
-  private let menuButtonCornerRadius = 6.0
-  private let themeColor = UIColor.cyan
-  
-  // MARK: computed UI variables
-  var menuButtonSize : CGSize {
-    CGSize(width: UIGuidelineButtonWidth,
-           height: innButton.sizeThatFits(self.bounds.size).height)
-  }
-  var hpLabelSize : CGSize {
-    return hpLabel.sizeThatFits(self.bounds.size)
-  }
-  var goldLabelSize : CGSize {
-    return goldLabel.sizeThatFits(self.bounds.size)
-  }
-  
-  var layoutConstraints : [NSLayoutConstraint] {
-    return computedLayoutConstraints()
-  }
-
-  // MARK: Model
-  private let mainMenuViewModel: MainMenuViewModel
-  
-  // MARK: Delegate
   var mainMenuDelegate: MainMenuDelegate?
   
-  init(mainMenuViewModel: MainMenuViewModel) {
-    innButton = UIButton(type: .system)
-    shopButton = UIButton(type: .system)
-    itemsButton = UIButton(type: .system)
-    battleButton = UIButton(type: .system)
-    hpLabel = UILabel()
-    goldLabel = UILabel()
-    self.mainMenuViewModel = mainMenuViewModel
-
+  // MARK: Subviews
+  private let inn = UIButton(type: .custom)
+  private let shop = UIButton(type: .custom)
+  private let items = UIButton(type: .custom)
+  private let battle = UIButton(type: .custom)
+  private let hp = UILabel()
+  private let gold = UILabel()
+  
+  // MARK: UI Constants
+  private let menuCornerRadius = 6.0
+  private let themeColor = UIColor.cyan
+  private let buttonToStatusSpacing = 100.0
+  private let buttonSpacing = 50.0
+  
+  init() {
     super.init(frame: CGRectZero)
-    self.backgroundColor = .cyan
+    self.backgroundColor = themeColor
 
-    // MARK: Set up subviews
-    innButton.configuration = UIGuidelineButtonConfig(title: "Inn", foregroundColor: themeColor)
-    innButton.layer.cornerRadius = menuButtonCornerRadius
-    innButton.addTarget(self, action: #selector(didTapInnButton), for: .touchUpInside)
+    // MARK: Set Up Subviews
+    inn.layer.cornerRadius = menuCornerRadius
+    shop.layer.cornerRadius = menuCornerRadius
+    items.layer.cornerRadius = menuCornerRadius
+    battle.layer.cornerRadius = menuCornerRadius
     
-    shopButton.configuration = UIGuidelineButtonConfig(title: "Shop", foregroundColor: themeColor)
-    shopButton.layer.cornerRadius = menuButtonCornerRadius
-    shopButton.addTarget(self, action: #selector(didTapShopButton), for: .touchUpInside)
+    inn.addTarget(self, action: #selector(didTapInn), for: .touchUpInside)
+    shop.addTarget(self, action: #selector(didTapShop), for: .touchUpInside)
+    items.addTarget(self, action: #selector(didTapItems), for: .touchUpInside)
+    battle.addTarget(self, action: #selector(didTapBattle), for: .touchUpInside)
     
-    itemsButton.configuration = UIGuidelineButtonConfig(title: "Items", foregroundColor: themeColor)
-    itemsButton.layer.cornerRadius = menuButtonCornerRadius
-    itemsButton.addTarget(self, action: #selector(didTapItemsButton), for: .touchUpInside)
+    addSubview(inn)
+    addSubview(shop)
+    addSubview(items)
+    addSubview(battle)
+    addSubview(hp)
+    addSubview(gold)
+  }
+  
+  func configure(with viewState: MainMenuViewState) {
+    hp.text = viewState.hpText
+    gold.text = viewState.goldText
     
-    battleButton.configuration = UIGuidelineButtonConfig(title: "Battle", foregroundColor: themeColor)
-    battleButton.layer.cornerRadius = menuButtonCornerRadius
-    battleButton.addTarget(self, action: #selector(didTapBattleButton), for: .touchUpInside)
+    clearConstraints()
+    NSLayoutConstraint.activate(computedLayoutConstraints())
+    layoutIfNeeded()
     
-    hpLabel.attributedText = NSAttributedString(string: mainMenuViewModel.playerHealthDisplayText())
-    goldLabel.attributedText = NSAttributedString(string: mainMenuViewModel.playerGoldDisplayText()) // convert to computed var
-    
-    addSubview(self.innButton)
-    addSubview(self.shopButton)
-    addSubview(self.itemsButton)
-    addSubview(self.battleButton)
-    addSubview(self.hpLabel)
-    addSubview(self.goldLabel)
-
-    innButton.translatesAutoresizingMaskIntoConstraints = false
-    shopButton.translatesAutoresizingMaskIntoConstraints = false
-    itemsButton.translatesAutoresizingMaskIntoConstraints = false
-    battleButton.translatesAutoresizingMaskIntoConstraints = false
-    hpLabel.translatesAutoresizingMaskIntoConstraints = false
-    goldLabel.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate(layoutConstraints)
+    inn.configuration = UIGuidelineButtonConfig(title: viewState.innTitle,
+                                                      foregroundColor: themeColor)
+    shop.configuration = UIGuidelineButtonConfig(title: viewState.shopTitle,
+                                                       foregroundColor: themeColor)
+    items.configuration = UIGuidelineButtonConfig(title: viewState.itemsTitle,
+                                                        foregroundColor: themeColor)
+    battle.configuration = UIGuidelineButtonConfig(title: viewState.battleTitle,
+                                                         foregroundColor: themeColor)
   }
   
   func computedLayoutConstraints() -> [NSLayoutConstraint] {
     return [
-      innButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-      innButton.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -200),
-      innButton.widthAnchor.constraint(equalToConstant: menuButtonSize.width),
-      innButton.heightAnchor.constraint(equalToConstant: menuButtonSize.height),
+      inn.centerXAnchor.constraint(equalTo: centerXAnchor),
+      inn.bottomAnchor.constraint(equalTo: shop.topAnchor, constant: -buttonSpacing),
+      inn.widthAnchor.constraint(equalToConstant: UIGuidelineButtonWidth),
+//      inn.heightAnchor.constraint(equalToConstant: inn.computedHeightAnchor),
       
-      shopButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-      shopButton.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -100),
-      shopButton.widthAnchor.constraint(equalToConstant: menuButtonSize.width),
-      shopButton.heightAnchor.constraint(equalToConstant: menuButtonSize.height),
+      shop.centerXAnchor.constraint(equalTo: centerXAnchor),
+      shop.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -buttonSpacing),
+      shop.widthAnchor.constraint(equalToConstant: UIGuidelineButtonWidth),
+//      shop.heightAnchor.constraint(equalToConstant: shop.computedHeightAnchor),
       
-      itemsButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-      itemsButton.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0),
-      itemsButton.widthAnchor.constraint(equalToConstant: menuButtonSize.width),
-      itemsButton.heightAnchor.constraint(equalToConstant: menuButtonSize.height),
+      items.centerXAnchor.constraint(equalTo: centerXAnchor),
+      items.centerYAnchor.constraint(equalTo: centerYAnchor, constant: buttonSpacing),
+      items.widthAnchor.constraint(equalToConstant: UIGuidelineButtonWidth),
+//      items.heightAnchor.constraint(equalToConstant: items.computedHeightAnchor),
       
-      battleButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-      battleButton.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 100),
-      battleButton.widthAnchor.constraint(equalToConstant: menuButtonSize.width),
-      battleButton.heightAnchor.constraint(equalToConstant: menuButtonSize.height),
+      battle.centerXAnchor.constraint(equalTo: centerXAnchor),
+      battle.topAnchor.constraint(equalTo: items.bottomAnchor, constant: buttonSpacing),
+      battle.widthAnchor.constraint(equalToConstant: UIGuidelineButtonWidth),
+//      battle.heightAnchor.constraint(equalToConstant: battle.computedHeightAnchor),
       
-      hpLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: UIGuidelineStatusSide),
-      hpLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -UIGuidelineStatusBottom),
-      hpLabel.widthAnchor.constraint(equalToConstant: hpLabelSize.width),
-      hpLabel.heightAnchor.constraint(equalToConstant: hpLabelSize.height),
+      hp.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIGuidelineStatusSide),
+      hp.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -UIGuidelineStatusBottom),
+      hp.widthAnchor.constraint(equalToConstant: hp.computedWidthAnchor),
+      hp.heightAnchor.constraint(equalToConstant: hp.computedHeightAnchor),
       
-      goldLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: UIGuidelineStatusSide),
-      goldLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -UIGuidelineStatusBottom + 30),
-      goldLabel.widthAnchor.constraint(equalToConstant: goldLabelSize.width),
-      goldLabel.heightAnchor.constraint(equalToConstant: goldLabelSize.height)
+      gold.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: UIGuidelineStatusSide),
+      gold.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -UIGuidelineStatusBottom + 30),
+      gold.widthAnchor.constraint(equalToConstant: gold.computedWidthAnchor),
+      gold.heightAnchor.constraint(equalToConstant: gold.computedHeightAnchor)
     ]
   }
   
-  @objc func didTapInnButton() {
-    mainMenuDelegate?.didTapInnButton()
+  @objc func didTapInn() {
+    mainMenuDelegate?.didTapInn()
   }
   
-  @objc func didTapShopButton() {
-    mainMenuDelegate?.didTapShopButton()
+  @objc func didTapShop() {
+    mainMenuDelegate?.didTapShop()
   }
   
-  @objc func didTapItemsButton() {
-    mainMenuDelegate?.didTapItemsButton()
+  @objc func didTapItems() {
+    mainMenuDelegate?.didTapItems()
   }
   
-  @objc func didTapBattleButton() {
-    mainMenuDelegate?.didTapBattleButton()
-  }
-  
-  func dataDidChange() {
-    setNeedsUpdateProperties()
-  }
-  
-  override func updateProperties() {
-    super.updateProperties()
-    // Reading the properties here automatically tracks them
-    hpLabel.attributedText = NSAttributedString(string: mainMenuViewModel.playerHealthDisplayText())
-    goldLabel.attributedText = NSAttributedString(string: mainMenuViewModel.playerGoldDisplayText())
-    
-    clearConstraints()
-    NSLayoutConstraint.activate(layoutConstraints)
+  @objc func didTapBattle() {
+    mainMenuDelegate?.didTapBattle()
   }
   
   required init?(coder: NSCoder) {

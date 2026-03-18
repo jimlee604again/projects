@@ -7,120 +7,117 @@
 
 import UIKit
 
-protocol BattleViewDelegate {
+protocol BattleViewDelegate: AnyObject {
   func didTapExit()
   func didTapBattle()
 }
 
-class BattleView : UIView {
-  private let title : UILabel = {
-    let title = UILabel()
-    title.font = UIGuidelineTitleFont
-    title.textAlignment = .center
-    return title
-  }()
-  private let outcomeExplanation : UILabel = {
-    let outcomeExplanation = UILabel()
-//    outcomeExplanation.font = UIGuidelineBodyFont
-    outcomeExplanation.textAlignment = .center
-    return outcomeExplanation
-  }()
-  private let battleButton: UIButton = {
-    let battleButton = UIButton()
-    // make changes here
-    return battleButton
-  }()
-  private let exitButton = UIButton(type: .close)
+final class BattleView: UIView {
+  weak var delegate: BattleViewDelegate?
   
-  private let hpLabel = UILabel()
-  private let goldLabel = UILabel()
-  var delegate: BattleViewDelegate?
+  // MARK: - Subviews
+  private let title: UILabel = {
+    let label = UILabel()
+    label.font = UIGuidelineTitleFont
+    label.textAlignment = .center
+    label.translatesAutoresizingMaskIntoConstraints = false
+    return label
+  }()
+  
+  private let outcomeExplanation: UILabel = {
+    let label = UILabel()
+    label.textAlignment = .center
+    label.numberOfLines = 0
+    label.translatesAutoresizingMaskIntoConstraints = false
+    return label
+  }()
+  
+  private let battle: UIButton = {
+    let button = UIButton(type: .system)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    return button
+  }()
+  
+  private let exit: UIButton = {
+    let button = UIButton(type: .close)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    return button
+  }()
+  
+  private let hpLabel: UILabel = {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    return label
+  }()
+  
+  private let goldLabel: UILabel = {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    return label
+  }()
   
   private let themeColor: UIColor = .red
   
-  init() {
-    super.init(frame: CGRectZero)
-
-    self.backgroundColor = themeColor
-    battleButton.addTarget(self, action: #selector(didTapBattle), for: .touchUpInside)
-    exitButton.addTarget(self, action:  #selector(didTapExit), for: .touchUpInside)
-
-    self.addSubview(title)
-    self.addSubview(outcomeExplanation)
-    self.addSubview(battleButton)
-    self.addSubview(hpLabel)
-    self.addSubview(goldLabel)
-    self.addSubview(exitButton)
-
-    title.translatesAutoresizingMaskIntoConstraints = false
-    outcomeExplanation.translatesAutoresizingMaskIntoConstraints = false
-    battleButton.translatesAutoresizingMaskIntoConstraints = false
-    hpLabel.translatesAutoresizingMaskIntoConstraints = false
-    goldLabel.translatesAutoresizingMaskIntoConstraints = false
-    exitButton.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate(computedConstraints())
-  }
-
-  @objc
-  func didTapBattle() {
-    delegate?.didTapBattle()
-  }
-  
-  @objc
-  func didTapExit() {
-    delegate?.didTapExit()
-  }
-  
-  func configure(_ battleViewState: BattleViewState) {
-    title.text = battleViewState.titleText
-    outcomeExplanation.text = battleViewState.outcomeExplanationText
-    battleButton.configuration = UIGuidelineButtonConfig(title: battleViewState.battleButtonText, foregroundColor: themeColor)
-    hpLabel.text = battleViewState.hpLabelText
-    hpLabel.sizeToFit()
-    goldLabel.text = battleViewState.goldLabelText
-    goldLabel.sizeToFit()
+  // MARK: - Init
+  override init(frame: CGRect) {
+    super.init(frame: frame)
     
-    clearConstraints()
-    NSLayoutConstraint.activate(computedConstraints())
-  }
-  
-  func computedConstraints() -> [NSLayoutConstraint] {
-    return [
-      title.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-      title.topAnchor.constraint(equalTo: self.topAnchor, constant: UIGuidelineTitleTopInset),
-      title.widthAnchor.constraint(equalToConstant: title.computedWidthAnchor),
-      title.heightAnchor.constraint(equalToConstant: title.computedHeightAnchor),
+    backgroundColor = themeColor
+    
+    battle.addTarget(self, action: #selector(didTapBattle), for: .touchUpInside)
+    exit.addTarget(self, action: #selector(didTapExit), for: .touchUpInside)
+    
+    addSubview(title)
+    addSubview(outcomeExplanation)
+    addSubview(battle)
+    addSubview(hpLabel)
+    addSubview(goldLabel)
+    addSubview(exit)
+    
+    NSLayoutConstraint.activate([
+      title.centerXAnchor.constraint(equalTo: centerXAnchor),
+      title.topAnchor.constraint(equalTo: topAnchor, constant: UIGuidelineTitleTopInset),
       
-      outcomeExplanation.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+      outcomeExplanation.centerXAnchor.constraint(equalTo: centerXAnchor),
       outcomeExplanation.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 20),
-      outcomeExplanation.widthAnchor.constraint(equalToConstant: outcomeExplanation.computedWidthAnchor),
-      outcomeExplanation.heightAnchor.constraint(equalToConstant: outcomeExplanation.computedHeightAnchor),
+      outcomeExplanation.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 24),
+      outcomeExplanation.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -24),
       
-      // make this a stack for HP and Gold
-      hpLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: UIGuidelineStatusSide),
-      hpLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -UIGuidelineStatusBottom),
-      hpLabel.widthAnchor.constraint(equalToConstant: hpLabel.computedWidthAnchor),
-      hpLabel.heightAnchor.constraint(equalToConstant: hpLabel.computedHeightAnchor),
-
-      goldLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: UIGuidelineStatusSide),
-      goldLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -UIGuidelineStatusBottom + 30),
-      goldLabel.widthAnchor.constraint(equalToConstant: goldLabel.computedWidthAnchor),
-      goldLabel.heightAnchor.constraint(equalToConstant: goldLabel.computedHeightAnchor),
+      hpLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIGuidelineStatusSide),
+      hpLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -UIGuidelineStatusBottom),
       
-      battleButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-      battleButton.bottomAnchor.constraint(equalTo: self.hpLabel.topAnchor, constant: -50),
-      battleButton.widthAnchor.constraint(equalToConstant: UIGuidelineButtonWidth),
-      battleButton.heightAnchor.constraint(equalToConstant: battleButton.computedHeightAnchor),
-
-      exitButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIGuidelineExitLeading),
-      exitButton.topAnchor.constraint(equalTo: topAnchor, constant: UIGuidelineExitTop),
-      exitButton.widthAnchor.constraint(equalToConstant: exitButton.computedWidthAnchor),
-      exitButton.heightAnchor.constraint(equalToConstant: exitButton.computedHeightAnchor)
-    ]
+      goldLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIGuidelineStatusSide),
+      goldLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -UIGuidelineStatusBottom + 30),
+      
+      battle.centerXAnchor.constraint(equalTo: centerXAnchor),
+      battle.bottomAnchor.constraint(equalTo: hpLabel.topAnchor, constant: -50),
+      battle.widthAnchor.constraint(equalToConstant: UIGuidelineButtonWidth),
+      
+      exit.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIGuidelineExitLeading),
+      exit.topAnchor.constraint(equalTo: topAnchor, constant: UIGuidelineExitTop)
+    ])
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
   
+  func configure(_ state: BattleViewState) {
+    title.text = state.titleText
+    outcomeExplanation.text = state.outcomeExplanationText
+    hpLabel.text = state.hpLabelText
+    goldLabel.text = state.goldLabelText
+    battle.configuration = UIGuidelineButtonConfig(
+      title: state.battleButtonText,
+      foregroundColor: themeColor
+    )
+  }
+  
+  @objc private func didTapBattle() {
+    delegate?.didTapBattle()
+  }
+  
+  @objc private func didTapExit() {
+    delegate?.didTapExit()
+  }
 }

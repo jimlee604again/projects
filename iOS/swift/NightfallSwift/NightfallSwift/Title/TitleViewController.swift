@@ -14,19 +14,25 @@ class TitleViewController: UIViewController, StartButtonDelegate {
   
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    let titleView = TitleView()
-    self.view = titleView
-    titleView.startButtonDelegate = self
-    titleView.configure(with: titleViewModel.viewState)
+//    titleView.configure(with: titleViewModel.viewState)
   }
 
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
   
+  override func loadView() {
+    let titleView = TitleView()
+    titleView.startButtonDelegate = self
+    view = titleView
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view.
+    if let titleView = self.view as? TitleView {
+      titleView.configure(with: titleViewModel.viewState)
+    }
   }
 
   func didTapStart() {

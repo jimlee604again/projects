@@ -25,6 +25,7 @@ extension UIView {
   func clearConstraints() {
     for subview in self.subviews {
       subview.clearConstraints()
+      subview.translatesAutoresizingMaskIntoConstraints = false
     }
     self.removeConstraints(self.constraints)
   }

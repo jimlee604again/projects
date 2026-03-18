@@ -14,61 +14,56 @@ class MainMenuViewController: UIViewController, MainMenuDelegate {
   init(mainMenuViewModel: MainMenuViewModel) {
     self.mainMenuViewModel = mainMenuViewModel
     super.init(nibName: nil, bundle: nil)
-    let mainMenuView = MainMenuView(mainMenuViewModel: mainMenuViewModel)
-    mainMenuView.mainMenuDelegate = self
-    self.view = mainMenuView
   }
 
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
   
+  override func loadView() {
+    let mainMenuView = MainMenuView()
+    mainMenuView.mainMenuDelegate = self
+    mainMenuViewModel.onDidChange = { [weak mainMenuView] viewState in
+      mainMenuView?.configure(with: viewState)
+    }
+    self.view = mainMenuView
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view.
-  }
-  
-  override func viewDidAppear(_ animated: Bool) {
-    updateMainMenuViewData()
+    if let mainMenuView = self.view as? MainMenuView {
+      mainMenuView.configure(with: mainMenuViewModel.viewState)
+    }
   }
 
-  func didTapInnButton() {
+  func didTapInn() {
     let innViewModel = mainMenuViewModel.makeInnViewModel()
     let innVC = InnViewController(innViewModel: innViewModel)
     innVC.modalPresentationStyle = .fullScreen
     present(innVC, animated: false, completion: nil)
   }
   
-  func didTapShopButton() {
+  func didTapShop() {
     let shopViewModel = mainMenuViewModel.makeShopViewModel()
     let shopVC = ShopViewController(shopViewModel: shopViewModel)
     shopVC.modalPresentationStyle = .fullScreen
     present(shopVC, animated: false, completion: nil)
   }
   
-  func didTapItemsButton() {
+  func didTapItems() {
     let itemsViewModel = mainMenuViewModel.makeItemsViewModel()
     let itemsVC = ItemsViewController(itemsViewModel: itemsViewModel)
     itemsVC.modalPresentationStyle = .fullScreen
     present(itemsVC, animated: false, completion: nil)
   }
-  
-  // MARK: TODO: do actual function
-  func didTapBattleButton() {
-//    mainMenuViewModel.completeBattle()
-//    updateMainMenuViewData()
+
+  func didTapBattle() {
     let battleViewModel = mainMenuViewModel.makeBattleViewModel()
     let battleVC = BattleViewController(battleViewModel: battleViewModel)
     battleVC.modalPresentationStyle = .fullScreen
     present(battleVC, animated: false, completion: nil)
   }
-  
-  func updateMainMenuViewData() {
-    if let mainMenuView = self.view as? MainMenuView {
-        // Access MyCustomView properties
-      mainMenuView.dataDidChange()
-    }
-  }
-  
+
 }
 

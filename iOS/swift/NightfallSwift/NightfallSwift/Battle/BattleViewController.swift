@@ -13,17 +13,26 @@ class BattleViewController: UIViewController, BattleViewDelegate {
   init(battleViewModel: BattleViewModel) {
     self.battleViewModel = battleViewModel
     super.init(nibName: nil, bundle: nil)
-    let battleView = BattleView()
-    self.view = battleView
-    self.battleViewModel.onStateChange = { [weak battleView] state in
-      battleView?.configure(state)
-    }
-    battleView.delegate = self
-    battleView.configure(battleViewModel.viewState)
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+  override func loadView() {
+    let battleView = BattleView()
+    self.battleViewModel.onStateChange = { [weak battleView] state in
+      battleView?.configure(state)
+    }
+    battleView.delegate = self
+    view = battleView
+  }
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    if let battleView = self.view as? BattleView {
+      battleView.configure(battleViewModel.viewState)
+    }
   }
   
   func didTapBattle() {
