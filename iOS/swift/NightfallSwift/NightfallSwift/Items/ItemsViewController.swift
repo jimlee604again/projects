@@ -33,6 +33,7 @@ class ItemsViewController: UIViewController, ItemsViewDelegate {
       presentSimpleAlert(title: itemsViewModel.usedPotionAlertTitle, message: itemsViewModel.usedPotionAlertMessage)
       break
     case .noneLeft:
+      presentSimpleAlert(title: itemsViewModel.noPotionsLeftAlertTitle, message: nil)
       break
     }
   }

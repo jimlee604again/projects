@@ -28,7 +28,7 @@ struct InnViewState {
   }
 }
 
-struct InnViewModel {
+class InnViewModel {
   // MARK: Data In
   private let gameState: GameState
   private(set) var viewState: InnViewState {
@@ -56,6 +56,9 @@ struct InnViewModel {
 
   func attemptStay() -> StayResult {
     if gameState.stayAtInn(cost: innParameters.stayCost, recoverAmount: innParameters.recoverAmount) {
+      self.viewState = InnViewState(innParameters,
+                               hp: gameState.player.hp,
+                               gold: gameState.player.gold)
       return .success
     }
     return .insufficientFunds

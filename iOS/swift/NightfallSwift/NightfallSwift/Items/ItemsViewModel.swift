@@ -55,7 +55,8 @@ class ItemsViewModel {
                                     gold: gameState.player.gold)
   }
 
-  let usedPotionAlertTitle: String = "Potion Used"
+  let usedPotionAlertTitle = "Potion Used"
+  let noPotionsLeftAlertTitle = "No Potions Left"
   var usedPotionAlertMessage: String {
     "You restored \(itemsParameters.potionHealAmount) HP!"
   }
