@@ -25,12 +25,42 @@ class MainMenuView : UIView {
     label.translatesAutoresizingMaskIntoConstraints = false
     return label
   }()
-  private let inn = UIButton(type: .custom)
-  private let shop = UIButton(type: .custom)
-  private let items = UIButton(type: .custom)
-  private let battle = UIButton(type: .custom)
-  private let hp = UILabel()
-  private let gold = UILabel()
+
+  private let inn: UIButton = {
+    let button = UIButton(type: .custom)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    return button
+  }()
+  
+  private let shop: UIButton = {
+    let button = UIButton(type: .custom)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    return button
+  }()
+  
+  private let items: UIButton = {
+    let button = UIButton(type: .custom)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    return button
+  }()
+  
+  private let battle: UIButton = {
+    let button = UIButton(type: .custom)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    return button
+  }()
+  
+  private let hp: UILabel = {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    return label
+  }()
+  
+  private let gold: UILabel = {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    return label
+  }()
   
   // MARK: UI Constants
   private let menuCornerRadius = 6.0
@@ -56,32 +86,7 @@ class MainMenuView : UIView {
     addSubview(hp)
     addSubview(gold)
 
-    inn.translatesAutoresizingMaskIntoConstraints = false
-    shop.translatesAutoresizingMaskIntoConstraints = false
-    items.translatesAutoresizingMaskIntoConstraints = false
-    battle.translatesAutoresizingMaskIntoConstraints = false
-    hp.translatesAutoresizingMaskIntoConstraints = false
-    gold.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate(computedLayoutConstraints())
-  }
-  
-  func configure(with viewState: MainMenuViewState) {
-    title.text = viewState.title
-    hp.text = viewState.hpText
-    gold.text = viewState.goldText
-    
-    inn.configuration = UIGuidelineButtonConfig(title: viewState.innTitle,
-                                                      foregroundColor: themeColor)
-    shop.configuration = UIGuidelineButtonConfig(title: viewState.shopTitle,
-                                                       foregroundColor: themeColor)
-    items.configuration = UIGuidelineButtonConfig(title: viewState.itemsTitle,
-                                                        foregroundColor: themeColor)
-    battle.configuration = UIGuidelineButtonConfig(title: viewState.battleTitle,
-                                                         foregroundColor: themeColor)
-  }
-  
-  func computedLayoutConstraints() -> [NSLayoutConstraint] {
-    return [
+    NSLayoutConstraint.activate([
       title.centerXAnchor.constraint(equalTo: centerXAnchor),
       title.topAnchor.constraint(equalTo: topAnchor, constant: UIGuidelineTitleTopInset),
       
@@ -106,7 +111,22 @@ class MainMenuView : UIView {
       
       gold.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIGuidelineStatusSide),
       gold.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -UIGuidelineStatusBottom + 30)
-    ]
+    ])
+  }
+  
+  func configure(with viewState: MainMenuViewState) {
+    title.text = viewState.title
+    hp.text = viewState.hpText
+    gold.text = viewState.goldText
+    
+    inn.configuration = UIGuidelineButtonConfig(title: viewState.innTitle,
+                                                      foregroundColor: themeColor)
+    shop.configuration = UIGuidelineButtonConfig(title: viewState.shopTitle,
+                                                       foregroundColor: themeColor)
+    items.configuration = UIGuidelineButtonConfig(title: viewState.itemsTitle,
+                                                        foregroundColor: themeColor)
+    battle.configuration = UIGuidelineButtonConfig(title: viewState.battleTitle,
+                                                         foregroundColor: themeColor)
   }
   
   @objc func didTapInn() {
