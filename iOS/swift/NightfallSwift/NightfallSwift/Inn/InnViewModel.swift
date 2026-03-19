@@ -9,13 +9,18 @@ import Foundation
 
 enum StayResult { case success, insufficientFunds }
 
+struct InnParameters {
+  let stayCost: Int32 = 2
+  let recoverAmount: Int32 = 10
+}
+
 struct InnViewState {
   let title = "Inn"
   let outcomeExplanation: String
   let stayButtonText = "Stay"
   
-  init(stayCost : Int32, recoverAmount : Int32) {
-    outcomeExplanation = "You will pay \(stayCost) gold to recover \(recoverAmount) HP."
+  init(_ parameters: InnParameters) {
+    outcomeExplanation = "You will pay \(parameters.stayCost) gold to recover \(parameters.recoverAmount) HP."
   }
 }
 
@@ -25,12 +30,9 @@ struct InnViewModel {
   private(set) var viewState: InnViewState {
       didSet { onStateChange?(viewState) }
   }
+  private let innParameters = InnParameters()
 
   var onStateChange: ((InnViewState) -> Void)?
-  
-  // MARK: Logic Values
-  private let stayCost : Int32 = 2
-  private let recoverAmount : Int32 = 10
   
   // MARK: Content
   let titleText = "Inn"
@@ -42,12 +44,12 @@ struct InnViewModel {
   
   init(gameState: GameState) {
     self.gameState = gameState
-    self.viewState = InnViewState(stayCost: stayCost, recoverAmount: recoverAmount)
-    self.staySuccessMessage = "You feel rested. Gained \(recoverAmount) HP."
+    self.viewState = InnViewState(innParameters)
+    self.staySuccessMessage = "You feel rested. Gained \(innParameters.recoverAmount) HP."
   }
 
   func attemptStay() -> StayResult {
-    if gameState.stayAtInn(cost: stayCost, recoverAmount: recoverAmount) {
+    if gameState.stayAtInn(cost: innParameters.stayCost, recoverAmount: innParameters.recoverAmount) {
       return .success
     }
     return .insufficientFunds

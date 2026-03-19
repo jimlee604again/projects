@@ -23,11 +23,7 @@ class TitleView : UIView {
     return label
   }()
 
-  private let start: UIButton = {
-    let button = UIButton(type: .custom)
-    button.translatesAutoresizingMaskIntoConstraints = false
-    return button
-  }()
+  private let start = UIGuidelineButtonTemplate()
   
   // MARK: Spacing Constants
   private let titleVerticalOffset: CGFloat = -200

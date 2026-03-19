@@ -13,13 +13,23 @@ class InnViewController: UIViewController, InnViewDelegate {
   init(innViewModel: InnViewModel) {
     self.innViewModel = innViewModel
     super.init(nibName: nil, bundle: nil)
+  }
+  
+  override func loadView() {
     let innView = InnView()
-    self.view = innView
     self.innViewModel.onStateChange = { [weak innView] state in
         innView?.configureWith(state)
     }
-    innView.configureWith(innViewModel.viewState)
     innView.innViewDelegate = self
+    view = innView
+  }
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    // Do any additional setup after loading the view.
+    if let innView = self.view as? InnView {
+      innView.configureWith(innViewModel.viewState)
+    }
   }
 
   func didTapStay() {
@@ -39,11 +49,6 @@ class InnViewController: UIViewController, InnViewDelegate {
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
-  }
-  
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    // Do any additional setup after loading the view.
   }
 
 }

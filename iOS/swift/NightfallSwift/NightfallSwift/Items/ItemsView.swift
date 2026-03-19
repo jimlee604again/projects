@@ -14,26 +14,18 @@ protocol ItemsViewDelegate {
 
 class ItemsView : UIView {
   var itemsViewDelegate: ItemsViewDelegate?
-
+  private let themeColor = UIColor.green
+  
   // MARK: Subviews
-  private let title = UILabel()
-  private let pageDescription = UILabel()
-  private let potionsCount = UILabel()
-  private let crownsCount = UILabel()
+  private let title = UIGuidelineTitleTemplate()
+  private let pageDescription = UIGuidelineLabelTemplate()
+  private let potionsCount = UIGuidelineLabelTemplate()
+  private let crownsCount = UIGuidelineLabelTemplate()
   
   // add hp and gold amount
   
-  private let exit = UIButton(type: .close)
-  private let usePotion = UIButton(type: .custom)
-  var potionsCountSize : CGSize {
-    potionsCount.sizeThatFits(self.bounds.size)
-  }
-  var crownsCountSize : CGSize {
-    crownsCount.sizeThatFits(self.bounds.size)
-  }
-  
-  // MARK: UI
-  private let themeColor = UIColor.green
+  private let exit = UIGuidelineButtonTemplate(.close)
+  private let usePotion = UIGuidelineButtonTemplate()
   
   init() {
     super.init(frame: CGRectZero)
@@ -50,44 +42,23 @@ class ItemsView : UIView {
     addSubview(potionsCount)
     addSubview(crownsCount)
     addSubview(exit)
-    
-    // MARK: layout subviews
-    title.translatesAutoresizingMaskIntoConstraints = false
-    usePotion.translatesAutoresizingMaskIntoConstraints = false
-    potionsCount.translatesAutoresizingMaskIntoConstraints = false
-    crownsCount.translatesAutoresizingMaskIntoConstraints = false
-    exit.translatesAutoresizingMaskIntoConstraints = false
-    
-    NSLayoutConstraint.activate(computedConstraints())
-  }
-  
-  func computedConstraints () -> [NSLayoutConstraint] {
-    return [
+
+    NSLayoutConstraint.activate([
       title.centerXAnchor.constraint(equalTo: centerXAnchor),
       title.topAnchor.constraint(equalTo: topAnchor, constant: 100),
-      title.widthAnchor.constraint(equalToConstant: title.computedWidthAnchor),
-      title.heightAnchor.constraint(equalToConstant: title.computedHeightAnchor),
       
       potionsCount.centerXAnchor.constraint(equalTo: centerXAnchor),
       potionsCount.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -140),
-      potionsCount.widthAnchor.constraint(equalToConstant: potionsCount.computedWidthAnchor),
-      potionsCount.heightAnchor.constraint(equalToConstant: potionsCount.computedHeightAnchor),
       
       crownsCount.centerXAnchor.constraint(equalTo: centerXAnchor),
       crownsCount.topAnchor.constraint(equalTo: potionsCount.bottomAnchor, constant: 10),
-      crownsCount.widthAnchor.constraint(equalToConstant: crownsCount.computedWidthAnchor),
-      crownsCount.heightAnchor.constraint(equalToConstant: crownsCount.computedHeightAnchor),
       
       exit.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIGuidelineExitLeading),
       exit.topAnchor.constraint(equalTo: topAnchor, constant: UIGuidelineExitTop),
-      exit.widthAnchor.constraint(equalToConstant: exit.computedWidthAnchor),
-      exit.heightAnchor.constraint(equalToConstant: exit.computedHeightAnchor),
-
+      
       usePotion.centerXAnchor.constraint(equalTo: centerXAnchor),
       usePotion.bottomAnchor.constraint(equalTo: potionsCount.topAnchor, constant: -20),
-      usePotion.widthAnchor.constraint(equalToConstant: usePotion.computedWidthAnchor),
-      usePotion.heightAnchor.constraint(equalToConstant: usePotion.computedHeightAnchor)
-    ]
+    ])
   }
   
   func configure(with viewState: ItemsViewState) {
@@ -96,9 +67,6 @@ class ItemsView : UIView {
     potionsCount.text = viewState.potionAmountText
     crownsCount.text = viewState.crownAmountText
     usePotion.configuration = UIGuidelineButtonConfig(title: viewState.usePotionText, foregroundColor: themeColor)
-    
-    clearConstraints()
-    NSLayoutConstraint.activate(computedConstraints())
   }
 
   @objc func didTapExit() {

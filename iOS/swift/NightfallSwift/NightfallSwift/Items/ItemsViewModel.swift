@@ -9,6 +9,10 @@ import Foundation
 
 enum UseItemResult { case used, noneLeft }
 
+struct ItemsParameters {
+  let potionHealAmount: Int32 = 5
+}
+
 struct ItemsViewState {
   let usePotionText = "Use Potion"
   let title = "Items"
@@ -17,9 +21,9 @@ struct ItemsViewState {
   let potionAmountText: String
   let crownAmountText: String
   
-  init(potionHealAmount: Int32, potionAmount: Int32, crownAmount: Int32) {
-    self.potionHealAmount = potionHealAmount
-    self.pageDescription = "Potions will heal you \(potionHealAmount) HP."
+  init(parameters: ItemsParameters, potionAmount: Int32, crownAmount: Int32) {
+    self.potionHealAmount = parameters.potionHealAmount
+    self.pageDescription = "Potions will heal you \(parameters.potionHealAmount) HP."
     self.potionAmountText = "Potions: \(potionAmount)"
     self.crownAmountText = "Crowns: \(crownAmount)"
   }
@@ -30,34 +34,25 @@ class ItemsViewModel {
   private(set) var viewState : ItemsViewState {
     didSet { onStateChange?(viewState) }
   }
-  
-  let potionHealAmount: Int32 = 5
+  private let itemsParameters = ItemsParameters()
   
   var onStateChange: ((ItemsViewState) -> Void)?
-  
-  // MARK: Text
-  var potionsCountText : String {
-    "Potions: \(gameState.player.potionCount)"
-  }
-  var crownsCountText : String {
-    "Crowns: \(gameState.player.crownCount)"
-  }
 
   init (gameState: GameState) {
     self.gameState = gameState
-    self.viewState = ItemsViewState(potionHealAmount: potionHealAmount,
+    self.viewState = ItemsViewState(parameters: itemsParameters,
                                     potionAmount: gameState.player.potionCount,
                                     crownAmount: gameState.player.crownCount)
   }
   
   let usedPotionAlertTitle: String = "Potion Used"
   var usedPotionAlertMessage: String {
-    "You restored \(potionHealAmount) HP!"
+    "You restored \(itemsParameters.potionHealAmount) HP!"
   }
 
   func attemptUsePotion() -> UseItemResult {
-    if gameState.usePotion(healAmount: potionHealAmount) {
-      viewState = ItemsViewState(potionHealAmount: potionHealAmount,
+    if gameState.usePotion(healAmount: itemsParameters.potionHealAmount) {
+      viewState = ItemsViewState(parameters: itemsParameters,
                                  potionAmount: gameState.player.potionCount,
                                  crownAmount: gameState.player.crownCount)
       return .used

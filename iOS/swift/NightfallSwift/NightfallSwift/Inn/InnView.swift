@@ -14,15 +14,13 @@ protocol InnViewDelegate {
 
 class InnView : UIView {
   var innViewDelegate: InnViewDelegate?
+  private let themeColor = UIColor.systemPink
 
   // MARK: Subviews
-  private let title = UILabel()
-  private let outcomeExplanation = UILabel()
-  private let stayButton = UIButton(type: .system)
-  private let exitButton = UIButton(type: .close)
-
-  // MARK: UI
-  private let themeColor = UIColor.systemPink
+  private let title = UIGuidelineTitleTemplate()
+  private let outcomeExplanation = UIGuidelineLabelTemplate()
+  private let stayButton  = UIGuidelineButtonTemplate()
+  private let exitButton = UIGuidelineButtonTemplate(.close)
 
   init() {
     super.init(frame: CGRectZero)
@@ -30,7 +28,6 @@ class InnView : UIView {
     self.backgroundColor = themeColor
 
     // MARK: set up subviews
-    title.font = UIGuidelineTitleFont
     stayButton.configuration = UIGuidelineButtonConfig(title:"", foregroundColor: themeColor)
     stayButton.addTarget(self, action: #selector(didTapStay), for: .touchUpInside)
     exitButton.addTarget(self, action: #selector(didTapExit), for: .touchUpInside)
@@ -40,17 +37,7 @@ class InnView : UIView {
     addSubview(stayButton)
     addSubview(exitButton)
 
-    // MARK: Layout Subviews
-    title.translatesAutoresizingMaskIntoConstraints = false
-    outcomeExplanation.translatesAutoresizingMaskIntoConstraints = false
-    stayButton.translatesAutoresizingMaskIntoConstraints = false
-    exitButton.translatesAutoresizingMaskIntoConstraints = false
-
-    NSLayoutConstraint.activate(computeLayoutConstraints())
-  }
-  
-  func computeLayoutConstraints() -> [NSLayoutConstraint] {
-    return [
+    NSLayoutConstraint.activate([
       title.centerXAnchor.constraint(equalTo: centerXAnchor),
       title.topAnchor.constraint(equalTo: topAnchor, constant: UIGuidelineTitleTopInset),
       
@@ -63,7 +50,7 @@ class InnView : UIView {
 
       exitButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIGuidelineExitLeading),
       exitButton.topAnchor.constraint(equalTo: topAnchor, constant: UIGuidelineExitTop)
-    ]
+    ])
   }
 
   func configureWith(_ viewState: InnViewState) {

@@ -18,52 +18,15 @@ class MainMenuView : UIView {
   var mainMenuDelegate: MainMenuDelegate?
   
   // MARK: - Subviews
-  private let title: UILabel = {
-    let label = UILabel()
-    label.font = UIGuidelineTitleFont
-    label.textAlignment = .center
-    label.translatesAutoresizingMaskIntoConstraints = false
-    return label
-  }()
-
-  private let inn: UIButton = {
-    let button = UIButton(type: .custom)
-    button.translatesAutoresizingMaskIntoConstraints = false
-    return button
-  }()
-  
-  private let shop: UIButton = {
-    let button = UIButton(type: .custom)
-    button.translatesAutoresizingMaskIntoConstraints = false
-    return button
-  }()
-  
-  private let items: UIButton = {
-    let button = UIButton(type: .custom)
-    button.translatesAutoresizingMaskIntoConstraints = false
-    return button
-  }()
-  
-  private let battle: UIButton = {
-    let button = UIButton(type: .custom)
-    button.translatesAutoresizingMaskIntoConstraints = false
-    return button
-  }()
-  
-  private let hp: UILabel = {
-    let label = UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
-    return label
-  }()
-  
-  private let gold: UILabel = {
-    let label = UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
-    return label
-  }()
+  private let title = UIGuidelineTitleTemplate()
+  private let inn = UIGuidelineButtonTemplate()
+  private let shop = UIGuidelineButtonTemplate()
+  private let items = UIGuidelineButtonTemplate()
+  private let battle = UIGuidelineButtonTemplate()
+  private let hp = UIGuidelineLabelTemplate()
+  private let gold = UIGuidelineLabelTemplate()
   
   // MARK: UI Constants
-  private let menuCornerRadius = 6.0
   private let themeColor = UIColor.cyan
   private let buttonToStatusSpacing = 100.0
   private let buttonSpacing = 50.0

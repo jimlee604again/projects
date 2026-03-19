@@ -14,49 +14,15 @@ protocol BattleViewDelegate: AnyObject {
 
 final class BattleView: UIView {
   weak var delegate: BattleViewDelegate?
+  private let themeColor: UIColor = .red
   
   // MARK: - Subviews
-  private let title: UILabel = {
-    let label = UILabel()
-    label.font = UIGuidelineTitleFont
-    label.textAlignment = .center
-    label.translatesAutoresizingMaskIntoConstraints = false
-    return label
-  }()
-  
-  private let outcomeExplanation: UILabel = {
-    let label = UILabel()
-    label.textAlignment = .center
-    label.numberOfLines = 0
-    label.translatesAutoresizingMaskIntoConstraints = false
-    return label
-  }()
-  
-  private let battle: UIButton = {
-    let button = UIButton(type: .custom)
-    button.translatesAutoresizingMaskIntoConstraints = false
-    return button
-  }()
-  
-  private let exit: UIButton = {
-    let button = UIButton(type: .close)
-    button.translatesAutoresizingMaskIntoConstraints = false
-    return button
-  }()
-  
-  private let hpLabel: UILabel = {
-    let label = UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
-    return label
-  }()
-  
-  private let goldLabel: UILabel = {
-    let label = UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
-    return label
-  }()
-  
-  private let themeColor: UIColor = .red
+  private let title = UIGuidelineTitleTemplate()
+  private let outcomeExplanation = UIGuidelineLabelTemplate()
+  private let battle = UIGuidelineButtonTemplate()
+  private let exit = UIGuidelineButtonTemplate(.close)
+  private let hpLabel = UIGuidelineLabelTemplate()
+  private let goldLabel = UIGuidelineLabelTemplate()
   
   // MARK: - Init
   override init(frame: CGRect) {
