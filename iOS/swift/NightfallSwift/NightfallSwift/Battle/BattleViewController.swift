@@ -42,7 +42,7 @@ class BattleViewController: UIViewController, BattleViewDelegate {
       alert.addAction(UIAlertAction(title: UIGuidelineAlertConfirm, style: .default))
       present(alert, animated: false)
     case .winBattle:
-      let alert = UIAlertController(title: "You Win", message: nil, preferredStyle: .alert)
+      let alert = UIAlertController(title: "You win the battle!", message: nil, preferredStyle: .alert)
       alert.addAction(UIAlertAction(title: UIGuidelineAlertConfirm, style: .default))
       present(alert, animated: false)
     }

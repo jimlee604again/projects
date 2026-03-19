@@ -19,10 +19,15 @@ class TitleView : UIView {
     let label = UILabel()
     label.textColor = .white
     label.font = UIFont.boldSystemFont(ofSize: 40.0)
+    let.translatesAutoresizingMaskIntoConstraints = false
     return label
   }()
 
-  private let start = UIButton(type: .custom)
+  private let start: UIButton = {
+    let button = UIButton(type: .custom)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    return button
+  }
   
   // MARK: Spacing Constants
   private let titleVerticalOffset: CGFloat = -200
@@ -36,14 +41,8 @@ class TitleView : UIView {
     
     addSubview(title)
     addSubview(start)
-    
-    title.translatesAutoresizingMaskIntoConstraints = false
-    start.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate(computedConstraints())
-  }
-  
-  func computedConstraints() -> [NSLayoutConstraint] {
-    return [
+
+    NSLayoutConstraint.activate([
       title.centerXAnchor.constraint(equalTo: centerXAnchor),
       title.centerYAnchor.constraint(equalTo: centerYAnchor,
                                      constant: titleVerticalOffset),
@@ -52,9 +51,9 @@ class TitleView : UIView {
       start.centerYAnchor.constraint(equalTo: centerYAnchor,
                                      constant: startButtonVerticalOffset),
       start.widthAnchor.constraint(equalToConstant: UIGuidelineButtonWidth),
-    ]
+    ])
   }
-  
+
   func startButtonConfig(title: String) -> UIButton.Configuration {
     var config = UIButton.Configuration.filled()
     var attributedString = AttributedString(title)

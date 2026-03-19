@@ -33,7 +33,7 @@ final class BattleView: UIView {
   }()
   
   private let battle: UIButton = {
-    let button = UIButton(type: .system)
+    let button = UIButton(type: .custom)
     button.translatesAutoresizingMaskIntoConstraints = false
     return button
   }()
