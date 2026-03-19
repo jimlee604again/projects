@@ -10,7 +10,7 @@ import UIKit
 class MainMenuViewController: UIViewController, MainMenuDelegate {
 
   let mainMenuViewModel: MainMenuViewModel
-  
+
   init(mainMenuViewModel: MainMenuViewModel) {
     self.mainMenuViewModel = mainMenuViewModel
     super.init(nibName: nil, bundle: nil)
@@ -19,7 +19,7 @@ class MainMenuViewController: UIViewController, MainMenuDelegate {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   override func loadView() {
     let mainMenuView = MainMenuView()
     mainMenuView.mainMenuDelegate = self
@@ -28,7 +28,7 @@ class MainMenuViewController: UIViewController, MainMenuDelegate {
     }
     self.view = mainMenuView
   }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view.
@@ -42,13 +42,13 @@ class MainMenuViewController: UIViewController, MainMenuDelegate {
     innVC.modalPresentationStyle = .fullScreen
     present(innVC, animated: false, completion: nil)
   }
-  
+
   func didTapShop() {
     let shopVC = ShopViewController(shopViewModel: mainMenuViewModel.makeShopViewModel())
     shopVC.modalPresentationStyle = .fullScreen
     present(shopVC, animated: false, completion: nil)
   }
-  
+
   func didTapItems() {
     let itemsVC = ItemsViewController(itemsViewModel: mainMenuViewModel.makeItemsViewModel())
     itemsVC.modalPresentationStyle = .fullScreen

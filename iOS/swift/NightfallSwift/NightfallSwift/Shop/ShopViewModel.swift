@@ -28,7 +28,7 @@ struct ShopViewState {
   let potionAmountText : String
   let crownAmountText : String
   let goldAmountText : String
-  
+
   init(_ parameters : ShopParameters) {
     buyPotionText = "Buy Potion\n(\(parameters.potionCost) gold)"
     buyCrownText = "Buy Crown\n(\(parameters.crownCost) gold)"
@@ -45,7 +45,7 @@ class ShopViewModel {
   var onStateChange: ((ShopViewState) -> Void)?
 
   private let gameState: GameState
-  
+
   let insufficientFundsAlertTitle = "Insuffient funds."
   let winGameText: String = "Congratulations, you got the magic crown and now you rule the world! See how many crowns you can collect."
   var repeatWinText: String {
@@ -56,10 +56,10 @@ class ShopViewModel {
   var buyCrownAlertMessage: String {
     gameState.player.crownCount == 1 ? winGameText : repeatWinText
   }
-  
+
   let potionCost = Int32(5)
   let crownCost = Int32(1)
-  
+
   init(gameState: GameState) {
     self.gameState = gameState
     let snapshot = gameState.snapshot
@@ -69,7 +69,7 @@ class ShopViewModel {
                                                   crownAmount: snapshot.crownCount,
                                                   goldAmount: snapshot.gold))
   }
-  
+
   func updateViewState () {
     let snapshot = gameState.snapshot
     viewState = ShopViewState(ShopParameters(potionCost: potionCost,
@@ -94,5 +94,5 @@ class ShopViewModel {
     }
     return .insufficientFunds
   }
-  
+
 }

@@ -15,13 +15,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
       // Ensure this scene is a UIWindowScene
       guard let windowScene = (scene as? UIWindowScene) else { return }
-      
+
       // Create a new UIWindow with the windowScene
       window = UIWindow(windowScene: windowScene)
-      
+
       // Set the initial view controller (assuming you have a ViewController class)
       window?.rootViewController = TitleViewController(nibName: nil, bundle: nil)
-      
+
       // Make the window visible
       window?.makeKeyAndVisible()
   }

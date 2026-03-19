@@ -20,7 +20,7 @@ struct BattleViewState {
   let outcomeExplanationText : String
   let hpLabelText : String
   let goldLabelText : String
-  
+
   init(parameters: BattleParameters, hp: Int32, gold: Int32) {
     outcomeExplanationText = "You will lose \(parameters.hpLoss) health and gain \(parameters.goldGain) gold."
     hpLabelText = "HP: \(hp)"
@@ -42,7 +42,7 @@ class BattleViewModel {
                                      hp: gameState.player.hp,
                                      gold: gameState.player.gold)
   }
-  
+
   func battle() -> BattleResult {
     let result = gameState.battle(battleParameters)
     self.viewState = BattleViewState(parameters: battleParameters,

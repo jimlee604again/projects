@@ -7,14 +7,15 @@
 
 import UIKit
 
-let UIGuidelineExitLeading: CGFloat = 40
-let UIGuidelineExitTop: CGFloat = 70
+let UIGuidelineExitLeading = 40.0
+let UIGuidelineExitTop = 70.0
 let UIGuidelineStatusBottom = 100.0
 let UIGuidelineStatusSide = 50.0
 let UIGuidelineButtonWidth = 200.0
 let UIGuidelineTitleTopInset = 100.0
-let UIGuidelineDescriptionGap: CGFloat = 30.0
-let UIGuidelineTitleBottomInset: CGFloat = 100.0
+let UIGuidelineDescriptionGap = 30.0
+let UIGuidelineTitleBottomInset = 100.0
+let UIGuidelineButtonToStatusSpacing = 50.0
 let UIGuidelineButtonFont = UIFont.systemFont(ofSize: 20.0, weight: .bold)
 
 let UIGuidelineAlertConfirm = "OK"
@@ -50,4 +51,14 @@ func UIGuidelineButtonTemplate(_ type: UIButton.ButtonType = .custom) -> UIButto
   let button = UIButton(type: type)
   button.translatesAutoresizingMaskIntoConstraints = false
   return button
+}
+
+func UIGuidelineStackTemplate() -> UIStackView {
+  let stack = UIStackView(frame: .zero)
+  stack.axis = .vertical
+  stack.alignment = .leading
+  stack.distribution = .fill
+  stack.spacing = 8
+  stack.translatesAutoresizingMaskIntoConstraints = false
+  return stack
 }

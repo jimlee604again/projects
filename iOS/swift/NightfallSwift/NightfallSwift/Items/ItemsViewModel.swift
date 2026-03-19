@@ -20,12 +20,20 @@ struct ItemsViewState {
   let potionHealAmount: Int32
   let potionAmountText: String
   let crownAmountText: String
-  
-  init(parameters: ItemsParameters, potionAmount: Int32, crownAmount: Int32) {
+  let hpText: String
+  let goldText: String
+
+  init(parameters: ItemsParameters,
+       potionAmount: Int32,
+       crownAmount: Int32,
+       hp: Int32,
+       gold: Int32) {
     self.potionHealAmount = parameters.potionHealAmount
     self.pageDescription = "Potions will heal you \(parameters.potionHealAmount) HP."
     self.potionAmountText = "Potions: \(potionAmount)"
     self.crownAmountText = "Crowns: \(crownAmount)"
+    self.hpText = "HP: \(hp)"
+    self.goldText = "Gold: \(gold)"
   }
 }
 
@@ -35,16 +43,18 @@ class ItemsViewModel {
     didSet { onStateChange?(viewState) }
   }
   private let itemsParameters = ItemsParameters()
-  
+
   var onStateChange: ((ItemsViewState) -> Void)?
 
   init (gameState: GameState) {
     self.gameState = gameState
     self.viewState = ItemsViewState(parameters: itemsParameters,
                                     potionAmount: gameState.player.potionCount,
-                                    crownAmount: gameState.player.crownCount)
+                                    crownAmount: gameState.player.crownCount,
+                                    hp: gameState.player.hp,
+                                    gold: gameState.player.gold)
   }
-  
+
   let usedPotionAlertTitle: String = "Potion Used"
   var usedPotionAlertMessage: String {
     "You restored \(itemsParameters.potionHealAmount) HP!"
@@ -54,7 +64,9 @@ class ItemsViewModel {
     if gameState.usePotion(healAmount: itemsParameters.potionHealAmount) {
       viewState = ItemsViewState(parameters: itemsParameters,
                                  potionAmount: gameState.player.potionCount,
-                                 crownAmount: gameState.player.crownCount)
+                                 crownAmount: gameState.player.crownCount,
+                                 hp: gameState.player.hp + itemsParameters.potionHealAmount,
+                                 gold: gameState.player.gold)
       return .used
     } else {
       return .noneLeft

@@ -14,7 +14,7 @@ class ShopViewController: UIViewController, ShopViewDelegate {
     self.shopViewModel = shopViewModel
     super.init(nibName: nil, bundle: nil)
   }
-  
+
   override func loadView() {
     let shopView = ShopView()
     shopViewModel.onStateChange = { [weak shopView] newState in
@@ -23,14 +23,14 @@ class ShopViewController: UIViewController, ShopViewDelegate {
     shopView.shopViewDelegate = self
     view = shopView
   }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     if let shopView = view as? ShopView {
       shopView.configure(with: shopViewModel.viewState)
     }
   }
-  
+
   func didTapBuyPotion() {
     switch shopViewModel.attemptBuyPotion() {
     case .success:
@@ -41,7 +41,7 @@ class ShopViewController: UIViewController, ShopViewDelegate {
       break
     }
   }
-  
+
   func didTapBuyCrown() {
     switch shopViewModel.attemptBuyCrown() {
     case .success:
@@ -57,9 +57,9 @@ class ShopViewController: UIViewController, ShopViewDelegate {
   func didTapExit() {
     self.dismiss(animated: false)
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
 }

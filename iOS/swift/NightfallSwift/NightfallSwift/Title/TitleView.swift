@@ -13,7 +13,7 @@ protocol StartButtonDelegate {
 
 class TitleView : UIView {
   var startButtonDelegate : StartButtonDelegate?
-  
+
   // MARK: Subviews
   private let title: UILabel = {
     let label = UILabel()
@@ -24,17 +24,17 @@ class TitleView : UIView {
   }()
 
   private let start = UIGuidelineButtonTemplate()
-  
+
   // MARK: Spacing Constants
   private let titleVerticalOffset: CGFloat = -200
   private let startButtonVerticalOffset: CGFloat = 100
-  
+
   init() {
     super.init(frame: CGRectZero)
     backgroundColor = .black
 
     start.addTarget(self, action: #selector(didTapStart), for: .touchUpInside)
-    
+
     addSubview(title)
     addSubview(start)
 
@@ -42,7 +42,7 @@ class TitleView : UIView {
       title.centerXAnchor.constraint(equalTo: centerXAnchor),
       title.centerYAnchor.constraint(equalTo: centerYAnchor,
                                      constant: titleVerticalOffset),
-      
+
       start.centerXAnchor.constraint(equalTo: centerXAnchor),
       start.centerYAnchor.constraint(equalTo: centerYAnchor,
                                      constant: startButtonVerticalOffset),
@@ -61,18 +61,18 @@ class TitleView : UIView {
     config.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 20, bottom: 16, trailing: 20)
     return config
   }
-  
+
   func configure(with viewState: TitleViewState) {
       title.text = viewState.titleText
       start.configuration = startButtonConfig(title: viewState.startText)
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   @objc func didTapStart() {
     startButtonDelegate?.didTapStart()
   }
-  
+
 }

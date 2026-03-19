@@ -16,11 +16,11 @@ struct GameStateSnapshot {
 
 public class GameState {
   private var observers: [UUID: (GameStateSnapshot) -> Void] = [:]
-  
+
   let innPrice: Int32 = 3
-  
+
   let player: Player
-  
+
   init(player: Player) {
     self.player = player
   }
@@ -48,11 +48,11 @@ public class GameState {
     let currentSnapshot = snapshot
     observers.values.forEach { $0(currentSnapshot) }
   }
-  
+
   func canStayAtInn() -> Bool {
     return player.gold >= innPrice
   }
-  
+
   func stayAtInn() {
     if canStayAtInn() {
       player.gold -= innPrice
@@ -72,7 +72,7 @@ public class GameState {
     notifyObservers()
     return true
   }
- 
+
   func battle(_ battleParameters: BattleParameters) -> BattleResult {
     player.hp -= battleParameters.hpLoss
 
@@ -119,5 +119,5 @@ public class GameState {
     notifyObservers()
     return true
   }
-  
+
 }

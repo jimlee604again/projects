@@ -8,9 +8,9 @@
 import UIKit
 
 class ItemsViewController: UIViewController, ItemsViewDelegate {
-  
+
   private let itemsViewModel: ItemsViewModel
-  
+
   init(itemsViewModel: ItemsViewModel) {
     self.itemsViewModel = itemsViewModel
     super.init(nibName: nil, bundle: nil)
@@ -22,11 +22,11 @@ class ItemsViewController: UIViewController, ItemsViewDelegate {
     self.view = itemsView
     itemsView.itemsViewDelegate = self
   }
-  
+
   func didTapExit() {
     dismiss(animated: false)
   }
-  
+
   func didTapUsePotion() {
     switch itemsViewModel.attemptUsePotion() {
     case .used:
@@ -36,9 +36,9 @@ class ItemsViewController: UIViewController, ItemsViewDelegate {
       break
     }
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
 }

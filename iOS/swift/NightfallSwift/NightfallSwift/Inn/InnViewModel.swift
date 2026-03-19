@@ -18,9 +18,13 @@ struct InnViewState {
   let title = "Inn"
   let outcomeExplanation: String
   let stayButtonText = "Stay"
-  
-  init(_ parameters: InnParameters) {
+  let hpText: String
+  let goldText: String
+
+  init(_ parameters: InnParameters, hp: Int32, gold: Int32) {
     outcomeExplanation = "You will pay \(parameters.stayCost) gold to recover \(parameters.recoverAmount) HP."
+    hpText = "HP: \(hp)"
+    goldText = "Gold: \(gold)"
   }
 }
 
@@ -33,7 +37,7 @@ struct InnViewModel {
   private let innParameters = InnParameters()
 
   var onStateChange: ((InnViewState) -> Void)?
-  
+
   // MARK: Content
   let titleText = "Inn"
   let stayButtonText = "Stay"
@@ -41,11 +45,13 @@ struct InnViewModel {
   let staySuccessMessage: String
   let notEnoughGoldTitle = "Insufficient Funds"
   let notEnoughGoldMessage = "Not enough gold to stay at the inn."
-  
+
   init(gameState: GameState) {
     self.gameState = gameState
-    self.viewState = InnViewState(innParameters)
-    self.staySuccessMessage = "You feel rested. Gained \(innParameters.recoverAmount) HP."
+    self.viewState = InnViewState(innParameters,
+                                  hp: gameState.player.hp,
+                                  gold: gameState.player.gold)
+    self.staySuccessMessage = "You feel rested. Recovered \(innParameters.recoverAmount) HP."
   }
 
   func attemptStay() -> StayResult {

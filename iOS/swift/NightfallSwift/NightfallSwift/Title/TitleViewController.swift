@@ -9,9 +9,9 @@ import CoreData
 import UIKit
 
 class TitleViewController: UIViewController, StartButtonDelegate {
-  
+
   let titleViewModel: TitleViewModel = TitleViewModel()
-  
+
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
   }
@@ -19,13 +19,13 @@ class TitleViewController: UIViewController, StartButtonDelegate {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   override func loadView() {
     let titleView = TitleView()
     titleView.startButtonDelegate = self
     view = titleView
   }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view.
@@ -40,7 +40,7 @@ class TitleViewController: UIViewController, StartButtonDelegate {
     mainMenuVC.modalPresentationStyle = .fullScreen
     present(mainMenuVC, animated: false)
   }
-  
+
   func fetchPlayers() -> [Player] {
       let context = CoreDataManager.shared.context
       let request: NSFetchRequest<Player> = Player.fetchRequest()
@@ -51,15 +51,15 @@ class TitleViewController: UIViewController, StartButtonDelegate {
           return []
       }
   }
-  
+
   func createPlayer() -> Player {
     let context = CoreDataManager.shared.context
     let players = fetchPlayers()
-    
+
     if let existingPlayer = players.first {
       return existingPlayer
     }
-    
+
     // Generate base player if a persisted one isn't fetched.
     guard let entity = NSEntityDescription.entity(
       forEntityName: "Player",
@@ -67,11 +67,11 @@ class TitleViewController: UIViewController, StartButtonDelegate {
     ) else {
       return Player()
     }
-    
+
     let player = Player(entity: entity, insertInto: context)
     player.hp = titleViewModel.playerStartingHealth
     player.gold = titleViewModel.playerStartingGold
-    
+
     do {
       try context.save()
     } catch {

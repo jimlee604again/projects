@@ -14,7 +14,7 @@ class InnViewController: UIViewController, InnViewDelegate {
     self.innViewModel = innViewModel
     super.init(nibName: nil, bundle: nil)
   }
-  
+
   override func loadView() {
     let innView = InnView()
     self.innViewModel.onStateChange = { [weak innView] state in
@@ -23,7 +23,7 @@ class InnViewController: UIViewController, InnViewDelegate {
     innView.innViewDelegate = self
     view = innView
   }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view.
@@ -46,7 +46,7 @@ class InnViewController: UIViewController, InnViewDelegate {
   func didTapExit() {
     self.dismiss(animated: false)
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }

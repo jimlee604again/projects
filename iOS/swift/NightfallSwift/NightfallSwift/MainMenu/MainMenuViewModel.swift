@@ -15,7 +15,7 @@ struct MainMenuViewState {
   let battleTitle = "Battle"
   let hpText : String
   let goldText : String
-  
+
   init(hp: Int32, gold: Int32) {
     hpText = "HP: \(hp)"
     goldText = "Gold: \(gold)"
@@ -29,7 +29,7 @@ public class MainMenuViewModel {
     didSet { onDidChange?(viewState) }
   }
   var onDidChange: ((MainMenuViewState) -> Void)?
-  
+
   init(gameState: GameState) {
     self.gameState = gameState
     let snapshot = gameState.snapshot
@@ -40,27 +40,27 @@ public class MainMenuViewModel {
                                           gold: snapshot.gold)
     }
   }
-  
+
   func makeInnViewModel() -> InnViewModel {
     return InnViewModel(gameState: gameState)
   }
-  
+
   func makeShopViewModel() -> ShopViewModel {
     return ShopViewModel(gameState: gameState)
   }
-  
+
   func makeItemsViewModel() -> ItemsViewModel {
     return ItemsViewModel(gameState: gameState)
   }
-  
+
   func makeBattleViewModel() -> BattleViewModel {
     return BattleViewModel(gameState: gameState)
   }
-  
+
   func playerHealthDisplayText() -> String {
     return "HP: \(gameState.snapshot.hp)"
   }
-  
+
   func playerGoldDisplayText() -> String {
     return "Gold: \(gameState.snapshot.gold)"
   }

@@ -21,6 +21,9 @@ class InnView : UIView {
   private let outcomeExplanation = UIGuidelineLabelTemplate()
   private let stayButton  = UIGuidelineButtonTemplate()
   private let exitButton = UIGuidelineButtonTemplate(.close)
+  private let hp = UIGuidelineLabelTemplate()
+  private let gold = UIGuidelineLabelTemplate()
+  private let status = UIGuidelineStackTemplate()
 
   init() {
     super.init(frame: CGRectZero)
@@ -32,33 +35,42 @@ class InnView : UIView {
     stayButton.addTarget(self, action: #selector(didTapStay), for: .touchUpInside)
     exitButton.addTarget(self, action: #selector(didTapExit), for: .touchUpInside)
 
+    status.addArrangedSubview(hp)
+    status.addArrangedSubview(gold)
+
     addSubview(title)
     addSubview(outcomeExplanation)
     addSubview(stayButton)
+    addSubview(status)
     addSubview(exitButton)
 
     NSLayoutConstraint.activate([
       title.centerXAnchor.constraint(equalTo: centerXAnchor),
       title.topAnchor.constraint(equalTo: topAnchor, constant: UIGuidelineTitleTopInset),
-      
+
       outcomeExplanation.centerXAnchor.constraint(equalTo: centerXAnchor),
       outcomeExplanation.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 30),
 
       stayButton.centerXAnchor.constraint(equalTo: centerXAnchor),
-      stayButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -100),
+      stayButton.bottomAnchor.constraint(equalTo: hp.topAnchor, constant: -UIGuidelineButtonToStatusSpacing),
       stayButton.widthAnchor.constraint(equalToConstant: UIGuidelineButtonWidth),
 
       exitButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIGuidelineExitLeading),
-      exitButton.topAnchor.constraint(equalTo: topAnchor, constant: UIGuidelineExitTop)
+      exitButton.topAnchor.constraint(equalTo: topAnchor, constant: UIGuidelineExitTop),
+
+      status.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIGuidelineStatusSide),
+      status.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -UIGuidelineStatusBottom)
     ])
   }
 
   func configureWith(_ viewState: InnViewState) {
     title.text = viewState.title
     outcomeExplanation.text = viewState.outcomeExplanation
+    hp.text = viewState.hpText
+    gold.text = viewState.goldText
     stayButton.configuration = stayButtonConfig(title: viewState.stayButtonText)
   }
-  
+
   func stayButtonConfig(title: String) -> UIButton.Configuration {
     var stayButtonConfig = UIButton.Configuration.filled()
     var attributedTitle = AttributedString(title)
