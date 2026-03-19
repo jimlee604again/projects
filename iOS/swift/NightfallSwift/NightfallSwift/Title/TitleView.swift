@@ -19,7 +19,7 @@ class TitleView : UIView {
     let label = UILabel()
     label.textColor = .white
     label.font = UIFont.boldSystemFont(ofSize: 40.0)
-    let.translatesAutoresizingMaskIntoConstraints = false
+    label.translatesAutoresizingMaskIntoConstraints = false
     return label
   }()
 
@@ -27,7 +27,7 @@ class TitleView : UIView {
     let button = UIButton(type: .custom)
     button.translatesAutoresizingMaskIntoConstraints = false
     return button
-  }
+  }()
   
   // MARK: Spacing Constants
   private let titleVerticalOffset: CGFloat = -200

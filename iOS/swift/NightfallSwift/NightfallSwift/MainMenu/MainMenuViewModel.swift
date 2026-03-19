@@ -8,6 +8,7 @@
 import Foundation
 
 struct MainMenuViewState {
+  let title = "Main Menu"
   let innTitle = "Inn"
   let shopTitle = "Shop"
   let itemsTitle = "Items"
@@ -56,10 +57,6 @@ public class MainMenuViewModel {
     return BattleViewModel(gameState: gameState)
   }
   
-  func completeBattle() {
-    _ = gameState.battle(BattleParameters())
-  }
-  
   func playerHealthDisplayText() -> String {
     return "HP: \(gameState.snapshot.hp)"
   }
@@ -72,4 +69,5 @@ public class MainMenuViewModel {
     guard let gameStateObserverID else { return }
     gameState.removeObserver(gameStateObserverID)
   }
+
 }

@@ -29,5 +29,6 @@ func UIGuidelineButtonConfig(title: String, foregroundColor: UIColor) -> UIButto
   menuButtonConfig.baseForegroundColor = foregroundColor
   menuButtonConfig.background.backgroundColor = .black
   menuButtonConfig.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 20, bottom: 16, trailing: 20)
+  menuButtonConfig.cornerStyle = .medium
   return menuButtonConfig
 }

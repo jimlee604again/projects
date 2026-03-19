@@ -16,13 +16,13 @@ struct BattleParameters {
 
 struct BattleViewState {
   let titleText = "Battle"
-  let outcomeExplanationText = "You will lose X HP, but gain Y gold."
   let battleButtonText = "Battle"
+  let outcomeExplanationText : String
   let hpLabelText : String
   let goldLabelText : String
-  let battleParameters = BattleParameters()
   
-  init(hp: Int32, gold: Int32) {
+  init(hp: Int32, gold: Int32, battleParameters: BattleParameters) {
+    outcomeExplanationText = "You will lose \(battleParameters.hpLoss) health and gain \(battleParameters.goldGain) gold."
     hpLabelText = "HP: \(hp)"
     goldLabelText = "Gold: \(gold)"
   }
@@ -34,15 +34,18 @@ class BattleViewModel {
       didSet { onStateChange?(viewState) }
   }
   var onStateChange: ((BattleViewState) -> Void)?
+  let battleParameters = BattleParameters()
 
   init (gameState: GameState) {
     self.gameState = gameState
-    self.viewState = BattleViewState(hp: gameState.player.hp, gold: gameState.player.gold)
+    self.viewState = BattleViewState(hp: gameState.player.hp,
+                                     gold: gameState.player.gold,
+                                     battleParameters: BattleParameters())
   }
   
   func battle() -> BattleResult {
-    let result = gameState.battle(viewState.battleParameters)
-    self.viewState = BattleViewState(hp: gameState.player.hp, gold: gameState.player.gold)
+    let result = gameState.battle(battleParameters)
+    self.viewState = BattleViewState(hp: gameState.player.hp, gold: gameState.player.gold, battleParameters: battleParameters)
     return result
   }
 }

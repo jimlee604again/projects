@@ -38,29 +38,25 @@ class MainMenuViewController: UIViewController, MainMenuDelegate {
   }
 
   func didTapInn() {
-    let innViewModel = mainMenuViewModel.makeInnViewModel()
-    let innVC = InnViewController(innViewModel: innViewModel)
+    let innVC = InnViewController(innViewModel: mainMenuViewModel.makeInnViewModel())
     innVC.modalPresentationStyle = .fullScreen
     present(innVC, animated: false, completion: nil)
   }
   
   func didTapShop() {
-    let shopViewModel = mainMenuViewModel.makeShopViewModel()
-    let shopVC = ShopViewController(shopViewModel: shopViewModel)
+    let shopVC = ShopViewController(shopViewModel: mainMenuViewModel.makeShopViewModel())
     shopVC.modalPresentationStyle = .fullScreen
     present(shopVC, animated: false, completion: nil)
   }
   
   func didTapItems() {
-    let itemsViewModel = mainMenuViewModel.makeItemsViewModel()
-    let itemsVC = ItemsViewController(itemsViewModel: itemsViewModel)
+    let itemsVC = ItemsViewController(itemsViewModel: mainMenuViewModel.makeItemsViewModel())
     itemsVC.modalPresentationStyle = .fullScreen
     present(itemsVC, animated: false, completion: nil)
   }
 
   func didTapBattle() {
-    let battleViewModel = mainMenuViewModel.makeBattleViewModel()
-    let battleVC = BattleViewController(battleViewModel: battleViewModel)
+    let battleVC = BattleViewController(battleViewModel: mainMenuViewModel.makeBattleViewModel())
     battleVC.modalPresentationStyle = .fullScreen
     present(battleVC, animated: false, completion: nil)
   }
