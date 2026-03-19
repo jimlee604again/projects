@@ -13,11 +13,8 @@ enum PurchaseResult {
 }
 
 struct ShopParameters {
-  let potionCost: Int32
-  let crownCost: Int32
-  let potionAmount: Int32
-  let crownAmount: Int32
-  let goldAmount: Int32
+  let potionCost = Int32(5)
+  let crownCost = Int32(1)
 }
 
 struct ShopViewState {
@@ -25,16 +22,22 @@ struct ShopViewState {
   let pageDescriptionText: String = "Shop til you drop."
   let buyPotionText : String
   let buyCrownText : String
+  let hpAmountText : String
+  let goldAmountText : String
   let potionAmountText : String
   let crownAmountText : String
-  let goldAmountText : String
 
-  init(_ parameters : ShopParameters) {
+  init(parameters : ShopParameters,
+       potionAmount: Int32,
+       crownAmount: Int32,
+       hpAmount: Int32,
+       goldAmount: Int32) {
     buyPotionText = "Buy Potion\n(\(parameters.potionCost) gold)"
     buyCrownText = "Buy Crown\n(\(parameters.crownCost) gold)"
-    potionAmountText = "Potions: \(parameters.potionAmount)"
-    crownAmountText = "Crowns: \(parameters.crownAmount)"
-    goldAmountText = "Gold: \(parameters.goldAmount)"
+    potionAmountText = "Potions: \(potionAmount)"
+    crownAmountText = "Crowns: \(crownAmount)"
+    hpAmountText = "HP: \(hpAmount)"
+    goldAmountText = "Gold: \(goldAmount)"
   }
 }
 
@@ -45,6 +48,7 @@ class ShopViewModel {
   var onStateChange: ((ShopViewState) -> Void)?
 
   private let gameState: GameState
+  private let parameters = ShopParameters()
 
   let insufficientFundsAlertTitle = "Insuffient funds."
   let winGameText: String = "Congratulations, you got the magic crown and now you rule the world! See how many crowns you can collect."
@@ -57,30 +61,27 @@ class ShopViewModel {
     gameState.player.crownCount == 1 ? winGameText : repeatWinText
   }
 
-  let potionCost = Int32(5)
-  let crownCost = Int32(1)
-
   init(gameState: GameState) {
     self.gameState = gameState
     let snapshot = gameState.snapshot
-    self.viewState = ShopViewState(ShopParameters(potionCost: potionCost,
-                                                  crownCost: crownCost,
-                                                  potionAmount: snapshot.potionCount,
-                                                  crownAmount: snapshot.crownCount,
-                                                  goldAmount: snapshot.gold))
+    self.viewState = ShopViewState(parameters: parameters,
+                                   potionAmount: snapshot.potionCount,
+                                   crownAmount: snapshot.crownCount,
+                                   hpAmount: snapshot.hp,
+                                   goldAmount: snapshot.gold)
   }
 
   func updateViewState () {
     let snapshot = gameState.snapshot
-    viewState = ShopViewState(ShopParameters(potionCost: potionCost,
-                                             crownCost: crownCost,
-                                             potionAmount: snapshot.potionCount,
-                                             crownAmount: snapshot.crownCount,
-                                             goldAmount: snapshot.gold))
+    viewState = ShopViewState(parameters: parameters,
+                              potionAmount: snapshot.potionCount,
+                              crownAmount: snapshot.crownCount,
+                              hpAmount: snapshot.hp,
+                              goldAmount: snapshot.gold)
   }
 
   func attemptBuyPotion() -> PurchaseResult {
-    if gameState.buyPotion(cost: potionCost) {
+    if gameState.buyPotion(cost: parameters.potionCost) {
       updateViewState()
       return .success
     }
@@ -88,7 +89,7 @@ class ShopViewModel {
   }
 
   func attemptBuyCrown() -> PurchaseResult {
-    if gameState.buyCrown(cost: crownCost) {
+    if gameState.buyCrown(cost: parameters.crownCost) {
       updateViewState()
       return .success
     }

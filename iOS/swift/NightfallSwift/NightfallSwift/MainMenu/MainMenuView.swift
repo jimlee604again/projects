@@ -18,13 +18,13 @@ class MainMenuView : UIView {
   var mainMenuDelegate: MainMenuDelegate?
 
   // MARK: - Subviews
-  private let title = UIGuidelineTitleTemplate()
-  private let inn = UIGuidelineButtonTemplate()
-  private let shop = UIGuidelineButtonTemplate()
-  private let items = UIGuidelineButtonTemplate()
-  private let battle = UIGuidelineButtonTemplate()
-  private let hp = UIGuidelineLabelTemplate()
-  private let gold = UIGuidelineLabelTemplate()
+  private let title = TitleTemplate()
+  private let inn = ButtonTemplate()
+  private let shop = ButtonTemplate()
+  private let items = ButtonTemplate()
+  private let battle = ButtonTemplate()
+  private let hp = LabelTemplate()
+  private let gold = LabelTemplate()
 
   // MARK: UI Constants
   private let themeColor = UIColor.cyan

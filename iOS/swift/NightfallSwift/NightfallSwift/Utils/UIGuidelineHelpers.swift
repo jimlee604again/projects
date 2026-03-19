@@ -32,33 +32,3 @@ func UIGuidelineButtonConfig(title: String, foregroundColor: UIColor) -> UIButto
   return menuButtonConfig
 }
 
-func UIGuidelineTitleTemplate() -> UILabel {
-  let label = UILabel()
-  label.font = UIFont.preferredFont(forTextStyle: .largeTitle)
-  label.textAlignment = .center
-  label.translatesAutoresizingMaskIntoConstraints = false
-  return label
-}
-
-func UIGuidelineLabelTemplate() -> UILabel {
-  let label = UILabel()
-  label.textAlignment = .center
-  label.translatesAutoresizingMaskIntoConstraints = false
-  return label
-}
-
-func UIGuidelineButtonTemplate(_ type: UIButton.ButtonType = .custom) -> UIButton {
-  let button = UIButton(type: type)
-  button.translatesAutoresizingMaskIntoConstraints = false
-  return button
-}
-
-func UIGuidelineStackTemplate() -> UIStackView {
-  let stack = UIStackView(frame: .zero)
-  stack.axis = .vertical
-  stack.alignment = .leading
-  stack.distribution = .fill
-  stack.spacing = 8
-  stack.translatesAutoresizingMaskIntoConstraints = false
-  return stack
-}

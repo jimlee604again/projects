@@ -18,15 +18,13 @@ class ShopView : UIView {
   private let themeColor = UIColor.yellow
 
   // MARK: Subviews
-  private let title = UIGuidelineTitleTemplate()
-  private let pageDescription = UIGuidelineLabelTemplate()
-  private let buyPotion = UIGuidelineButtonTemplate()
-  private let buyCrown = UIGuidelineButtonTemplate()
-  private let potionAmount = UIGuidelineLabelTemplate()
-  private let crownAmount = UIGuidelineLabelTemplate()
-  private let goldAmount = UIGuidelineLabelTemplate()
-  private let exit = UIGuidelineButtonTemplate(.close)
-  private let status = UIGuidelineStackTemplate()
+  private let title = TitleTemplate()
+  private let pageDescription = LabelTemplate()
+  private let buyPotion = ButtonTemplate()
+  private let buyCrown = ButtonTemplate()
+  private let exit = ButtonTemplate(.close)
+  private let status = PlayerStatusView()
+  private let inventory = PlayerInventoryView()
 
   init() {
     super.init(frame: CGRectZero)
@@ -39,15 +37,12 @@ class ShopView : UIView {
     buyCrown.addTarget(self, action: #selector(didTapBuyCrown), for: .touchUpInside)
     exit.addTarget(self, action: #selector(didTapExit), for: .touchUpInside)
 
-    status.addArrangedSubview(potionAmount)
-    status.addArrangedSubview(crownAmount)
-    status.addArrangedSubview(goldAmount)
-
     addSubview(title)
     addSubview(pageDescription)
     addSubview(buyPotion)
     addSubview(buyCrown)
     addSubview(status)
+    addSubview(inventory)
     addSubview(exit)
 
     NSLayoutConstraint.activate([
@@ -62,11 +57,14 @@ class ShopView : UIView {
       buyPotion.widthAnchor.constraint(equalToConstant: UIGuidelineButtonWidth),
 
       buyCrown.centerXAnchor.constraint(equalTo: centerXAnchor),
-      buyCrown.bottomAnchor.constraint(equalTo: potionAmount.topAnchor, constant: -UIGuidelineButtonToStatusSpacing),
+      buyCrown.bottomAnchor.constraint(equalTo: status.topAnchor, constant: -UIGuidelineButtonToStatusSpacing),
       buyCrown.widthAnchor.constraint(equalToConstant: UIGuidelineButtonWidth),
 
       status.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIGuidelineStatusSide),
       status.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -UIGuidelineStatusBottom),
+      
+      inventory.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIGuidelineStatusSide),
+      inventory.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -UIGuidelineStatusBottom),
 
       exit.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIGuidelineExitLeading),
       exit.topAnchor.constraint(equalTo: topAnchor, constant: UIGuidelineExitTop),
@@ -78,9 +76,8 @@ class ShopView : UIView {
     pageDescription.text = viewState.pageDescriptionText
     buyPotion.configuration = UIGuidelineButtonConfig(title: viewState.buyPotionText, foregroundColor: themeColor)
     buyCrown.configuration = UIGuidelineButtonConfig(title: viewState.buyCrownText, foregroundColor: themeColor)
-    potionAmount.text = viewState.potionAmountText
-    crownAmount.text = viewState.crownAmountText
-    goldAmount.text = viewState.goldAmountText
+    status.configure(hpText: viewState.hpAmountText, goldText: viewState.goldAmountText)
+    inventory.configure(potionText: viewState.potionAmountText, crownText: viewState.crownAmountText)
   }
 
   @objc func didTapBuyPotion() {

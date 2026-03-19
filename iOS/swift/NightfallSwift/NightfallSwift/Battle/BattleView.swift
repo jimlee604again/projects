@@ -17,13 +17,11 @@ final class BattleView: UIView {
   private let themeColor: UIColor = .red
 
   // MARK: - Subviews
-  private let title = UIGuidelineTitleTemplate()
-  private let outcomeExplanation = UIGuidelineLabelTemplate()
-  private let battle = UIGuidelineButtonTemplate()
-  private let exit = UIGuidelineButtonTemplate(.close)
-  private let hp = UIGuidelineLabelTemplate()
-  private let gold = UIGuidelineLabelTemplate()
-  private let status = UIGuidelineStackTemplate()
+  private let title = TitleTemplate()
+  private let outcomeExplanation = LabelTemplate()
+  private let battle = ButtonTemplate()
+  private let exit = ButtonTemplate(.close)
+  private let statusView = PlayerStatusView()
 
   // MARK: - Init
   override init(frame: CGRect) {
@@ -34,13 +32,10 @@ final class BattleView: UIView {
     battle.addTarget(self, action: #selector(didTapBattle), for: .touchUpInside)
     exit.addTarget(self, action: #selector(didTapExit), for: .touchUpInside)
 
-    status.addArrangedSubview(hp)
-    status.addArrangedSubview(gold)
-
     addSubview(title)
     addSubview(outcomeExplanation)
     addSubview(battle)
-    addSubview(status)
+    addSubview(statusView)
     addSubview(exit)
 
     NSLayoutConstraint.activate([
@@ -52,11 +47,11 @@ final class BattleView: UIView {
       outcomeExplanation.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 24),
       outcomeExplanation.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -24),
 
-      status.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIGuidelineStatusSide),
-      status.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -UIGuidelineStatusBottom),
+      statusView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIGuidelineStatusSide),
+      statusView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -UIGuidelineStatusBottom),
 
       battle.centerXAnchor.constraint(equalTo: centerXAnchor),
-      battle.bottomAnchor.constraint(equalTo: hp.topAnchor, constant: -50),
+      battle.bottomAnchor.constraint(equalTo: statusView.topAnchor, constant: -50),
       battle.widthAnchor.constraint(equalToConstant: UIGuidelineButtonWidth),
 
       exit.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIGuidelineExitLeading),
@@ -71,8 +66,7 @@ final class BattleView: UIView {
   func configure(_ state: BattleViewState) {
     title.text = state.titleText
     outcomeExplanation.text = state.outcomeExplanationText
-    hp.text = state.hpLabelText
-    gold.text = state.goldLabelText
+    statusView.configure(hpText: state.hpLabelText, goldText: state.goldLabelText)
     battle.configuration = UIGuidelineButtonConfig(
       title: state.battleButtonText,
       foregroundColor: themeColor

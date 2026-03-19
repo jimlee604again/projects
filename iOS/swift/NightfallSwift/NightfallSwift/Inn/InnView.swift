@@ -17,13 +17,11 @@ class InnView : UIView {
   private let themeColor = UIColor.systemPink
 
   // MARK: Subviews
-  private let title = UIGuidelineTitleTemplate()
-  private let outcomeExplanation = UIGuidelineLabelTemplate()
-  private let stayButton  = UIGuidelineButtonTemplate()
-  private let exitButton = UIGuidelineButtonTemplate(.close)
-  private let hp = UIGuidelineLabelTemplate()
-  private let gold = UIGuidelineLabelTemplate()
-  private let status = UIGuidelineStackTemplate()
+  private let title = TitleTemplate()
+  private let outcomeExplanation = LabelTemplate()
+  private let stayButton  = ButtonTemplate()
+  private let exitButton = ButtonTemplate(.close)
+  private let statusView = PlayerStatusView()
 
   init() {
     super.init(frame: CGRectZero)
@@ -35,13 +33,10 @@ class InnView : UIView {
     stayButton.addTarget(self, action: #selector(didTapStay), for: .touchUpInside)
     exitButton.addTarget(self, action: #selector(didTapExit), for: .touchUpInside)
 
-    status.addArrangedSubview(hp)
-    status.addArrangedSubview(gold)
-
     addSubview(title)
     addSubview(outcomeExplanation)
     addSubview(stayButton)
-    addSubview(status)
+    addSubview(statusView)
     addSubview(exitButton)
 
     NSLayoutConstraint.activate([
@@ -52,22 +47,21 @@ class InnView : UIView {
       outcomeExplanation.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 30),
 
       stayButton.centerXAnchor.constraint(equalTo: centerXAnchor),
-      stayButton.bottomAnchor.constraint(equalTo: hp.topAnchor, constant: -UIGuidelineButtonToStatusSpacing),
+      stayButton.bottomAnchor.constraint(equalTo: statusView.topAnchor, constant: -UIGuidelineButtonToStatusSpacing),
       stayButton.widthAnchor.constraint(equalToConstant: UIGuidelineButtonWidth),
 
       exitButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIGuidelineExitLeading),
       exitButton.topAnchor.constraint(equalTo: topAnchor, constant: UIGuidelineExitTop),
 
-      status.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIGuidelineStatusSide),
-      status.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -UIGuidelineStatusBottom)
+      statusView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIGuidelineStatusSide),
+      statusView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -UIGuidelineStatusBottom)
     ])
   }
 
   func configureWith(_ viewState: InnViewState) {
     title.text = viewState.title
     outcomeExplanation.text = viewState.outcomeExplanation
-    hp.text = viewState.hpText
-    gold.text = viewState.goldText
+    statusView.configure(hpText: viewState.hpText, goldText: viewState.goldText)
     stayButton.configuration = stayButtonConfig(title: viewState.stayButtonText)
   }
 
