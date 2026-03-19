@@ -15,8 +15,14 @@ class TitleView : UIView {
   var startButtonDelegate : StartButtonDelegate?
   
   // MARK: Subviews
-  private let title = UILabel()
-  private let start = UIButton(type: .system)
+  private let title: UILabel = {
+    let label = UILabel()
+    label.textColor = .white
+    label.font = UIFont.boldSystemFont(ofSize: 40.0)
+    return label
+  }()
+
+  private let start = UIButton(type: .custom)
   
   // MARK: Spacing Constants
   private let titleVerticalOffset: CGFloat = -200
@@ -24,16 +30,16 @@ class TitleView : UIView {
   
   init() {
     super.init(frame: CGRectZero)
-
     backgroundColor = .black
-
-    title.textColor = .white
-    title.font = UIFont.boldSystemFont(ofSize: 40.0)
 
     start.addTarget(self, action: #selector(didTapStart), for: .touchUpInside)
     
     addSubview(title)
     addSubview(start)
+    
+    title.translatesAutoresizingMaskIntoConstraints = false
+    start.translatesAutoresizingMaskIntoConstraints = false
+    NSLayoutConstraint.activate(computedConstraints())
   }
   
   func computedConstraints() -> [NSLayoutConstraint] {
@@ -41,15 +47,11 @@ class TitleView : UIView {
       title.centerXAnchor.constraint(equalTo: centerXAnchor),
       title.centerYAnchor.constraint(equalTo: centerYAnchor,
                                      constant: titleVerticalOffset),
-      title.widthAnchor.constraint(equalToConstant: title.computedWidthAnchor),
-      title.heightAnchor.constraint(equalToConstant: title.computedHeightAnchor),
       
       start.centerXAnchor.constraint(equalTo: centerXAnchor),
       start.centerYAnchor.constraint(equalTo: centerYAnchor,
                                      constant: startButtonVerticalOffset),
       start.widthAnchor.constraint(equalToConstant: UIGuidelineButtonWidth),
-//      start.heightAnchor.constraint(equalToConstant: start.computedHeightAnchor)
-//      start.heightAnchor.constraint(equalToConstant: 48.0)
     ]
   }
   
@@ -67,11 +69,6 @@ class TitleView : UIView {
   
   func configure(with viewState: TitleViewState) {
       title.text = viewState.titleText
-
-      clearConstraints()
-      NSLayoutConstraint.activate(computedConstraints())
-      layoutIfNeeded()
-
       start.configuration = startButtonConfig(title: viewState.startText)
   }
   

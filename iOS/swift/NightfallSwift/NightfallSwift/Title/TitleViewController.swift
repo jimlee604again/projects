@@ -14,7 +14,6 @@ class TitleViewController: UIViewController, StartButtonDelegate {
   
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-//    titleView.configure(with: titleViewModel.viewState)
   }
 
   required init?(coder: NSCoder) {
