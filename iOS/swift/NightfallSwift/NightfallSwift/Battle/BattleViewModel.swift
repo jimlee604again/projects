@@ -7,13 +7,6 @@
 
 import Foundation
 
-enum BattleResult { case winBattle, loseBattle}
-
-struct BattleParameters {
-  let hpLoss : Int32 = 6
-  let goldGain : Int32 = 10
-}
-
 struct BattleViewState {
   let titleText = "Battle"
   let battleButtonText = "Battle"
@@ -39,15 +32,15 @@ class BattleViewModel {
   init (gameState: GameState) {
     self.gameState = gameState
     self.viewState = BattleViewState(parameters: battleParameters,
-                                     hp: gameState.player.hp,
-                                     gold: gameState.player.gold)
+                                     hp: gameState.snapshot.hp,
+                                     gold: gameState.snapshot.gold)
   }
 
   func battle() -> BattleResult {
     let result = gameState.battle(battleParameters)
     self.viewState = BattleViewState(parameters: battleParameters,
-                                     hp: gameState.player.hp,
-                                     gold: gameState.player.gold)
+                                     hp: gameState.snapshot.hp,
+                                     gold: gameState.snapshot.gold)
     return result
   }
 }

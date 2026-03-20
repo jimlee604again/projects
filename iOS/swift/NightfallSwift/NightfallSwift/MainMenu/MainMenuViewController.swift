@@ -9,9 +9,11 @@ import UIKit
 
 class MainMenuViewController: UIViewController, MainMenuDelegate {
 
+  private let coordinator: GameCoordinator
   let mainMenuViewModel: MainMenuViewModel
 
-  init(mainMenuViewModel: MainMenuViewModel) {
+  init(mainMenuViewModel: MainMenuViewModel, coordinator: GameCoordinator) {
+    self.coordinator = coordinator
     self.mainMenuViewModel = mainMenuViewModel
     super.init(nibName: nil, bundle: nil)
   }
@@ -38,28 +40,19 @@ class MainMenuViewController: UIViewController, MainMenuDelegate {
   }
 
   func didTapInn() {
-    let innVC = InnViewController(innViewModel: mainMenuViewModel.makeInnViewModel())
-    innVC.modalPresentationStyle = .fullScreen
-    present(innVC, animated: false, completion: nil)
+    coordinator.showInn(from: self)
   }
 
   func didTapShop() {
-    let shopVC = ShopViewController(shopViewModel: mainMenuViewModel.makeShopViewModel())
-    shopVC.modalPresentationStyle = .fullScreen
-    present(shopVC, animated: false, completion: nil)
+    coordinator.showShop(from: self)
   }
 
   func didTapItems() {
-    let itemsVC = ItemsViewController(itemsViewModel: mainMenuViewModel.makeItemsViewModel())
-    itemsVC.modalPresentationStyle = .fullScreen
-    present(itemsVC, animated: false, completion: nil)
+    coordinator.showItems(from: self)
   }
 
   func didTapBattle() {
-    let battleVC = BattleViewController(battleViewModel: mainMenuViewModel.makeBattleViewModel())
-    battleVC.modalPresentationStyle = .fullScreen
-    present(battleVC, animated: false, completion: nil)
+    coordinator.showBattle(from: self)
   }
 
 }
-

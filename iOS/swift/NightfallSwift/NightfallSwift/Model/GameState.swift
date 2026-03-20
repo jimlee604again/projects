@@ -16,10 +16,11 @@ struct GameStateSnapshot {
 
 public class GameState {
   private var observers: [UUID: (GameStateSnapshot) -> Void] = [:]
-
+  
+  // this should probably be moved
   let innPrice: Int32 = 3
 
-  let player: Player
+  private let player: Player
 
   init(player: Player) {
     self.player = player

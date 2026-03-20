@@ -6,3 +6,10 @@
 //
 
 import Foundation
+
+enum BattleResult { case winBattle, loseBattle}
+
+struct BattleParameters {
+  let hpLoss : Int32 = 6
+  let goldGain : Int32 = 10
+}

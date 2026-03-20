@@ -49,16 +49,16 @@ class InnViewModel {
   init(gameState: GameState) {
     self.gameState = gameState
     self.viewState = InnViewState(innParameters,
-                                  hp: gameState.player.hp,
-                                  gold: gameState.player.gold)
+                                  hp: gameState.snapshot.hp,
+                                  gold: gameState.snapshot.gold)
     self.staySuccessMessage = "You feel rested. Recovered \(innParameters.recoverAmount) HP."
   }
 
   func attemptStay() -> StayResult {
     if gameState.stayAtInn(cost: innParameters.stayCost, recoverAmount: innParameters.recoverAmount) {
       self.viewState = InnViewState(innParameters,
-                               hp: gameState.player.hp,
-                               gold: gameState.player.gold)
+                                    hp: gameState.snapshot.hp,
+                                    gold: gameState.snapshot.gold)
       return .success
     }
     return .insufficientFunds

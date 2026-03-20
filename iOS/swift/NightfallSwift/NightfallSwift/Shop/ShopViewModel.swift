@@ -53,12 +53,12 @@ class ShopViewModel {
   let insufficientFundsAlertTitle = "Insuffient funds."
   let winGameText: String = "Congratulations, you got the magic crown and now you rule the world! See how many crowns you can collect."
   var repeatWinText: String {
-    "Congratulations on crown number \(gameState.player.crownCount)!"
+    "Congratulations on crown number \(gameState.snapshot.crownCount)!"
   }
   let buyPotionAlertTitle = "Potion Purchased!"
   let buyCrownAlertTitle = "Crown Purchased!"
   var buyCrownAlertMessage: String {
-    gameState.player.crownCount == 1 ? winGameText : repeatWinText
+    gameState.snapshot.crownCount == 1 ? winGameText : repeatWinText
   }
 
   init(gameState: GameState) {

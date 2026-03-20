@@ -48,11 +48,12 @@ class ItemsViewModel {
 
   init (gameState: GameState) {
     self.gameState = gameState
+    let snapshot = gameState.snapshot
     self.viewState = ItemsViewState(parameters: itemsParameters,
-                                    potionAmount: gameState.player.potionCount,
-                                    crownAmount: gameState.player.crownCount,
-                                    hp: gameState.player.hp,
-                                    gold: gameState.player.gold)
+                                    potionAmount: snapshot.potionCount,
+                                    crownAmount: snapshot.crownCount,
+                                    hp: snapshot.hp,
+                                    gold: snapshot.gold)
   }
 
   let usedPotionAlertTitle = "Potion Used"
@@ -64,10 +65,10 @@ class ItemsViewModel {
   func attemptUsePotion() -> UseItemResult {
     if gameState.usePotion(healAmount: itemsParameters.potionHealAmount) {
       viewState = ItemsViewState(parameters: itemsParameters,
-                                 potionAmount: gameState.player.potionCount,
-                                 crownAmount: gameState.player.crownCount,
-                                 hp: gameState.player.hp + itemsParameters.potionHealAmount,
-                                 gold: gameState.player.gold)
+                                 potionAmount: gameState.snapshot.potionCount,
+                                 crownAmount: gameState.snapshot.crownCount,
+                                 hp: gameState.snapshot.hp,
+                                 gold: gameState.snapshot.gold)
       return .used
     } else {
       return .noneLeft

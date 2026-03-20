@@ -10,20 +10,22 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
   var window: UIWindow?
-
+  private let gameCoordinator = GameCoordinator()
 
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-      // Ensure this scene is a UIWindowScene
-      guard let windowScene = (scene as? UIWindowScene) else { return }
-
-      // Create a new UIWindow with the windowScene
-      window = UIWindow(windowScene: windowScene)
-
-      // Set the initial view controller (assuming you have a ViewController class)
-      window?.rootViewController = TitleViewController(nibName: nil, bundle: nil)
-
-      // Make the window visible
-      window?.makeKeyAndVisible()
+    // Ensure this scene is a UIWindowScene
+    guard let windowScene = (scene as? UIWindowScene) else { return }
+    
+    // Create a new UIWindow with the windowScene
+    window = UIWindow(windowScene: windowScene)
+    
+    // Set the initial view controller (assuming you have a ViewController class)
+    if let window {
+      gameCoordinator.start(in: window)
+    }
+    
+    // Make the window visible
+    window?.makeKeyAndVisible()
   }
 
   func sceneDidDisconnect(_ scene: UIScene) {
@@ -59,4 +61,3 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
 }
-

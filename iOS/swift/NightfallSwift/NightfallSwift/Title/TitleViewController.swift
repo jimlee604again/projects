@@ -5,15 +5,17 @@
 //  Created by Jimmy Lee on 1/20/26.
 //
 
-import CoreData
 import UIKit
 
 class TitleViewController: UIViewController, StartButtonDelegate {
 
+  private let coordinator: GameCoordinator
   let titleViewModel: TitleViewModel = TitleViewModel()
+  var fetchedPlayer: Player?
 
-  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+  init(coordinator: GameCoordinator) {
+    self.coordinator = coordinator
+    super.init(nibName: nil, bundle: nil)
   }
 
   required init?(coder: NSCoder) {
@@ -29,56 +31,14 @@ class TitleViewController: UIViewController, StartButtonDelegate {
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view.
+    fetchedPlayer = PlayerRepository.shared.loadOrCreatePlayer()
     if let titleView = self.view as? TitleView {
       titleView.configure(with: titleViewModel.viewState)
     }
   }
 
   func didTapStart() {
-    let mainMenuViewModel = MainMenuViewModel(gameState: GameState(player: createPlayer()))
-    let mainMenuVC = MainMenuViewController(mainMenuViewModel: mainMenuViewModel)
-    mainMenuVC.modalPresentationStyle = .fullScreen
-    present(mainMenuVC, animated: false)
+    coordinator.showMainMenu(from: self, player: fetchedPlayer)
   }
 
-  func fetchPlayers() -> [Player] {
-      let context = CoreDataManager.shared.context
-      let request: NSFetchRequest<Player> = Player.fetchRequest()
-      do {
-          return try context.fetch(request)
-      } catch {
-          print("Fetch failed: \(error)")
-          return []
-      }
-  }
-
-  func createPlayer() -> Player {
-    let context = CoreDataManager.shared.context
-    let players = fetchPlayers()
-
-    if let existingPlayer = players.first {
-      return existingPlayer
-    }
-
-    // Generate base player if a persisted one isn't fetched.
-    guard let entity = NSEntityDescription.entity(
-      forEntityName: "Player",
-      in: context
-    ) else {
-      return Player()
-    }
-
-    let player = Player(entity: entity, insertInto: context)
-    player.hp = titleViewModel.playerStartingHealth
-    player.gold = titleViewModel.playerStartingGold
-
-    do {
-      try context.save()
-    } catch {
-      print("Failed context save")
-    }
-
-    return player
-  }
 }
-
