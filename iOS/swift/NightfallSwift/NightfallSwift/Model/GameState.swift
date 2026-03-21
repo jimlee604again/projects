@@ -16,7 +16,7 @@ struct GameStateSnapshot {
 
 public class GameState {
   private var observers: [UUID: (GameStateSnapshot) -> Void] = [:]
-  
+
   // this should probably be moved
   let innPrice: Int32 = 3
 
@@ -51,7 +51,7 @@ public class GameState {
   }
 
   func canStayAtInn() -> Bool {
-    return player.gold >= innPrice
+    player.gold >= innPrice
   }
 
   func stayAtInn() {

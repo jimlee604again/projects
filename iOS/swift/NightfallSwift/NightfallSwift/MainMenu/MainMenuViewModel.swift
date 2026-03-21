@@ -33,36 +33,38 @@ public class MainMenuViewModel {
   init(gameState: GameState) {
     self.gameState = gameState
     let snapshot = gameState.snapshot
-    self.viewState = MainMenuViewState(hp: snapshot.hp,
-                                       gold: snapshot.gold)
+    self.viewState = Self.makeViewState(snapshot: snapshot)
     self.gameStateObserverID = gameState.addObserver { [weak self] snapshot in
-      self?.viewState = MainMenuViewState(hp: snapshot.hp,
-                                          gold: snapshot.gold)
+      self?.viewState = Self.makeViewState(snapshot: snapshot)
     }
   }
 
+  private static func makeViewState(snapshot: GameStateSnapshot) -> MainMenuViewState {
+    MainMenuViewState(hp: snapshot.hp, gold: snapshot.gold)
+  }
+
   func makeInnViewModel() -> InnViewModel {
-    return InnViewModel(gameState: gameState)
+    InnViewModel(gameState: gameState)
   }
 
   func makeShopViewModel() -> ShopViewModel {
-    return ShopViewModel(gameState: gameState)
+    ShopViewModel(gameState: gameState)
   }
 
   func makeItemsViewModel() -> ItemsViewModel {
-    return ItemsViewModel(gameState: gameState)
+    ItemsViewModel(gameState: gameState)
   }
 
   func makeBattleViewModel() -> BattleViewModel {
-    return BattleViewModel(gameState: gameState)
+    BattleViewModel(gameState: gameState)
   }
 
   func playerHealthDisplayText() -> String {
-    return "HP: \(gameState.snapshot.hp)"
+    "HP: \(gameState.snapshot.hp)"
   }
 
   func playerGoldDisplayText() -> String {
-    return "Gold: \(gameState.snapshot.gold)"
+    "Gold: \(gameState.snapshot.gold)"
   }
 
   deinit {

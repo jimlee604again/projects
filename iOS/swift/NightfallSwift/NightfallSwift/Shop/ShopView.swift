@@ -62,7 +62,7 @@ class ShopView : UIView {
 
       status.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIGuidelineStatusSide),
       status.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -UIGuidelineStatusBottom),
-      
+
       inventory.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIGuidelineStatusSide),
       inventory.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -UIGuidelineStatusBottom),
 

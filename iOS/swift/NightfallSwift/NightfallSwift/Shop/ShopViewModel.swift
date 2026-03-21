@@ -63,21 +63,19 @@ class ShopViewModel {
 
   init(gameState: GameState) {
     self.gameState = gameState
-    let snapshot = gameState.snapshot
-    self.viewState = ShopViewState(parameters: parameters,
-                                   potionAmount: snapshot.potionCount,
-                                   crownAmount: snapshot.crownCount,
-                                   hpAmount: snapshot.hp,
-                                   goldAmount: snapshot.gold)
+    self.viewState = Self.makeViewState(parameters: parameters, snapshot: gameState.snapshot)
   }
 
-  func updateViewState () {
-    let snapshot = gameState.snapshot
-    viewState = ShopViewState(parameters: parameters,
-                              potionAmount: snapshot.potionCount,
-                              crownAmount: snapshot.crownCount,
-                              hpAmount: snapshot.hp,
-                              goldAmount: snapshot.gold)
+  private static func makeViewState(parameters: ShopParameters, snapshot: GameStateSnapshot) -> ShopViewState {
+    ShopViewState(parameters: parameters,
+                  potionAmount: snapshot.potionCount,
+                  crownAmount: snapshot.crownCount,
+                  hpAmount: snapshot.hp,
+                  goldAmount: snapshot.gold)
+  }
+
+  private func updateViewState() {
+    viewState = Self.makeViewState(parameters: parameters, snapshot: gameState.snapshot)
   }
 
   func attemptBuyPotion() -> PurchaseResult {

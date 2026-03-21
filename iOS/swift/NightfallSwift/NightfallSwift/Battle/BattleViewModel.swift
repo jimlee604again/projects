@@ -27,20 +27,24 @@ class BattleViewModel {
       didSet { onStateChange?(viewState) }
   }
   var onStateChange: ((BattleViewState) -> Void)?
-  let battleParameters = BattleParameters()
+  let parameters = BattleParameters()
 
   init (gameState: GameState) {
     self.gameState = gameState
-    self.viewState = BattleViewState(parameters: battleParameters,
-                                     hp: gameState.snapshot.hp,
-                                     gold: gameState.snapshot.gold)
+    self.viewState = Self.makeViewState(parameters: parameters, snapshot: gameState.snapshot)
+  }
+
+  private static func makeViewState(parameters: BattleParameters, snapshot: GameStateSnapshot) -> BattleViewState {
+    BattleViewState(parameters: parameters, hp: snapshot.hp, gold: snapshot.gold)
+  }
+
+  private func updateViewState() {
+    self.viewState = Self.makeViewState(parameters: parameters, snapshot: gameState.snapshot)
   }
 
   func battle() -> BattleResult {
-    let result = gameState.battle(battleParameters)
-    self.viewState = BattleViewState(parameters: battleParameters,
-                                     hp: gameState.snapshot.hp,
-                                     gold: gameState.snapshot.gold)
+    let result = gameState.battle(parameters)
+    updateViewState()
     return result
   }
 }

@@ -14,9 +14,9 @@ struct DefaultPlayerStats {
 }
 
 public class PlayerRepository {
-  
+
   static let shared = PlayerRepository()
-  
+
   func loadOrCreatePlayer() -> Player {
     let context = CoreDataManager.shared.context
     let players = fetchPlayers()
@@ -46,7 +46,7 @@ public class PlayerRepository {
 
     return player
   }
-  
+
   func fetchPlayers() -> [Player] {
       let context = CoreDataManager.shared.context
       let request: NSFetchRequest<Player> = Player.fetchRequest()
@@ -57,5 +57,5 @@ public class PlayerRepository {
           return []
       }
   }
-  
+
 }

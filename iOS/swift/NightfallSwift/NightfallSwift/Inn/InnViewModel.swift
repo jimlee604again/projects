@@ -7,13 +7,6 @@
 
 import Foundation
 
-enum StayResult { case success, insufficientFunds }
-
-struct InnParameters {
-  let stayCost: Int32 = 2
-  let recoverAmount: Int32 = 10
-}
-
 struct InnViewState {
   let title = "Inn"
   let outcomeExplanation: String
@@ -34,7 +27,7 @@ class InnViewModel {
   private(set) var viewState: InnViewState {
       didSet { onStateChange?(viewState) }
   }
-  private let innParameters = InnParameters()
+  private let parameters = InnParameters()
 
   var onStateChange: ((InnViewState) -> Void)?
 
@@ -48,17 +41,21 @@ class InnViewModel {
 
   init(gameState: GameState) {
     self.gameState = gameState
-    self.viewState = InnViewState(innParameters,
-                                  hp: gameState.snapshot.hp,
-                                  gold: gameState.snapshot.gold)
-    self.staySuccessMessage = "You feel rested. Recovered \(innParameters.recoverAmount) HP."
+    self.viewState = Self.makeViewState(parameters: parameters, snapshot: gameState.snapshot)
+    self.staySuccessMessage = "You feel rested. Recovered \(parameters.recoverAmount) HP."
+  }
+
+  private static func makeViewState(parameters: InnParameters, snapshot: GameStateSnapshot) -> InnViewState {
+    InnViewState(parameters, hp: snapshot.hp, gold: snapshot.gold)
+  }
+
+  private func updateViewState() {
+    self.viewState = Self.makeViewState(parameters: parameters, snapshot: gameState.snapshot)
   }
 
   func attemptStay() -> StayResult {
-    if gameState.stayAtInn(cost: innParameters.stayCost, recoverAmount: innParameters.recoverAmount) {
-      self.viewState = InnViewState(innParameters,
-                                    hp: gameState.snapshot.hp,
-                                    gold: gameState.snapshot.gold)
+    if gameState.stayAtInn(cost: parameters.stayCost, recoverAmount: parameters.recoverAmount) {
+      updateViewState()
       return .success
     }
     return .insufficientFunds

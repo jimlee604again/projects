@@ -31,4 +31,3 @@ func UIGuidelineButtonConfig(title: String, foregroundColor: UIColor) -> UIButto
   menuButtonConfig.cornerStyle = .medium
   return menuButtonConfig
 }
-

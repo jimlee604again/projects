@@ -7,12 +7,6 @@
 
 import Foundation
 
-enum UseItemResult { case used, noneLeft }
-
-struct ItemsParameters {
-  let potionHealAmount: Int32 = 5
-}
-
 struct ItemsViewState {
   let usePotionText = "Use Potion"
   let title = "Items"
@@ -42,33 +36,36 @@ class ItemsViewModel {
   private(set) var viewState : ItemsViewState {
     didSet { onStateChange?(viewState) }
   }
-  private let itemsParameters = ItemsParameters()
+  private let parameters = ItemsParameters()
 
   var onStateChange: ((ItemsViewState) -> Void)?
-
-  init (gameState: GameState) {
-    self.gameState = gameState
-    let snapshot = gameState.snapshot
-    self.viewState = ItemsViewState(parameters: itemsParameters,
-                                    potionAmount: snapshot.potionCount,
-                                    crownAmount: snapshot.crownCount,
-                                    hp: snapshot.hp,
-                                    gold: snapshot.gold)
-  }
 
   let usedPotionAlertTitle = "Potion Used"
   let noPotionsLeftAlertTitle = "No Potions Left"
   var usedPotionAlertMessage: String {
-    "You restored \(itemsParameters.potionHealAmount) HP!"
+    "You restored \(parameters.potionHealAmount) HP!"
+  }
+
+  init (gameState: GameState) {
+    self.gameState = gameState
+    viewState = Self.makeViewState(parameters: parameters, snapshot: gameState.snapshot)
+  }
+
+  private static func makeViewState(parameters: ItemsParameters, snapshot : GameStateSnapshot) -> ItemsViewState {
+    ItemsViewState(parameters: parameters,
+                   potionAmount: snapshot.potionCount,
+                   crownAmount: snapshot.crownCount,
+                   hp: snapshot.hp,
+                   gold: snapshot.gold)
+  }
+
+  private func updateViewState() {
+    viewState = Self.makeViewState(parameters: parameters, snapshot: gameState.snapshot)
   }
 
   func attemptUsePotion() -> UseItemResult {
-    if gameState.usePotion(healAmount: itemsParameters.potionHealAmount) {
-      viewState = ItemsViewState(parameters: itemsParameters,
-                                 potionAmount: gameState.snapshot.potionCount,
-                                 crownAmount: gameState.snapshot.crownCount,
-                                 hp: gameState.snapshot.hp,
-                                 gold: gameState.snapshot.gold)
+    if gameState.usePotion(healAmount: parameters.potionHealAmount) {
+      updateViewState()
       return .used
     } else {
       return .noneLeft
