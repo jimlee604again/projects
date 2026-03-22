@@ -7,6 +7,10 @@
 
 import Foundation
 
+protocol MainMenuViewModelDelegate: AnyObject {
+  func mainMenuViewModel(_ viewModel: MainMenuViewModel, didUpdate viewState: MainMenuViewState)
+}
+
 struct MainMenuViewState {
   let title = "Main Menu"
   let innTitle = "Inn"
@@ -26,9 +30,9 @@ public class MainMenuViewModel {
   private let gameState: GameState
   private var gameStateObserverID: UUID?
   private(set) var viewState : MainMenuViewState {
-    didSet { onDidChange?(viewState) }
+    didSet { delegate?.mainMenuViewModel(self, didUpdate: viewState) }
   }
-  var onDidChange: ((MainMenuViewState) -> Void)?
+  weak var delegate: MainMenuViewModelDelegate?
 
   init(gameState: GameState) {
     self.gameState = gameState
@@ -57,14 +61,6 @@ public class MainMenuViewModel {
 
   func makeBattleViewModel() -> BattleViewModel {
     BattleViewModel(gameState: gameState)
-  }
-
-  func playerHealthDisplayText() -> String {
-    "HP: \(gameState.snapshot.hp)"
-  }
-
-  func playerGoldDisplayText() -> String {
-    "Gold: \(gameState.snapshot.gold)"
   }
 
   deinit {

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BattleViewController: UIViewController, BattleViewDelegate {
+class BattleViewController: UIViewController, BattleViewDelegate, BattleViewModelDelegate {
   private let battleViewModel: BattleViewModel
 
   init(battleViewModel: BattleViewModel) {
@@ -21,30 +21,29 @@ class BattleViewController: UIViewController, BattleViewDelegate {
 
   override func loadView() {
     let battleView = BattleView()
-    self.battleViewModel.onStateChange = { [weak battleView] state in
-      battleView?.configure(state)
-    }
     battleView.delegate = self
     view = battleView
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    battleViewModel.delegate = self
     if let battleView = self.view as? BattleView {
       battleView.configure(battleViewModel.viewState)
     }
   }
 
+  func battleViewModel(_ viewModel: BattleViewModel, didUpdate viewState: BattleViewState) {
+    (view as? BattleView)?.configure(viewState)
+  }
+
   func didTapBattle() {
     switch battleViewModel.battle() {
     case .loseBattle:
-      let alert = UIAlertController(title: "You Lose", message: nil, preferredStyle: .alert)
-      alert.addAction(UIAlertAction(title: UIGuidelineAlertConfirm, style: .default))
-      present(alert, animated: false)
+      // MARK: TODO: replace with presenting a you lose screen and try again button.
+      presentSimpleAlert(title: battleViewModel.loseMessage, message: nil)
     case .winBattle:
-      let alert = UIAlertController(title: "You win the battle!", message: nil, preferredStyle: .alert)
-      alert.addAction(UIAlertAction(title: UIGuidelineAlertConfirm, style: .default))
-      present(alert, animated: false)
+      presentSimpleAlert(title: battleViewModel.winMessage, message: nil)
     }
   }
 

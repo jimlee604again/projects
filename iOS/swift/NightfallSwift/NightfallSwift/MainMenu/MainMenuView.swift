@@ -23,8 +23,7 @@ class MainMenuView : UIView {
   private let shop = ButtonTemplate()
   private let items = ButtonTemplate()
   private let battle = ButtonTemplate()
-  private let hp = LabelTemplate()
-  private let gold = LabelTemplate()
+  private let status = PlayerStatusView()
 
   // MARK: UI Constants
   private let themeColor = UIColor.cyan
@@ -46,8 +45,7 @@ class MainMenuView : UIView {
     addSubview(shop)
     addSubview(items)
     addSubview(battle)
-    addSubview(hp)
-    addSubview(gold)
+    addSubview(status)
 
     NSLayoutConstraint.activate([
       title.centerXAnchor.constraint(equalTo: centerXAnchor),
@@ -69,27 +67,19 @@ class MainMenuView : UIView {
       battle.topAnchor.constraint(equalTo: items.bottomAnchor, constant: buttonSpacing),
       battle.widthAnchor.constraint(equalToConstant: UIGuidelineButtonWidth),
 
-      hp.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIGuidelineStatusSide),
-      hp.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -UIGuidelineStatusBottom),
-
-      gold.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIGuidelineStatusSide),
-      gold.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -UIGuidelineStatusBottom + 30)
+      status.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIGuidelineStatusSide),
+      status.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -UIGuidelineStatusBottom)
     ])
   }
 
   func configure(with viewState: MainMenuViewState) {
     title.text = viewState.title
-    hp.text = viewState.hpText
-    gold.text = viewState.goldText
+    status.configure(hpText: viewState.hpText, goldText: viewState.goldText)
 
-    inn.configuration = UIGuidelineButtonConfig(title: viewState.innTitle,
-                                                      foregroundColor: themeColor)
-    shop.configuration = UIGuidelineButtonConfig(title: viewState.shopTitle,
-                                                       foregroundColor: themeColor)
-    items.configuration = UIGuidelineButtonConfig(title: viewState.itemsTitle,
-                                                        foregroundColor: themeColor)
-    battle.configuration = UIGuidelineButtonConfig(title: viewState.battleTitle,
-                                                         foregroundColor: themeColor)
+    inn.configuration = UIGuidelineButtonConfig(title: viewState.innTitle, foregroundColor: themeColor)
+    shop.configuration = UIGuidelineButtonConfig(title: viewState.shopTitle, foregroundColor: themeColor)
+    items.configuration = UIGuidelineButtonConfig(title: viewState.itemsTitle, foregroundColor: themeColor)
+    battle.configuration = UIGuidelineButtonConfig(title: viewState.battleTitle,foregroundColor: themeColor)
   }
 
   @objc func didTapInn() {

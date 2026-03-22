@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ShopViewController: UIViewController, ShopViewDelegate {
+class ShopViewController: UIViewController, ShopViewDelegate, ShopViewModelDelegate {
   private let shopViewModel: ShopViewModel
 
   init(shopViewModel: ShopViewModel) {
@@ -17,18 +17,20 @@ class ShopViewController: UIViewController, ShopViewDelegate {
 
   override func loadView() {
     let shopView = ShopView()
-    shopViewModel.onStateChange = { [weak shopView] newState in
-      shopView?.configure(with: newState)
-    }
     shopView.shopViewDelegate = self
     view = shopView
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    shopViewModel.delegate = self
     if let shopView = view as? ShopView {
       shopView.configure(with: shopViewModel.viewState)
     }
+  }
+
+  func shopViewModel(_ viewModel: ShopViewModel, didUpdate viewState: ShopViewState) {
+    (view as? ShopView)?.configure(with: viewState)
   }
 
   func didTapBuyPotion() {

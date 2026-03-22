@@ -7,7 +7,7 @@
 
 import UIKit
 
-class InnViewController: UIViewController, InnViewDelegate {
+class InnViewController: UIViewController, InnViewDelegate, InnViewModelDelegate {
   private var innViewModel: InnViewModel
 
   init(innViewModel: InnViewModel) {
@@ -17,19 +17,21 @@ class InnViewController: UIViewController, InnViewDelegate {
 
   override func loadView() {
     let innView = InnView()
-    self.innViewModel.onStateChange = { [weak innView] state in
-        innView?.configureWith(state)
-    }
     innView.innViewDelegate = self
     view = innView
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    innViewModel.delegate = self
     // Do any additional setup after loading the view.
     if let innView = self.view as? InnView {
       innView.configureWith(innViewModel.viewState)
     }
+  }
+
+  func innViewModel(_ viewModel: InnViewModel, didUpdate viewState: InnViewState) {
+    (view as? InnView)?.configureWith(viewState)
   }
 
   func didTapStay() {

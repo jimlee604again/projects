@@ -7,6 +7,10 @@
 
 import Foundation
 
+protocol InnViewModelDelegate: AnyObject {
+  func innViewModel(_ viewModel: InnViewModel, didUpdate viewState: InnViewState)
+}
+
 struct InnViewState {
   let title = "Inn"
   let outcomeExplanation: String
@@ -25,11 +29,11 @@ class InnViewModel {
   // MARK: Data In
   private let gameState: GameState
   private(set) var viewState: InnViewState {
-      didSet { onStateChange?(viewState) }
+      didSet { delegate?.innViewModel(self, didUpdate: viewState) }
   }
   private let parameters = InnParameters()
 
-  var onStateChange: ((InnViewState) -> Void)?
+  weak var delegate: InnViewModelDelegate?
 
   // MARK: Content
   let titleText = "Inn"

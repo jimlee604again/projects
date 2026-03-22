@@ -7,6 +7,10 @@
 
 import Foundation
 
+protocol ShopViewModelDelegate: AnyObject {
+  func shopViewModel(_ viewModel: ShopViewModel, didUpdate viewState: ShopViewState)
+}
+
 enum PurchaseResult {
   case success
   case insufficientFunds
@@ -43,9 +47,9 @@ struct ShopViewState {
 
 class ShopViewModel {
   private(set) var viewState : ShopViewState {
-    didSet { onStateChange?(viewState) }
+    didSet { delegate?.shopViewModel(self, didUpdate: viewState) }
   }
-  var onStateChange: ((ShopViewState) -> Void)?
+  weak var delegate: ShopViewModelDelegate?
 
   private let gameState: GameState
   private let parameters = ShopParameters()

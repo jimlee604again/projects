@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ItemsViewController: UIViewController, ItemsViewDelegate {
+class ItemsViewController: UIViewController, ItemsViewDelegate, ItemsViewModelDelegate {
 
   private let itemsViewModel: ItemsViewModel
 
@@ -15,12 +15,10 @@ class ItemsViewController: UIViewController, ItemsViewDelegate {
     self.itemsViewModel = itemsViewModel
     super.init(nibName: nil, bundle: nil)
     let itemsView = ItemsView()
-    itemsViewModel.onStateChange = { [weak itemsView] viewState in
-      itemsView?.configure(with: viewState)
-    }
     itemsView.configure(with: itemsViewModel.viewState)
     self.view = itemsView
     itemsView.itemsViewDelegate = self
+    itemsViewModel.delegate = self
   }
 
   func didTapExit() {
@@ -36,6 +34,10 @@ class ItemsViewController: UIViewController, ItemsViewDelegate {
       presentSimpleAlert(title: itemsViewModel.noPotionsLeftAlertTitle, message: nil)
       break
     }
+  }
+
+  func itemsViewModel(_ viewModel: ItemsViewModel, didUpdate viewState: ItemsViewState) {
+    (view as? ItemsView)?.configure(with: viewState)
   }
 
   required init?(coder: NSCoder) {

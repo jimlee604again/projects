@@ -7,6 +7,10 @@
 
 import Foundation
 
+protocol BattleViewModelDelegate: AnyObject {
+  func battleViewModel(_ viewModel: BattleViewModel, didUpdate viewState: BattleViewState)
+}
+
 struct BattleViewState {
   let titleText = "Battle"
   let battleButtonText = "Battle"
@@ -24,10 +28,12 @@ struct BattleViewState {
 class BattleViewModel {
   private let gameState: GameState
   private(set) var viewState: BattleViewState {
-      didSet { onStateChange?(viewState) }
+      didSet { delegate?.battleViewModel(self, didUpdate: viewState) }
   }
-  var onStateChange: ((BattleViewState) -> Void)?
+  weak var delegate: BattleViewModelDelegate?
   let parameters = BattleParameters()
+  let winMessage = "You win the battle!"
+  let loseMessage = "You Lose"
 
   init (gameState: GameState) {
     self.gameState = gameState
@@ -47,4 +53,5 @@ class BattleViewModel {
     updateViewState()
     return result
   }
+
 }

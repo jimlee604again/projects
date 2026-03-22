@@ -7,6 +7,10 @@
 
 import Foundation
 
+protocol ItemsViewModelDelegate: AnyObject {
+  func itemsViewModel(_ viewModel: ItemsViewModel, didUpdate viewState: ItemsViewState)
+}
+
 struct ItemsViewState {
   let usePotionText = "Use Potion"
   let title = "Items"
@@ -34,11 +38,11 @@ struct ItemsViewState {
 class ItemsViewModel {
   private let gameState: GameState
   private(set) var viewState : ItemsViewState {
-    didSet { onStateChange?(viewState) }
+    didSet { delegate?.itemsViewModel(self, didUpdate: viewState) }
   }
   private let parameters = ItemsParameters()
 
-  var onStateChange: ((ItemsViewState) -> Void)?
+  weak var delegate: ItemsViewModelDelegate?
 
   let usedPotionAlertTitle = "Potion Used"
   let noPotionsLeftAlertTitle = "No Potions Left"

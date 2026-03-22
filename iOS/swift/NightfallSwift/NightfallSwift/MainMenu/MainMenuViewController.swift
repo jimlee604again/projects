@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MainMenuViewController: UIViewController, MainMenuDelegate {
+class MainMenuViewController: UIViewController, MainMenuDelegate, MainMenuViewModelDelegate {
 
   private let coordinator: GameCoordinator
   let mainMenuViewModel: MainMenuViewModel
@@ -25,18 +25,20 @@ class MainMenuViewController: UIViewController, MainMenuDelegate {
   override func loadView() {
     let mainMenuView = MainMenuView()
     mainMenuView.mainMenuDelegate = self
-    mainMenuViewModel.onDidChange = { [weak mainMenuView] viewState in
-      mainMenuView?.configure(with: viewState)
-    }
     self.view = mainMenuView
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    mainMenuViewModel.delegate = self
     // Do any additional setup after loading the view.
     if let mainMenuView = self.view as? MainMenuView {
       mainMenuView.configure(with: mainMenuViewModel.viewState)
     }
+  }
+
+  func mainMenuViewModel(_ viewModel: MainMenuViewModel, didUpdate viewState: MainMenuViewState) {
+    (view as? MainMenuView)?.configure(with: viewState)
   }
 
   func didTapInn() {
