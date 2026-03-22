@@ -58,7 +58,7 @@ class InnViewModel {
   }
 
   func attemptStay() -> StayResult {
-    if gameState.stayAtInn(cost: parameters.stayCost, recoverAmount: parameters.recoverAmount) {
+    if gameState.stayAtInn(parameters) {
       updateViewState()
       return .success
     }

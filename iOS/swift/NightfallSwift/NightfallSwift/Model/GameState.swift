@@ -17,9 +17,6 @@ struct GameStateSnapshot {
 public class GameState {
   private var observers: [UUID: (GameStateSnapshot) -> Void] = [:]
 
-  // this should probably be moved
-  let innPrice: Int32 = 3
-
   private let player: Player
 
   init(player: Player) {
@@ -50,26 +47,13 @@ public class GameState {
     observers.values.forEach { $0(currentSnapshot) }
   }
 
-  func canStayAtInn() -> Bool {
-    player.gold >= innPrice
-  }
-
-  func stayAtInn() {
-    if canStayAtInn() {
-      player.gold -= innPrice
-      notifyObservers()
-    } else {
-      print("Attempted to stay at inn without enough gold.")
-    }
-  }
-
-  func stayAtInn(cost: Int32, recoverAmount: Int32) -> Bool {
-    guard player.gold >= cost else {
+  func stayAtInn(_ innParameters: InnParameters) -> Bool {
+    guard player.gold >= innParameters.stayCost else {
       return false
     }
 
-    player.gold -= cost
-    player.hp += recoverAmount
+    player.gold -= innParameters.stayCost
+    player.hp += innParameters.recoverAmount
     notifyObservers()
     return true
   }
