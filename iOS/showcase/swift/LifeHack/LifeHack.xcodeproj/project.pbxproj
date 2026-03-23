@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 70;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -47,10 +47,6 @@
 		BFE6764B2B1561DB006A3FD6 /* ToolbeltView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbeltView.swift; sourceTree = "<group>"; };
 		BFE6764D2B1973F1006A3FD6 /* GameLifeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameLifeData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		BFE5BEFA2E78CA4200269B2D /* UnitTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = UnitTests; sourceTree = "<group>"; };
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		BFD163982B1064C500CD361F /* Frameworks */ = {
@@ -128,7 +124,6 @@
 		BFD1639D2B1064C500CD361F /* LifeHack */ = {
 			isa = PBXGroup;
 			children = (
-				BFE5BEFA2E78CA4200269B2D /* UnitTests */,
 				BF0AE1202BAE40BA00890F80 /* Utilities */,
 				BFD1639E2B1064C500CD361F /* AppDelegate.swift */,
 				BFD163A02B1064C500CD361F /* SceneDelegate.swift */,
@@ -159,9 +154,6 @@
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				BFE5BEFA2E78CA4200269B2D /* UnitTests */,
 			);
 			name = LifeHack;
 			productName = LifeHack;

@@ -1,0 +1,5 @@
+This directory contains projects I would like to highlight. Please see short notes regarding each one below.
+
+swift/NightfallSwift: This is an example of a short game exercises practices of MVVM and eventually CoreData. Though this app did not make it to the app store, it is likely more impressive than the one that did.
+
+swift/LifeHack: This was the first project I launched into the App Store to compliment a hobby I took part in. It is a little weak in architecture, as I was not as fluent in MVVM, but made an attempt at it.

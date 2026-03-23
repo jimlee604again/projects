@@ -10,14 +10,10 @@ import Foundation
 class PlayerLifeViewModel: NSObject {
   var player: PlayerLifeData
   var life: Int {
-    get {
-      return self.player.life
-    }
+    player.life
   }
   var poison: Int {
-    get {
-      return player.poison
-    }
+    player.poison
   }
   var playerCount: PlayerCount
   var shouldDisplayPoison: Bool
