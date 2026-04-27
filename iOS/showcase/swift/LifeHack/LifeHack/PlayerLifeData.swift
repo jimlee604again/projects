@@ -10,9 +10,4 @@ import Foundation
 struct PlayerLifeData {
   var life: Int
   var poison: Int
-  
-  init(playerLife: Int, playerPoison: Int) {
-    self.life = playerLife
-    self.poison = playerPoison
-  }
 }

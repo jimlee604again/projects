@@ -22,7 +22,7 @@ class GameLifeData: NSObject {
   var player4Of4: PlayerLifeData
   
   init(playerCount: PlayerCount, 
-       displayPoison: Bool,
+       poisonEnabled: Bool,
        p1LifeData: PlayerLifeData,
        p2LifeData: PlayerLifeData,
        p1Of4LifeData: PlayerLifeData,
@@ -30,7 +30,7 @@ class GameLifeData: NSObject {
        p3Of4LifeData: PlayerLifeData,
        p4Of4LifeData: PlayerLifeData) {
     self.playerCount = playerCount
-    self.poisonEnabled = displayPoison
+    self.poisonEnabled = poisonEnabled
     self.player1 = p1LifeData
     self.player2 = p2LifeData
     self.player1Of4 = p1Of4LifeData

@@ -9,14 +9,12 @@ import Foundation
 import UIKit
 
 class TitleView: UIView {
-  var titleLabel: UILabel
-  var startButton: UIButton
+  var titleLabel: UILabel = UILabel()
+  var startButton: UIButton = UIButton()
   
   init(frame: CGRect, 
        presentLifeTrackerAction: Selector,
        presentingController: UIViewController) {
-    titleLabel = UILabel()
-    startButton = UIButton()
     super.init(frame: frame)
 
     backgroundColor = lightBlueColor

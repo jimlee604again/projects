@@ -41,13 +41,14 @@ class PlayerLifeViewModel: NSObject {
     player.poison += 1
     notifyLifeUpdate()
   }
+
   func decrementPoison() {
     player.poison -= 1
     notifyLifeUpdate()
   }
 
   func togglePoison() {
-    self.shouldDisplayPoison = !self.shouldDisplayPoison
+    shouldDisplayPoison = !shouldDisplayPoison
   }
 
   func resetLife(life: Int) {
